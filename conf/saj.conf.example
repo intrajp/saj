@@ -1,0 +1,334 @@
+# This is the configuration file for the saj.
+# 
+# If you have installed this program before,
+# new version will not override.
+#
+# Please check
+# /usr/share/saj/saj.conf.example,
+# and
+# copy it as ~/.saj/saj.conf.
+#
+#
+## You can set arbitrary item-name including 'all'
+#  up to 12 or 25 except some members.
+#
+# 'all' echos every line in the file.
+# Remember that 'all' should come very first.
+# Other 'all' is omitted automatically.
+#
+# Sometimes, certain files are not made by sosreport.
+# In such cases, you can skip the file, setting item-name to 'skip'.
+# But don't worry, saj will automatically
+# skips the directory which is not present.
+# ex. lsb-release=skip
+##==== general ==== 
+date=all
+etc/fedora-release=all
+lsb-release=all
+etc/os-release=all
+etc/redhat-release=all
+etc/system-release=all
+sos_commands/release/=all
+uname=all
+hostname=all
+proc/timer_list=all
+proc/timer_stats=all
+uptime=all
+last=all
+etc/environment=all
+etc/machine-id=all
+etc/nsswitch.conf=all
+installed-rpms=all
+root/anaconda-ks.cfg=all
+dmidecode=bios System Processor memory Smart Firmware firmware Count
+etc/default/=all
+sos_commands/boot/=all
+sos_commands/date/=all
+etc/vconsole.conf=all
+etc/locale.conf=all
+sos_commands/i18n/=all
+usr/share/zoneinfo/=all
+##==== etc/sysconfig/ ==== 
+etc/sysconfig/=all
+##==== cpu ==== 
+proc/cpuinfo=vendor_id model flags
+proc/interrupts=all
+sos_commands/processor/=all
+sos_commands/numa/=all
+##==== module ====
+lsmod=all
+etc/modprobe.d/=all
+usr/lib/modules/=all
+sys/module/=all
+##==== device ==== 
+lspci=00: 01: 02: 03: 04: 05: 06: 07: 08: 09: 7f 80 driver modules
+sos_commands/pci/=all
+etc/udev/=all
+usr/lib/udev/=all
+sos_commands/devicemapper/=all
+sos_commands/devices/=all
+sos_commands/block/=all
+sys/block/=all
+sos_commands/scsi/lsscsi=all
+sos_commands/ipmitool/=all
+sos_commands/usb/=all
+run/blkid/=all
+etc/multipath.conf=all
+sos_commands/multipath/=all
+sys/devices/=all
+##==== file systems ==== 
+etc/fstab=all
+etc/lvm/=all
+sos_commands/filesys/=all
+sos_commands/lvm2/=all
+sos_commands/btrfs/=all
+sos_commands/gfs2/=all
+sos_commands/gluster/=all
+sys/fs/=all
+##==== boot/grub ==== 
+grub2.cfg=all
+boot/=all
+etc/grub.d/=all
+sos_commands/bootloader/=all
+##==== process ==== 
+ps=all
+sos_commands/process/=all
+##==== disk usage ==== 
+df=/dev
+vgdisplay=all
+sos_commands/logs/journalctl_--disk-usage=all
+sos_commands/md/=all
+##==== memory usage ==== 
+free=all
+sos_commands/memory/=all
+proc/meminfo=all
+proc/zoneinfo=all
+proc/buddyinfo=all
+proc/slabinfo=all
+proc/vmstat=all
+proc/iomem=all
+proc/vmallocinfo=all
+##==== files ==== 
+lsof=all
+##====  systemd ==== 
+etc/systemd/system/=all
+etc/systemd/=all
+usr/lib/sysctl.d/=all
+usr/lib/systemd/=all
+run/systemd/=all
+sos_commands/startup/=all
+etc/rc.d/=all
+##==== kernel ==== 
+etc/kdump.conf=all
+etc/sysctl.conf=all
+sos_commands/kernel/sysctl_-a=panic watchdog nmi sysrq
+var/crash/=all
+sos_commands/abrt/=all
+sos_commands/systemtap/=all
+sos_commands/cgroups/=all
+etc/dracut.conf=all
+usr/lib/dracut/=all
+sos_commands/dracut/=all
+sys/kernel/=all
+##==== libraries ==== 
+etc/ld.so.conf=all
+etc/ld.so.conf.d/=all
+sos_commands/libraries/=all
+##==== networking ==== 
+etc/host=all
+ip_addr=all
+route=all
+etc/networks=all
+etc/resolv.conf=all
+etc/dnsmasq.conf=all
+etc/sysconfig/network-scripts/ifcfg-=all
+etc/firewalld/=all
+sos_commands/firewalld/=all
+var/log/firewalld=all
+etc/nftables/=all
+etc/iproute2/=all
+proc/net/dev=all
+proc/net/sockstat=all
+sos_commands/networking/ethtool_-S=all
+sos_commands/networking/ethtool_-i=all
+sos_commands/networking/=all
+etc/NetworkManager/=all
+sos_commands/networkmanager/=all
+sos_commands/wireless/=all
+netstat=TIME_WAIT
+etc/ppp/=all
+sos_commands/ppp/=all
+etc/wvdial.conf=all
+proc/net/bonding/=all
+##==== security ==== 
+etc/sudoers=all
+etc/sudoers.d/=all
+etc/pam.d/=all
+sos_commands/pam/=all
+etc/ssh/=all
+var/log/secure=su:session failure
+etc/audit/=all
+sos_commands/auditd/=all
+var/log/audit/=denied
+sos_commands/crypto/=all
+etc/pki/=all
+etc/sestatus.conf=all
+etc/selinux/=all
+sos_commands/selinux/=all
+etc/krb5.conf=all
+etc/krb5.conf.d/=all
+sos_commands/krb5/=all
+etc/ipsec.conf=all
+etc/ipsec.d/=all
+usr/share/crypto-policies/=all
+##==== mail ==== 
+etc/mail/=all
+sos_commands/sendmail/=all
+etc/postfix/=all
+sos_commands/postfix/=all
+##==== GUI ==== 
+etc/X11/=all
+sos_commands/x11/=all
+etc/gdm/=all
+sos_commands/gdm/=all
+##==== alternatives ==== 
+etc/alternatives/=all
+sos_commands/alternatives/=all
+##==== alsa ==== 
+etc/alsa/=all
+sos_commands/soundcard/=all
+usr/share/alsa/=all
+##==== anaconda ==== 
+var/log/anaconda/=all
+##==== ansible ==== 
+etc/ansible/=all
+sos_commands/ansible/=all
+##==== ceph ==== 
+sos_commands/ceph/=all
+##==== corosync ==== 
+etc/corosync/=all
+sos_commands/corosync/=all
+##==== cron ==== 
+etc/anacrontab=all
+etc/crontab=all
+etc/cron.deny=all
+etc/cron.d/=all
+etc/cron.hourly/=all
+etc/cron.daily/=all
+etc/cron.weekly/=all
+etc/cron.monthly/=all
+var/spool/cron/=all
+var/log/cron=all
+##==== chrony ==== 
+etc/chrony.conf=all
+sos_commands/chrony/=all
+var/lib/chrony/=all
+##==== cups ==== 
+etc/cups/=all
+sos_commands/cups/=all
+##==== dbus ==== 
+etc/dbus-1/=all
+sos_commands/dbus/=all
+var/lib/dbus/=all
+##==== dhcp ==== 
+etc/dhcp/=all
+##==== dnf/yum ==== 
+etc/dnf/=all
+sos_commands/dnf/=all
+etc/yum.conf=all
+etc/yum.repos.d/=all
+etc/yum/=all
+sos_commands/yum/=all
+##==== docker ==== 
+sos_commands/docker/=all
+##==== fcoe ==== 
+etc/fcoe/=all
+sos_commands/fcoe/=all
+##==== gss ==== 
+etc/gss/=all
+etc/gssproxy/=all
+##==== haproxy ==== 
+sos_commands/haproxy/=all
+##==== hpasm ==== 
+sos_commands/hpasm/=all
+##==== httpd ==== 
+etc/httpd/=all
+sos_commands/apache/=all
+var/log/httpd/=404 500
+##==== java ==== 
+etc/java/=all
+sos_commands/java/=all
+##==== kvm/libvirt ==== 
+etc/libvirt/=all
+sos_commands/kvm/=all
+sos_commands/libvirt/=all
+run/libvirt/=all
+sos_commands/virsh/=all
+var/log/libvirt/=all
+##==== ldap ==== 
+etc/openldap/=all
+etc/nslcd.conf=all
+sos_commands/ldap/=all
+##==== logrotate ==== 
+etc/logrotate.conf=all
+etc/logrotate.d/=all
+sos_commands/logrotate/=all
+var/lib/logrotate/=all
+##==== lstopo ==== 
+sos_commands/lstopo/=all
+##==== nfs ==== 
+etc/nfs.conf=all
+etc/nfsmount.conf=all
+sos_commands/nis/=all
+##==== oddjobd ==== 
+etc/oddjobd/=all
+etc/oddjobd.conf.d/=all
+##==== opengl ==== 
+sos_commands/opengl/=all
+##==== openshift ==== 
+sos_commands/openshift/=all
+##==== openswan ==== 
+sos_commands/openswan/=all
+##==== perl ==== 
+sos_commands/perl/=all
+##==== rear ==== 
+etc/rear/=all
+sos_commands/rear/=all
+var/log/rear/=all
+##==== ruby ==== 
+sos_commands/ruby/=all
+##==== samba ==== 
+etc/samba/=all
+sos_commands/samba/=all
+##==== sar ==== 
+sos_commands/sar/=all
+var/log/sa/sar=all
+##==== snmp ==== 
+etc/snmp/=all
+##==== sos ==== 
+etc/sos.conf=all
+##==== sssd ==== 
+sos_commands/sssd/=all
+##==== sunrpc ==== 
+sos_commands/sunrpc/=all
+##==== logs and journals ==== 
+etc/rsyslog.conf=all
+var/log/dmesg=all
+## var/log/messages 
+##
+## You can set arbitrary item-name including 'all' up to 25
+## ex. var/log/messages=error 
+var/log/messages=error kdump WARNING dump_stack bnx2x tg3 hung blocked NFS rpc RPC stat lockup [<ffffffff Trace flooding Out
+## sos_commands/logs/journalctl_--no-pager
+##
+## You can set arbitrary item-name including 'all' up to 25
+## ex. sos_commands/logs/journalctl_--no-pager=kdump 
+sos_commands/logs/journalctl_--no-pager=error kdump WARNING dump_stack bnx2x tg3 hung blocked NFS rpc RPC stat lockup [<ffffffff Trace flooding Out
+##==== others ( default item is 'skip' ) ==== 
+lib/=skip
+etc/=skip
+sos_commands/=skip
+dev/=skip
+usr/=skip
+var/=skip
+proc/=skip

@@ -1,0 +1,614 @@
+saj
+
+This is the next version of 'sosreport-analyzer-ng'.
+
+Enjoy!
+
+# saj
+Analyze sosreport in many different ways
+
+This software installs 3 binary file, 'saj',
+'cmp-saj' and 'saj-gui'
+which are linked with
+libsaj-sar-analyzer.so and libsaj-sosreport-analyzer.so.
+You can check linkage with like '$ ldd /usr/local/bin/saj'.
+
+# versions
+
+saj reads directories parallelly.
+Your favorite will be always the latest version.
+saj reads config file in user's home directory,
+'~/.saj', edit file there.
+
+How to build:
+
+ $ ./autogen.sh
+ $ ./configure
+ $ make
+ # make install
+
+ It will install 3 programs, 'saj', 'cmp-saj'
+ and 'saj-gui'in '/usr/local/bin'.
+
+1. saj for analyze sosreport
+
+Program Name: saj
+
+Binary path: /usr/local/bin/saj
+
+  Analyze sosreport in many different ways.
+
+saj has two features.
+
+1-1. saj for sosreport
+
+Binary path: /usr/local/bin/saj
+
+  For sosreport
+
+  New version of config is found in /usr/share/saj/saj.conf.example.
+  Copy it as ~/.saj/saj.conf.
+  It may be easier to use GUI, and 'Restore configs'.
+
+  These ones are to be analyzed with config settings.
+
+  ==== general ==== 
+    date
+    etc/fedora-release
+    lsb-release
+    etc/os-release
+    etc/redhat-release
+    etc/system-release
+    sos_commands/release/
+    uname
+    hostname
+    proc/timer_list 
+    proc/timer_stats
+    uptime
+    last
+    etc/environment
+    etc/machine-id
+    etc/nsswitch.conf
+    installed-rpms
+    root/anaconda-ks.cfg
+    dmidecode
+    etc/default/
+    sos_commands/boot/
+    sos_commands/date/
+    etc/vconsole.conf
+    etc/locale.conf
+    sos_commands/i18n/
+    usr/share/zoneinfo/
+
+  ==== etc/sysconfig ==== 
+    etc/sysconfig/
+
+  ==== cpu ==== 
+    proc/cpuinfo
+    proc/interrupts
+    sos_commands/processor/
+    sos_commands/numa/
+
+  ==== module ==== 
+    lsmod
+    etc/modprobe.d/
+    usr/lib/modules/
+
+  ==== device ==== 
+    lspci
+    sos_commands/pci/
+    etc/udev/
+    usr/lib/udev/
+    sos_commands/devicemapper/
+    sos_commands/devices/
+    sos_commands/block/
+    sys/block/
+    sos_commands/ipmitool/
+    sos_commands/scsi/lsscsi
+    sos_commands/usb/
+    run/blkid/
+    etc/multipath.conf
+    sos_commands/multipath/
+    sys/devices/
+
+  ==== file systems ==== 
+    etc/fstab
+    sos_commands/filesys/
+    etc/lvm/
+    sos_commands/lvm2/
+    sos_commands/btrfs/
+    sos_commands/gfs2/
+    sos_commands/gluster/
+    sys/fs/
+    
+  ==== boot/grub ==== 
+    grub2.cfg
+    boot/
+    etc/grub.d/
+    sos_commands/bootloader/
+
+  ==== process ==== 
+    ps
+    sos_commands/process/
+
+  ==== disk usage ==== 
+    df
+    vgdisplay
+    sos_commands/logs/journalctl_--disk-usage
+    sos_commands/md/
+
+  ==== memory usage ==== 
+    free
+    sos_commands/memory/
+    proc/meminfo
+    proc/zoneinfo
+    proc/buddyinfo
+    proc/slabinfo
+    proc/vmstat
+    proc/iomem
+    proc/vmallocinfo
+
+  ==== files ==== 
+    lsof
+
+  ==== systemd ==== 
+    etc/systemd/system/
+    etc/systemd/
+    usr/lib/sysctl.d/
+    usr/lib/systemd/
+    run/systemd/
+    sos_commands/startup/
+    etc/rc.d/
+
+  ==== kernel ==== 
+    etc/kdump.conf
+    etc/sysctl.conf
+    sos_commands/kernel/sysctl_-a
+    var/crash/
+    sos_commands/abrt/
+    sos_commands/systemtap/
+    sos_commands/cgroups/
+    etc/lib/dracut/
+    etc/dracut.conf
+    usr/lib/dracut/
+    sos_commands/dracut/
+    sys/kernel/
+
+  ==== libraries ==== 
+    etc/ld.so.conf
+    etc/ld.so.conf.d/
+    sos_commands/libraries/
+
+  ==== networking ==== 
+    etc/host*
+    ip_addr
+    route
+    etc/networks
+    etc/resolv.conf
+    etc/dnsmasq.conf
+    etc/sysconfig/network-scripts/ifcfg-*
+    etc/firewalld/
+    sos_commands/firewalld/
+    var/log/firewalld
+    etc/nftables/
+    etc/iproute2/
+    proc/net/dev
+    proc/net/sockstat
+    sos_commands/networking/ethtool_-S
+    sos_commands/networking/ethtool_-i
+    sos_commands/networking/
+    etc/NetworkManager/
+    sos_commands/networkmanager/
+    sos_commands/wireless/
+    netstat
+    etc/ppp/
+    sos_commands/ppp/
+    etc/wvdial.conf
+    proc/net/bonding/
+
+  ==== security ==== 
+    etc/sudoers
+    etc/sudoers.d/
+    etc/pam.d/
+    sos_commands/pam/
+    etc/ssh/
+    var/log/secure*
+    etc/audit/
+    sos_commands/auditd/
+    var/log/audit/
+    sos_commands/crypto/
+    etc/pki/
+    etc/sestatus.conf
+    etc/selinux/
+    sos_commands/selinux/
+    etc/krb5.conf
+    etc/krb5.conf.d/
+    sos_commands/krb5/
+    etc/ipsec.conf
+    etc/ipsec.d/
+    usr/share/crypto-policies/
+
+  ==== mail ==== 
+    etc/mail/
+    sos_commands/sendmail/
+    etc/postfix/
+    sos_commands/postfix/
+
+  ==== GUI ==== 
+    etc/X11/
+    sos_commands/x11/
+    etc/gdm/
+    sos_commands/gdm/
+
+  ==== alternatives ==== 
+    etc/alternatives/
+    sos_commands/alternatives/
+
+  ==== alsa ==== 
+    etc/alsa/
+    sos_commands/soundcard/
+    usr/share/alsa/
+
+  ==== anaconda ==== 
+    var/log/anaconda/
+
+  ==== ansible ==== 
+    etc/ansible/
+    sos_commands/ansible/
+
+  ==== ceph ==== 
+    sos_commands/ceph/
+
+  ==== corosync ==== 
+    etc/corosync/
+    sos_commands/corosync/
+
+  ==== cron ==== 
+    etc/anacrontab
+    etc/crontab
+    etc/cron.deny
+    etc/cron.d/
+    etc/cron.hourly/
+    etc/cron.daily/
+    etc/cron.weekly/
+    etc/cron.monthly/
+    var/spool/cron/
+    var/log/cron
+
+  ==== chrony ==== 
+    etc/chrony.conf
+    sos_commands/chrony/
+    var/lib/chrony/
+
+  ==== cups ==== 
+    etc/cups/
+    sos_commands/cups/
+
+  ==== dbus ==== 
+    etc/dbus-1/
+    sos_commands/dbus/
+    var/lib/dbus/
+
+  ==== dhcp ==== 
+    etc/dhcp/
+
+  ==== dnf/yum ==== 
+    etc/yum.conf
+    etc/yum.repos.d/
+    etc/yum/
+    sos_commands/yum/
+    etc/dnf/
+    sos_commands/dnf/
+
+  ==== docker ==== 
+    sos_commands/docker/
+
+  ==== fcoe ==== 
+    etc/fcoe/
+    sos_commands/fcoe/
+
+  ==== gss ==== 
+    etc/gss/
+    etc/gssproxy/
+
+  ==== haproxy ==== 
+    sos_commands/haproxy/
+
+  ==== hpasm ==== 
+    sos_commands/hpasm/
+
+  ==== httpd ==== 
+    etc/httpd/
+    sos_commands/apache/
+    var/log/httpd/
+
+  ==== java ==== 
+    etc/java/
+    sos_commands/java/
+
+  ==== kvm/libvirt ==== 
+    etc/libvirt/
+    sos_commands/libvirt/
+    run/libvirt/
+    sos_commands/kvm/
+    sos_commands/virsh/
+    var/log/libvirt/
+
+  ==== ldap ==== 
+    etc/openldap/
+    etc/nslcd.conf
+    sos_commands/ldap/
+
+  ==== logrotate ==== 
+    etc/logrotate.conf
+    etc/logrotate.d/
+    sos_commands/logrotate/
+    var/lib/logrotate/
+
+  ==== lstopo ==== 
+    sos_commands/lstopo/
+
+  ==== nfs ==== 
+    etc/nfs.conf
+    etc/nfsmount.conf
+    sos_commands/nis/
+
+  ==== oddjobd ==== 
+    etc/oddjobd/
+    etc/oddjobd.conf.d/
+
+  ==== opengl ==== 
+    sos_commands/opengl/
+
+  ==== openshift ==== 
+    sos_commands/openshift/
+
+  ==== openswan ==== 
+    sos_commands/openswan/
+
+  ==== perl ==== 
+    sos_commands/perl/
+
+  ==== rear ==== 
+    etc/rear/
+    sos_commands/rear/
+    var/log/rear/
+
+  ==== ruby ==== 
+    sos_commands/ruby/
+
+  ==== samba ==== 
+    etc/samba/
+    sos_commands/samba/
+
+  ==== sar ==== 
+    sos_commands/sar/
+    var/log/sa/sar*
+
+  ==== snmp ==== 
+    etc/snmp/
+
+  ==== sos ==== 
+    etc/sos.conf
+
+  ==== sssd ==== 
+    sos_commands/sssd/
+
+  ==== sunrpc ==== 
+    sos_commands/sunrpc/
+
+  ==== logs and journals ==== 
+    etc/rsyslog.conf
+    var/log/dmesg
+    var/log/messages*
+    sos_commands/logs/journalctl_--no-pager
+
+  ==== others ( default item is 'skip') ==== 
+    lib/
+    etc/
+    sos_commands/
+    dev/
+    usr/
+    var/
+    proc/
+
+  These ones are to be analyzed with automatically.
+
+  - Is hostname set in '/etc/hosts'?
+  - Are there any NIC which has no carrier? 
+  - Are there any NIC which has unrecoverable errors? 
+  - Any bonding has down NIC(s)? 
+  - Is 'resolv.conf' empty? 
+  - Is NIC offload is on? 
+
+
+  For mcinfo 
+
+  New version of config is found in /usr/share/saj/saj-mcinfo.conf.example.
+  Copy it as ~/.saj/saj-mcinfo.conf.
+  It may be easier to use GUI, and 'Restore configs'.
+
+  proc/cpuinfo
+  boot/grub/
+  cmdlog/
+  etc/host*
+  etc/sysconfig/network-scripts/ifcfg-*
+  etc/
+  proc/meminfo
+  proc/zoneinfo
+  proc/buddyinfo
+  proc/slabinfo
+  proc/vmstat
+  proc/interrupts
+  var/log/dmesg
+  etc/crontab
+  etc/cron.deny
+  etc/cron.d/
+  etc/cron.hourly/
+  etc/cron.daily/
+  etc/cron.weekly/
+  etc/cron.monthly/
+  var/spool/cron/
+  var/log/messages*
+  var/crash/
+  var/
+  proc/
+
+  Note that members in the same directory, upper ones will be analyzed and those are omitted for the rest. 
+
+1-2. saj for sar
+
+  Presently, it gives -ZM option to usual sar-analyzer functionality.
+
+  There are seven features.
+
+  Show highest and lowest average value to a file with a report.
+  Show spike, highest and lowest value to a file with a report.
+  Show spike, highest and lowest value in given time-span to a file with a report.
+  Show possible thrashing.
+  Show network down.
+  am-pm style is converted to abs style in the report.
+  Generate graphs as postscript files.
+
+  When the file sanity check fails, program stops echoing the reason.
+  In that case, move the very file to other than <sosreport-dir>/var/log/sa and run the program again. 
+  Or you may reading file including Japanese although machine locale is not JP.
+  In that case, edit libsar-analyzer/Makefile.am to use common_jp.c and sar_analyzer_jp.c.
+
+## Getting "sar file"
+
+  Note that "sar file" should be basically, written in English or Japanese.
+
+  It may be good to convert binary 'sa' file to text 'sar' file.
+  Because, sometimes, text 'sar' file is not made yet but binary 'sa' file exists.
+  Here is a way converting 'sa' file to 'sar' file.
+
+  example:
+  $ LC_ALL=C sar -f /var/log/sa/sa01 -A -t > ./sar01
+
+  or in Japanese environment, just do this.
+
+  $ sar -f /var/log/sa/sa01 -A -t > ./sar01
+
+  how to remove ^@
+
+  Sometimes, ^@ will appear in 'sar' file. In those cases, remove with this command.
+
+  example:
+  $ sed -i 's/\x00//g' ./sar01
+
+  When you did above, check 'sar' file is written in Ascii text and clear.
+
+  example:
+  $less sar01
+
+3. cmp-saj
+
+Program Name: cmp-saj
+
+Binary path: /usr/local/bin/cmp-saj
+
+  Compare 2 files emitted by saj.
+
+4. saj-gui
+
+Program Name: saj-gui
+
+Binary path: /usr/local/bin/saj-gui
+
+  saj's GUI using Qt4.
+
+
+## Before using
+
+  - sosreport
+
+    Check ~/.saj/saj.conf
+
+      By installation process, config file is not copied to your home directory.
+      It will be copied when you first excecute the program or restore with GUI program.
+
+      You can set analyzing word for each analyzing member.
+      If you are not sure, consult /usr/share/saj/saj.conf.example.
+      New version will not override the conf file. When you build new version, be sure to copy file
+      or at least, copy lines needed.
+
+      You can use GUI program to edit or restore config file.
+
+  - mcinfo 
+
+    Check ~/.saj/saj-mcinfo.conf
+
+      By installation process, config file is not copied to your home directory.
+      It will be copied when you first excecute the program or restore with GUI program.
+
+      You can set analyzing word for each analyzing member.
+      If you are not sure, consult /usr/share/saj/saj-mcinfo.conf.example.
+      New version will not override the conf file. When you build new version, be sure to copy file
+      or at least, copy lines needed.
+
+      You can use GUI program to edit or restore config file.
+
+  - utility script
+
+    You may use utility script in 'utils'.
+
+    Excecute 'unfold.sh' to unfold comperssed files in that directory.
+    Excecute 'align_netstat.sh <path/to/var/net/netstat>' to see netstat each item value.
+
+## Usage
+
+  - sosreport
+
+    $ saj -D <sosreport-dir>
+
+      It writes a file to './saj/<sosreport-dir>/<sosreport-dir>_<time>.txt',
+      './saj-results/<sosreport-dir>/<sosreport-dir>_analyze_<time>.txt'.
+      './saj-results/<sosreport-dir>/<sosreport-dir>_sar_<time>.txt'.
+      and, './saj-results/<sosreport-dir>/graphs/<sosreport-dir>-<item>-<no>.ps'.
+
+  - mcinfo
+
+    $ saj -M -D <mcinfo-dir>
+
+      It writes a file to './saj-results/<mcinfo-dir>/<mcinfo-dir>_<time>.txt',
+      './saj-results/<mcinfo-dir>/<mcinfo-dir>_analyze_<time>.txt'.
+      './saj-results/<mcinfo-dir>/<mcinfo-dir>_sar_<time>.txt'.
+      and, './saj-results/<mcinfo-dir>/graphs/<mcinfo-dir>-<item>-<no>.ps'.
+
+  - sar-only 
+
+    $ saj -S -D <sa-dir-path>
+
+      It writes a file to './saj-results/<dir>/<dir>_sar_<time>.txt'.
+      and, './saj-results/<dir>/graphs/<dir>-<item>-<no>.ps'.
+
+  - time-span for sar 
+
+    ex.
+
+    $ saj -T 09:00-13:00 -D <sosreport-dir> 
+    $ saj -T 09:00-13:00 -M -D <mcinfo-dir> 
+    $ saj -T 09:00-13:00 -S -D <sa-dir-path> 
+
+  You can't redirect to a file.
+
+## Log file of this program for each execution. 
+
+    It writes a file to './saj-results/<dir>/<dir>_log_<time>',
+    Some files are skipped just because file size is 0 or, exceeds max file size, check the log, please.
+
+## Is this program safe to execute?
+
+  You can execute this program as an ordinary user not root.
+  Config file is in your home directory named '.saj'.
+
+  Creating directory unconditionally in the current directory for the analyzed files, with no harm.
+
+  No memory leakage.
+
+    Checked with 'valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s saj -D <sosreport-dir>'.
+
+## Uninstall
+
+  # make uninstall

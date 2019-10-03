@@ -1,0 +1,56 @@
+# This is the configuration file for the saj.
+#
+# If you have installed this program before,
+# new version will not override.
+#
+# Please check
+# /usr/share/saj/saj-mcinfo.conf.example,
+# and
+# copy it as ~/.saj/saj-mcinfo.conf.
+#
+## You can set arbitrary item-name including 'all'
+#  up to 12 or 25 except some members.
+#
+# 'all' echos every line in the file.
+# Remember that 'all' should come very first.
+# Other 'all' is omitted automatically.
+#
+# 'all' echos every line in the file.
+#
+# Remember that 'all' should come very first. Other 'all' is
+# omitted automatically.
+# In some items, you can set any item-name, but string length
+# should be between 2 to 10.
+# Sometimes, certain files are not made by sosreport.
+# In such cases, you can skip the file, setting item-name to 'skip'.
+# But don't worry, saj will automatically
+# skips the directory which is not present.
+# ex. lsb-release=skip
+
+boot/grub/=all
+proc/cpuinfo=vendor_id model flags
+etc/sysconfig/network-scripts/ifcfg-=all
+cmdlog/=all
+etc/host=all 
+proc/meminfo=all
+proc/zoneinfo=all
+proc/buddyinfo=all
+proc/slabinfo=all
+proc/vmstat=all
+proc/interrupts=all
+etc/crontab=all
+etc/cron.deny=all
+etc/cron.d/=all
+etc/cron.hourly/=all
+etc/cron.daily/=all
+etc/cron.weekly/=all
+etc/cron.monthly/=all
+var/spool/cron/=all
+var/log/dmesg=all
+## You can set arbitrary item-name including 'all' up to 25
+## ex. var/log/messages=error 
+var/log/messages=error kdump WARNING dump_stack bnx2x tg3 hung blocked NFS rpc RPC stat lockup [<ffffffff Trace flooding Out
+## others
+etc/=skip
+var/=skip
+proc/=skip
