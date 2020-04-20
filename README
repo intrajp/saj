@@ -2,8 +2,6 @@ saj
 
 This is the next version of 'sosreport-analyzer-ng'.
 
-Enjoy!
-
 # saj
 Analyze sosreport in many different ways
 
@@ -19,6 +17,17 @@ saj reads directories parallelly.
 Your favorite will be always the latest version.
 saj reads config file in user's home directory,
 '~/.saj', edit file there.
+
+# requirements
+
+You need these packages.
+
+autoconf
+ghostscript
+intltool
+gcc-c++
+libtool
+qt-devel
 
 How to build:
 
@@ -520,6 +529,12 @@ Binary path: /usr/local/bin/saj-gui
 
 
 ## Before using
+
+In case saj is executed by ordinary user not root, which is default, sosreport should be
+owned by the very user.
+Execute the command below so that all the files are owned by the user.
+
+ # chown <user:user> <directory_of_sosreport> -R
 
   - sosreport
 
