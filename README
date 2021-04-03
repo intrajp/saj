@@ -7,8 +7,7 @@ Enjoy!
 # saj
 Analyze sosreport in many different ways
 
-This software installs 3 binary file, 'saj',
-'cmp-saj' and 'saj-gui'
+This software installs 3 binary file, 'saj','cmp-saj'
 which are linked with
 libsaj-sar-analyzer.so and libsaj-sosreport-analyzer.so.
 You can check linkage with like '$ ldd /usr/local/bin/saj'.
@@ -28,7 +27,7 @@ How to build:
  # make install
 
  It will install 3 programs, 'saj', 'cmp-saj'
- and 'saj-gui'in '/usr/local/bin'.
+ in '/usr/local/bin'.
 
 1. saj for analyze sosreport
 
@@ -509,14 +508,6 @@ Program Name: cmp-saj
 Binary path: /usr/local/bin/cmp-saj
 
   Compare 2 files emitted by saj.
-
-4. saj-gui
-
-Program Name: saj-gui
-
-Binary path: /usr/local/bin/saj-gui
-
-  saj's GUI using Qt4.
 
 
 ## Before using

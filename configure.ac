@@ -177,6 +177,5 @@ AC_CONFIG_FILES([
   libsaj-sosreport-analyzer/Makefile
   libsaj-sar-analyzer/Makefile
   src/Makefile
-  gui/Makefile
 ])
 AC_OUTPUT
