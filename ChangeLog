@@ -4,3 +4,5 @@ Initial version.
 Remove gui.
 0.1.1
 Fix README.
+0.1.2
+Fix bug unneeded directory check in sar_mode.
