@@ -26,7 +26,6 @@ ghostscript
 intltool
 gcc-c++
 libtool
-qt-devel
 
 How to build:
 
