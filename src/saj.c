@@ -366,7 +366,10 @@ int main(int argc, char* argv[])
 
     /* for sar-analyzer stuff */
     memset(str_dir_tmp, '\0', sizeof(str_dir_tmp));
-    snprintf(dir_sa, MAX_FILE_NAME_LENGTH, "%s/var/log/sa", get_dirname(str_dir_tmp));
+    if (sar_only == 0)
+        snprintf(dir_sa, MAX_FILE_NAME_LENGTH, "%s/var/log/sa", get_dirname(str_dir_tmp));
+    else
+        snprintf(dir_sa, MAX_FILE_NAME_LENGTH, "%s", get_dirname(str_dir_tmp));
 
     if (is_dir_present(dir_sa, sar_only) == 1 && sar_only == 0) {
         printf("Please check result file ./%s\n", sos_file_all_write);
