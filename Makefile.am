@@ -1,7 +1,7 @@
 # Makefile.am - use automake to generate Makefile.in
 #
 
-SUBDIRS = libsaj-sar-analyzer libsaj-sosreport-analyzer src gui
+SUBDIRS = libsaj-sar-analyzer libsaj-sosreport-analyzer src
 
 SAJ_CONF_PATH = @SAJ_CONF_PATH@
 SAJ_MCINFO_CONF_PATH = @SAJ_MCINFO_CONF_PATH@
@@ -10,8 +10,8 @@ SAJ_INCLUDE_PATH = @SAJ_INCLUDE_PATH@
 SAJ_SOSREPORT_ANALYZER_LIB_PATH = @SAJ_SOSREPORT_ANALYZER_LIB_PATH@
 SAJ_SAR_ANALYZER_LIB_PATH = @SAJ_SAR_ANALYZER_LIB_PATH@
 
-install-data-local: install-saj_conf install-saj_mcinfo_conf install-saj_data install-saj_include install-saj_sosreport_analyzer_lib install-saj_sar_analyzer_lib install-saj_gui
-uninstall-local: uninstall-saj_conf uninstall-saj_mcinfo_conf uninstall-saj_data uninstall-saj_include uninstall-saj_sosreport_analyzer_lib uninstall-saj_sar_analyzer_lib uninstall-saj_gui
+install-data-local: install-saj_conf install-saj_mcinfo_conf install-saj_data install-saj_include install-saj_sosreport_analyzer_lib install-saj_sar_analyzer_lib
+uninstall-local: uninstall-saj_conf uninstall-saj_mcinfo_conf uninstall-saj_data uninstall-saj_include uninstall-saj_sosreport_analyzer_lib uninstall-saj_sar_analyzer_lib
 
 # install a default saj configuration file if it is not already there
 install-saj_conf:
@@ -101,12 +101,6 @@ install-saj_sar_analyzer_lib:
 uninstall-saj_sar_analyzer_lib:
 	-rm -f $(DESTDIR)$(SAJ_SAR_ANALYZER_LIB_PATH)/libsaj-sar-analyzer.so
 
-install-saj_gui:
-	$(INSTALL) -m 775 $(srcdir)/gui/saj-gui /usr/local/bin/saj-gui
-
-uninstall-saj_gui:
-	-rm -f /usr/local/bin/saj-gui
-
 clean-local:
 
 clean-all:
@@ -137,11 +131,6 @@ clean-all:
 	$(RM) src/cmp-saj
 	$(RM) src/saj
 	$(RM) src/*.o
-	$(RM) gui/Makefile
-	$(RM) gui/Makefile.in
-	$(RM) gui/saj-gui
-	$(RM) gui/*.o
-	$(RM) gui/moc_*
 	-rm -rf ./autom4te.cache
 	-rm -rf ./.deps/
 	-rm -rf .libs _libs
@@ -152,4 +141,3 @@ clean-all:
 	-rm -rf libsaj-sosreport-analyzer/.libs/
 	-rm -rf src/.deps/
 	-rm -rf src/.libs/
-	-rm -rf gui/.deps/

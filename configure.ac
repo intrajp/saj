@@ -28,8 +28,8 @@ version 2.1 of the License, or (at your option) any later version. See the
 configure.ac file for more details.])
 
 # initialize and set version and bugreport address
-AC_INIT([saj], [0.0.1], [shintaro.fujiwara@gmail.com])
-RELEASE_MONTH="Nov 2019"
+AC_INIT([saj], [0.1.0], [shintaro.fujiwara@gmail.com])
+RELEASE_MONTH="Apr 2021"
 AC_SUBST(RELEASE_MONTH)
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -177,6 +177,5 @@ AC_CONFIG_FILES([
   libsaj-sosreport-analyzer/Makefile
   libsaj-sar-analyzer/Makefile
   src/Makefile
-  gui/Makefile
 ])
 AC_OUTPUT

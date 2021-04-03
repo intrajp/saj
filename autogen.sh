@@ -40,14 +40,6 @@ else
     echo "libtoolize is installed. I proceed."
 fi
 
-QT=`which qmake-qt4`
-if test -z $QT; then
-        echo "*** No qmake-qt4 found, please install qt-devel package. ***"
-        exit 1
-else
-    echo "qmake-qt4 is installed. I proceed."
-fi
-
 
 AUTOPOINT='intltoolize --automake --copy' autoreconf --force --install --verbose
 
