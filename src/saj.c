@@ -259,7 +259,7 @@ int main(int argc, char* argv[])
 
     char str_dir_tmp[MAX_FILE_NAME_LENGTH];
     memset(str_dir_tmp, '\0', sizeof(str_dir_tmp));
-    if (is_sos_dir_present(get_dirname(str_dir_tmp), sar_only, mcinfo) == 1 && sar_only == 0) {
+    if (sar_only == 0 && is_sos_dir_present(get_dirname(str_dir_tmp), sar_only, mcinfo) == 1) {
         fprintf(stderr, "This should not be a proper directory to be analyzed:\n%s\n",
             sos_dir_file_obj->dir_file_names.dirname);
         __print_help(mcinfo);
