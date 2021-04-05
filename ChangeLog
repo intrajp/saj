@@ -8,3 +8,5 @@ Fix README.
 Fix bug unneeded directory check in sar_only mode.
 0.1.3
 Fix bug of segfault when given not directory in sar_only mode.
+0.1.4
+Fix README.
