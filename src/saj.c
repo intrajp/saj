@@ -215,6 +215,10 @@ int main(int argc, char* argv[])
                     __print_help(mcinfo);
                     return 0;
                 } else {
+                    if (is_dir_present(dir_name, sar_only) == 1) {
+                        __print_help(mcinfo);
+                        return 0;
+                    }
                     strncpy(sos_dir_file_obj->dir_file_names.dirname, dir_name,
                         MAX_FILE_NAME_LENGTH - 1);
                     char str_dir_tmp[MAX_FILE_NAME_LENGTH];
