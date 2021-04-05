@@ -34,7 +34,7 @@ How to build:
  $ make
  # make install
 
- It will install 3 programs, 'saj', 'cmp-saj'
+ It will install 2 programs, 'saj', 'cmp-saj'
  in '/usr/local/bin'.
 
 1. saj for analyze sosreport
