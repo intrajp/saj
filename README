@@ -5,7 +5,7 @@ This is the next version of 'sosreport-analyzer-ng'.
 # saj
 Analyze sosreport in many different ways
 
-This software installs 3 binary file, 'saj','cmp-saj'
+This software installs 2 binary file, 'saj','cmp-saj'
 which are linked with
 libsaj-sar-analyzer.so and libsaj-sosreport-analyzer.so.
 You can check linkage with like '$ ldd /usr/local/bin/saj'.
