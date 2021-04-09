@@ -44,7 +44,7 @@ static const char* fname_mcinfo_example =
 
 const char* app_name = "saj";
 
-/* this function delete files when got SIGINT */
+/* this function delete files when got SIGINT or SIGHUP */
 int delete_files(void);
 
 /* brief Print help for this application */
@@ -102,6 +102,16 @@ void handle_signal(int sig)
         delete_files();
         /* Reset signal handling to default behavior */
         signal(SIGINT, SIG_DFL);
+        exit(EXIT_FAILURE); 
+    }
+    if (sig == SIGHUP) {
+        /*showing this is SIGHUP process*/
+        write(STDOUT_FILENO, msg_sighup, sizeof(msg_sighup) - 1);
+        printf("%s",msg_sighup);
+        /* this is needed, kernel don't care these stuff, you know... */
+        delete_files();
+        /* Reset signal handling to default behavior */
+        signal(SIGHUP, SIG_DFL);
         exit(EXIT_FAILURE); 
     }
 }
@@ -306,6 +316,7 @@ int main(int argc, char* argv[])
  is not present.\n");
     if (sar_only != 1) {
         signal(SIGINT, handle_signal);
+        signal(SIGHUP, handle_signal);
         pid_t cpid;
         pid_t wpid;
         int status = 0;
@@ -358,6 +369,7 @@ int main(int argc, char* argv[])
     fclose(fp_all_w);
 
     signal(SIGINT, handle_signal);
+    signal(SIGHUP, handle_signal);
     /* open result directory */
     char str_dir_result[MAX_FILE_NAME_LENGTH];
     memset(str_dir_result, '\0', sizeof(str_dir_result));
