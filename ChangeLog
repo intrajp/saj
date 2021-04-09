@@ -10,3 +10,5 @@ Fix bug unneeded directory check in sar_only mode.
 Fix bug of segfault when given not directory in sar_only mode.
 0.1.4
 Fix README.
+0.1.5
+Fix signal handling.
