@@ -12,3 +12,5 @@ Fix bug of segfault when given not directory in sar_only mode.
 Fix README.
 0.1.5
 Fix signal handling.
+0.1.6
+Fix tps reading in sar analyzing feature.
