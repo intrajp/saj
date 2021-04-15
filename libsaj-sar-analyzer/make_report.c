@@ -2881,6 +2881,18 @@ int make_report(int SAR_OPTION, int REPORT, int files_n, const char *time_span)
             }
         }
     }
+
+    // Overall judgement.
+    append_list(&report_thrashing_obj, "");
+    append_list(&report_thrashing_obj, "-- Overall Judgement --");
+    int judge_cpu_avg_lowest_val = get_cpu_avg_lowest_val(0, "idle");
+    if (judge_cpu_avg_lowest_val < 30)
+        append_list(&report_thrashing_obj, "   Add more CPU! Lowest average value of '%idle' for CPU all' is blow 30%!");
+    else
+        append_list(&report_thrashing_obj, "   No need to add more CPU. Lowest average value of '%idle' for CPU all' is above 30%.");
+    append_list(&report_thrashing_obj, "-- End Overall Judgement --");
+    // End Overall judgement.
+
     append_list(&report_thrashing_obj, "");
 
     /*** detecting network down ****/

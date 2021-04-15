@@ -244,7 +244,7 @@ int set_token_column(int file_number, char *line, const char *item_name_for_colu
             }
         /* this item name is set by get_word_line() */
         } else if (strcmp(item_name_for_column, "bread/s") == 0) {
-            if ((strstr(token, "tps") != NULL) &&(strstr(token, "wtps") == NULL) &&(strstr(token, "rtps") == NULL)) {
+            if ((strstr(token, "tps") != NULL) && (strstr(token, "rtps") == NULL) && (strstr(token, "wtps") == NULL) && (strstr(token, "dtps") == NULL)) {
                 set_column_io_transfer_rate(i, "tps");
             } else if (strstr(token, "bread") != NULL) {
                 set_column_io_transfer_rate(i, "bread");
