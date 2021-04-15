@@ -5002,7 +5002,7 @@ int get_column_paging(const char *element)
 
 int get_column_io_transfer_rate(const char *element)
 {
-    if (strcmp(" tps", element) == 0)
+    if (strcmp("tps", element) == 0)
         return sar_analyzer_obj->column_io_transfer_rates.tps;
     else if (strcmp("bread", element) == 0)
         return sar_analyzer_obj->column_io_transfer_rates.bread;
