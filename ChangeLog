@@ -14,3 +14,5 @@ Fix README.
 Fix signal handling.
 0.1.6
 Fix tps reading in sar analyzing feature.
+0.1.7
+Fix tps reading and Overall Judgement in sar analyzing feature.
