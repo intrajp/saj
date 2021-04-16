@@ -145,7 +145,35 @@ int main(int argc, char* argv[])
         fprintf(stderr, "You are not allowed to redirect to a file.\n");
         /* return 0; */
     }
+    /* Here, we first allow asking only the version. */
+    int value = 0;
     if (argc <= 2) {
+        while (1) {
+            int option_index = 0;
+            static struct option long_options[] = {
+                {"help", no_argument, 0, 'h'},
+                {"version", no_argument, 0, 'V'},
+                {NULL, 0, 0, 0}
+            };
+            /* Try to process all command line arguments */
+            value = getopt_long(argc, argv, "hV", long_options, &option_index);
+            if (value == -1)
+                break;
+            switch(value) {
+                case 'h':
+                    __print_help(0);
+                    return 0;
+                    break;
+                case 'V':
+                    printf("Version-%d.%d.%d\n", PROGRAM_VERSION, PROGRAM_RELEASE, PROGRAM_SUB_RELEASE);
+                    return 0;
+                    break;
+                case '?':
+                    __print_help(0);
+                    return 0;
+                    break;
+            }
+        }
         __print_help(0);
         return 0;
     }
@@ -175,7 +203,6 @@ int main(int argc, char* argv[])
 
     int dir_len_check = 255;
     size_t dir_len = 0;
-    int value = 0;
     int mcinfo = 0;
     int sar_only = 0;
     int v = 0;
@@ -191,23 +218,14 @@ int main(int argc, char* argv[])
             {"mcinfo", no_argument, 0, 'M'},
             {"sar-only", no_argument, 0, 'S'},
             {"time-span", required_argument, 0, 'T'},
-            {"help", no_argument, 0, 'h'},
             {NULL, 0, 0, 0}
         };
 
         /* Try to process all command line arguments */
-        value = getopt_long(argc, argv, "hMST:D:", long_options, &option_index);
+        value = getopt_long(argc, argv, "MST:D:", long_options, &option_index);
         if (value == -1)
             break;
         switch(value) {
-            case 'h':
-                __print_help(mcinfo);
-                return 0;
-                break;
-            case '?':
-                __print_help(mcinfo);
-                return 0;
-                break;
             case 'D':
                 dir_name = optarg;
                 if (dir_name == NULL) {
