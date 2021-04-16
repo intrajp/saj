@@ -18,3 +18,5 @@ Fix tps reading in sar analyzing feature.
 Fix tps reading and Overall Judgement in sar analyzing feature.
 0.1.8
 Fix menu.
+0.1.9
+Add new object for Overall Judgement.
