@@ -1968,6 +1968,7 @@ int create_sar_analyzer_obj()
     init_list(&report_thrashing_obj);
     for (v = 0; v < MAX_NETWORK_DEVICE_NUMBERS; v++)
         init_list(&report_network_down_obj[v]);
+    init_list(&report_overall_judgement_obj);
     for (v = 0; v < MAX_ANALYZE_FILES; v++) {
         /* for each file */
         init_list(&ps_common_cpu_obj[v]);
@@ -2087,6 +2088,7 @@ int free_sar_analyzer_obj()
     clear_list(&report_thrashing_obj);
     for (v = 0; v < MAX_NETWORK_DEVICE_NUMBERS; v++)
         clear_list(&report_network_down_obj[v]);
+    clear_list(&report_overall_judgement_obj);
     for (v = 0; v < MAX_ANALYZE_FILES; v++) {
         /* for each file */
         clear_list(&ps_common_cpu_obj[v]);
