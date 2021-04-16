@@ -524,6 +524,7 @@ int main(int argc, char* argv[])
     file_write_list(&report_thrashing_obj, fp_sar_w);
     for (v = 0; v <= get_network_device_numbers(); v++)
         file_write_list(&report_network_down_obj[v], fp_sar_w);
+    file_write_list(&report_overall_judgement_obj, fp_sar_w);
     file_write_list(&report_obj, fp_sar_w);
 
     /* writing "Linux" lines (top of sar file) to result file */

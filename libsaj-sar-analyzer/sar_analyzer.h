@@ -1110,6 +1110,13 @@ struct line_data report_network_down_obj_raw =
         NULL /* next pointer */
     };
 
+/* report_overall_judgement_obj */
+struct line_data report_overall_judgement_obj_raw =
+    {
+        "", /* each line */
+        NULL /* next pointer */
+    };
+
 /* ps_common_cpu_obj */
 struct line_data ps_common_cpu_obj_raw =
     {
@@ -1451,6 +1458,7 @@ struct line_data *report_network_error_time_span_spike_obj [ MAX_NETWORK_DEVICE_
 struct line_data *report_network_error_explanation_obj = &report_network_error_explanation_obj_raw;
 struct line_data *report_thrashing_obj = &report_thrashing_obj_raw;
 struct line_data *report_network_down_obj [ MAX_NETWORK_DEVICE_NUMBERS ] = { &report_network_down_obj_raw };
+struct line_data *report_overall_judgement_obj = &report_overall_judgement_obj_raw;
 /* for each file */
 struct line_data *ps_common_cpu_obj [ MAX_ANALYZE_FILES ]= { &ps_common_cpu_obj_raw };
 struct line_data *ps_common_memory_obj [ MAX_ANALYZE_FILES ]= { &ps_common_memory_obj_raw };
