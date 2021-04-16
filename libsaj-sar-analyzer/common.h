@@ -2263,6 +2263,7 @@ extern struct line_data *report_network_error_time_span_spike_obj[MAX_NETWORK_DE
 extern struct line_data *report_network_error_explanation_obj;
 extern struct line_data *report_thrashing_obj;
 extern struct line_data *report_network_down_obj[MAX_NETWORK_DEVICE_NUMBERS];
+extern struct line_data *report_overall_judgement_obj;
 /* ps obj should go here */
 extern struct line_data *ps_common_cpu_obj[MAX_ANALYZE_FILES];
 extern struct line_data *ps_common_memory_obj[MAX_ANALYZE_FILES];
