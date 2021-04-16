@@ -16,3 +16,5 @@ Fix signal handling.
 Fix tps reading in sar analyzing feature.
 0.1.7
 Fix tps reading and Overall Judgement in sar analyzing feature.
+0.1.8
+Fix menu.
