@@ -2976,6 +2976,16 @@ int make_report(int SAR_OPTION, int REPORT, int files_n, const char *time_span)
         snprintf(str_tmp, MAX_LINE_LENGTH, "   Lowest average value of '%%idle' for CPU all is above 30(%5.2f)%%.", judge_cpu_avg_lowest_val);
         append_list(&report_overall_judgement_obj, str_tmp);
     }
+    append_list(&report_overall_judgement_obj, "   -- MEMORY --");
+    if (judge_memory_avg_highest_val >= 80.00) {
+        append_list(&report_overall_judgement_obj, "   Add more MEMORY!");
+        snprintf(str_tmp, MAX_LINE_LENGTH, "   Highest average value of '%%memused' is above 80(%5.2f)%%!", judge_memory_avg_highest_val);
+        append_list(&report_overall_judgement_obj, str_tmp);
+    } else {
+        append_list(&report_overall_judgement_obj, "   No need to add more MEMORY.");
+        snprintf(str_tmp, MAX_LINE_LENGTH, "   Highest average value of '%%memused' is below 80(%5.2f)%%.", judge_memory_avg_highest_val);
+        append_list(&report_overall_judgement_obj, str_tmp);
+    }
 
     return 0;
 }
