@@ -2967,7 +2967,7 @@ int make_report(int SAR_OPTION, int REPORT, int files_n, const char *time_span)
     append_list(&report_overall_judgement_obj, "");
     append_list(&report_overall_judgement_obj, "#### Overall Judgement ####");
     double judge_cpu_avg_lowest_val = get_cpu_avg_lowest_val(0, "idle");
-    double judge_memory_avg_highest_val = get_memory_avg_lowest_val("memused");
+    double judge_memory_avg_highest_val = get_memory_avg_highest_val("memused");
     append_list(&report_overall_judgement_obj, "   -- CPU --");
     if (judge_cpu_avg_lowest_val < 30.00) {
         append_list(&report_overall_judgement_obj, "   Add more CPU!");
