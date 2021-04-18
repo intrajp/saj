@@ -1175,7 +1175,8 @@ int make_report(int SAR_OPTION, int REPORT, int files_n, const char *time_span)
 
         append_list(&report_memory_explanation_obj, "--------");
         append_list(&report_memory_explanation_obj, " Even if %memused is around 99.0%, it's OK with Linux.");
-        append_list(&report_memory_explanation_obj, " Check the highest value of kbcommit. This is the amount of memory needed for the system. If lacking, consider adding more memory.");
+        append_list(&report_memory_explanation_obj, " Check the highest value of kbcommit. This is the amount of memory needed for the system.");
+        append_list(&report_memory_explanation_obj, " If lacking, consider adding more memory.");
         append_list(&report_memory_explanation_obj, " If %commit is over 100%, memory shortage is occurring. Gain swap or add more memory.");
 
         /* swpused */
