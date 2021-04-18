@@ -147,16 +147,21 @@ int main(int argc, char* argv[])
     }
     /* Here, we first allow asking only the version. */
     int value = 0;
+    const char* dir_name = NULL;
     if (argc <= 2) {
         while (1) {
             int option_index = 0;
             static struct option long_options[] = {
                 {"help", no_argument, 0, 'h'},
                 {"version", no_argument, 0, 'V'},
+                {"directory", required_argument, 0, 'D'},
+                {"mcinfo", no_argument, 0, 'M'},
+                {"sar-only", no_argument, 0, 'S'},
+                {"time-span", required_argument, 0, 'T'},
                 {NULL, 0, 0, 0}
             };
             /* Try to process all command line arguments */
-            value = getopt_long(argc, argv, "hV", long_options, &option_index);
+            value = getopt_long(argc, argv, "hVDMST", long_options, &option_index);
             if (value == -1)
                 break;
             switch(value) {
@@ -169,6 +174,33 @@ int main(int argc, char* argv[])
                     return 0;
                     break;
                 case '?':
+                    __print_help(0);
+                    return 0;
+                    break;
+                case 'D':
+                    dir_name = optarg;
+                    if (dir_name == NULL) {
+                        printf("\n Please set directory name.\n");
+                        __print_help(0);
+                        return 0;
+                    }
+                    break;
+                case 'M':
+                    printf("\n Please also set -D <directory_name> | --directory <directory_name>.\n");
+                    printf(" ex. $ saj -M -D <path_to_mcinfo_directory>\n");
+                    __print_help(0);
+                    return 0;
+                    break;
+                case 'S':
+                    printf("\n Please also set -D <directory_name> | --directory <directory_name>.\n");
+                    printf(" ex. $ saj -S -D <path_to_sa_directory>\n");
+                    __print_help(0);
+                    return 0;
+                    break;
+                case 'T':
+                    printf("\n Please also set -D <directory_name> | --directory <directory_name>.\n");
+                    printf(" ex. $ saj -T 09:00-10:00 -D <path_to_sosreport_or_mcinfo_directory>\n");
+                    printf(" ex. $ saj -S -T 09:00-10:00 -D <path_to_sa_directory>\n");
                     __print_help(0);
                     return 0;
                     break;
@@ -208,7 +240,6 @@ int main(int argc, char* argv[])
     int v = 0;
     int x = 0;
     size_t time_span_str_len = 0;
-    const char* dir_name = NULL;
     const char* time_span = NULL;
 
     while (1) {
