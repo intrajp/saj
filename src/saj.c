@@ -238,7 +238,6 @@ int main(int argc, char* argv[])
     int mcinfo = 0;
     int sar_only = 0;
     int v = 0;
-    int x = 0;
     size_t time_span_str_len = 0;
     const char* time_span = NULL;
 
@@ -477,7 +476,6 @@ int main(int argc, char* argv[])
     file_to_write(SAR_OPTION);
 
     const char* sar_file_write = "";
-    char* file_ps_write = "";
     /* --------  for file write --------*/
     sar_file_write = get_sar_file_name_to_be_written();
     FILE* fp_sar_w = NULL;
