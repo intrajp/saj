@@ -81,6 +81,7 @@
 #include "sar_analyzer.h"
 #include "setter_getter.h"
 
+int linux_restart_count[ MAX_ANALYZE_FILES ]= {0};
 
 void initialize_check_int(void)
 {
