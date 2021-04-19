@@ -477,21 +477,9 @@ int main(int argc, char* argv[])
 
 
     const char* sar_file_write = "";
-    char* file_ps_write = "";
     /* --------  for file write --------*/
     sar_file_write = get_sar_file_name_to_be_written();
-    file_ps_write = (char *)get_ps_file_name_to_be_written();
     FILE* fp_sar_w = NULL;
-
-    FILE* fp_ps_w[MAX_ANALYZE_FILES];
-    FILE* fp_ps2_w[MAX_ANALYZE_FILES];
-    FILE* fp_ps3_w[MAX_ANALYZE_FILES];
-    FILE* fp_ps4_w[MAX_ANALYZE_FILES];
-
-
-    /* --------  for file write --------*/
-//    sar_file_write = get_sar_file_name_to_be_written();
-//    FILE* fp_sar_w = NULL;
 
     /* open result file */
     fp_sar_w = file_open_check(fp_sar_w, sar_file_write,"a", sar_only);
@@ -584,30 +572,8 @@ int main(int argc, char* argv[])
         free_sosreport_analyzer_obj(sar_only);
     }
 
-    int x = 0;
-    for (v = 0, x = 1; v < MAX_ANALYZE_FILES; v++, x++) {
-        char str_tmp[MAX_LINE_LENGTH] = {'\0'};
-        memset(str_tmp, '\0', sizeof(str_tmp));
-        snprintf(str_tmp,MAX_LINE_LENGTH, "%s%s%d%s", file_ps_write, "-cpu-", x, ".ps");
-        fp_ps_w[v] = file_open_check(fp_ps_w[v], str_tmp,"a", sar_only);
-        snprintf(str_tmp, MAX_LINE_LENGTH, "%s%s%d%s", file_ps_write, "-mem-", x, ".ps");
-        fp_ps2_w[v] = file_open_check(fp_ps2_w[v], str_tmp,"a", sar_only);
-        snprintf(str_tmp, MAX_LINE_LENGTH, "%s%s%d%s", file_ps_write, "-ldv-", x, ".ps");
-        fp_ps3_w[v] = file_open_check(fp_ps3_w[v], str_tmp,"a", sar_only);
-        snprintf(str_tmp, MAX_LINE_LENGTH, "%s%s%d%s", file_ps_write, "-ior-", x, ".ps");
-        fp_ps4_w[v] = file_open_check(fp_ps4_w[v], str_tmp,"a", sar_only);
-    }
-
     /* close the file pointer */
     fclose(fp_sar_w);
-
-    /* close the file pointers */
-    for (v = 0; v < MAX_ANALYZE_FILES; v++) {
-        fclose(fp_ps_w[v]);
-        fclose(fp_ps2_w[v]);
-        fclose(fp_ps3_w[v]);
-        fclose(fp_ps4_w[v]);
-    }
 
     /* freeing sar-analyzer objects */
     free_sar_analyzer_obj();
