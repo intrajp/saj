@@ -81,65 +81,6 @@
 #include "sar_analyzer.h"
 #include "setter_getter.h"
 
-/*
- * append the value to ps obj.
- * check 'utility' for cpu number, 0 is all.
- *
- * box size is, (100 1200) - (1400 1900)
- * horizontal: (1400 - 100) / 144 = 9.02777
- * vertical: (1900 - 1200) / 100 = 7
- * horizontal:
- * starts 0 by 10 min as 9.0277 
- * vertical:
- * 7 as 1% starts 1900 up to 1200
- * at the very first, m, after that, l.
- */
-
-/* for postscript graph */
-
-/* store data for each file for needed value */
-/* for file cpu */
-int horizontal_value_cpu_usr[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_cpu_sys[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_cpu_iowait[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_cpu_idle[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_paging_pgpgin[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_paging_pgpgout[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_paging_fault[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_paging_mjflt[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_paging_vmeff[MAX_ANALYZE_FILES]= {0};
-/* for file mem */
-int horizontal_value_memory_memused[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_memory_kbcommit[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_memory_commit[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_swapping_pswpin[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_swapping_pswpout[MAX_ANALYZE_FILES]= {0};
-/* for file ldv */
-int horizontal_value_ldavg_runq[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_ldavg_plist[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_ldavg_ldavg_one[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_ldavg_ldavg_five[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_ldavg_ldavg_15[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_tasks_proc[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_tasks_cswch[MAX_ANALYZE_FILES]= {0};
-/* for file ior */
-int horizontal_value_io_transfer_rate_tps[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_io_transfer_rate_bread[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_io_transfer_rate_bwrtn[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_kernel_table_dentunusd[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_kernel_table_file[MAX_ANALYZE_FILES]= {0};
-int horizontal_value_kernel_table_inode[MAX_ANALYZE_FILES]= {0};
-/* for linux restart strings */
-int linux_restart_count[ MAX_ANALYZE_FILES ]= {0};
-/* endstore data for each file for needed value */
-
-/* values which are passed as an argument to functions */
-int horizontal_first_time_point = 70;
-double horizontal_notch = 9.02777; /* devide 1300 by 144 */
-int horizontal_linux_restart_point = 600;
-int vertical_linux_restart_point = 1975;
-
-/* end for postscript graph */
 
 void initialize_check_int(void)
 {
@@ -470,8 +411,6 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
     const char s[4]= "  \t"; /* this is the delimiter */
     char *endp;
     int i = 0, network_device_setter = 0;
-    double vertical_value = 0; /* this is used in postscript graph */
-    double horizontal_value = 0; /* this is used in postscript graph */
     int set_to_struct = 1; /* set 0 when setting values to the struct */
     char *token = NULL;
     char time_value[20]= {'\0'};
@@ -674,41 +613,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_cpu_lowest_date(this_date_all, utility, "usr");
                         set_cpu_lowest_time(time_value, utility, "usr");
                     }
-                    /* code for postscript file utility 0 means, CPU all */
-                    if (utility == 0) {
-                        if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                          (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                          (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                          (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                          (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                          (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                       ) {
-                            horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_cpu_usr[file_number]);
-                            vertical_value = VERTICAL_START_POINT_CPU_ALL +(VERTICAL_NOTCH_PERCENT * t);
-                            /* only when first in element */
-                            if (horizontal_value_cpu_usr[file_number]== 0) {
-                                /* drawing subtitle label */
-                                write_subtitle_to_ps("CPU all", file_number, HORIZONTAL_CPU_ALL_SUBTITLE, VERTICAL_CPU_ALL_SUBTITLE, this_date_all);
-                                /* drawing time label */
-                                write_time_value_to_ps("CPU all", file_number, horizontal_first_time_point, VERTICAL_FIRST_TIME_POINT_CPU_ALL, horizontal_notch, horizontal_value_cpu_usr[file_number], time_value);
-                                /* drawing graph */
-                                draw_graph_to_ps("CPU all", "usr", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                                /* draw_graph_to_ps("CPU all", "usr", file_number, check_time_value(HORIZONTAL_START_POINT,
-                                 * horizontal_notch, horizontal_value_cpu_usr[file_number], time_value), vertical_value, "yes"); */
-                            } else {
-                                /* drawing graph */
-                                draw_graph_to_ps("CPU all", "usr", file_number, horizontal_value, vertical_value, "no");
-                                /* draw_graph_to_ps("CPU all", "usr", file_number, check_time_value(HORIZONTAL_START_POINT,
-                                 * horizontal_notch, horizontal_value_cpu_usr[file_number],time_value), vertical_value, "no"); */
-                                /* drawing time label */
-                                if ((horizontal_value_cpu_usr[file_number]% 12) == 0)
-                                    write_time_value_to_ps("CPU all", file_number, horizontal_first_time_point, VERTICAL_FIRST_TIME_POINT_CPU_ALL, horizontal_notch, horizontal_value_cpu_usr[file_number], time_value);
-                                else if ((horizontal_value_cpu_usr[file_number]% 6) == 0)
-                                    write_time_value_to_ps("CPU all", file_number, horizontal_first_time_point, VERTICAL_FIRST_TIME_POINT_CPU_ALL - 20, horizontal_notch, horizontal_value_cpu_usr[file_number], time_value);
-                            }
-                            horizontal_value_cpu_usr[file_number]++;
-                        }
-                    }
+                    /* code for graph */
                 } else {
                     t = strtod(token, &endp);
                     h = get_cpu_avg_highest_val(utility, "usr");
@@ -788,27 +693,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_cpu_lowest_date(this_date_all, utility, "sys");
                         set_cpu_lowest_time(time_value, utility, "sys");
                     }
-                    /* code for postscript file utility 0 means, CPU all */
-                    if (utility == 0) {
-                        if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                          (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                          (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                          (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                          (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                          (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                       ) {
-                            horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_cpu_sys[file_number]);
-                            vertical_value = VERTICAL_START_POINT_CPU_ALL +(VERTICAL_NOTCH_PERCENT * t);
-                            /* only when first in element */
-                            if (horizontal_value_cpu_sys[file_number]== 0)
-                                /* drawing graph */
-                                draw_graph_to_ps("CPU all", "sys", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                            else
-                                /* drawing graph */
-                                draw_graph_to_ps("CPU all", "sys",file_number, horizontal_value, vertical_value, "no");
-                            horizontal_value_cpu_sys[file_number]++;
-                        }
-                    }
+                    /* code for graph */
                 } else {
                     h = get_cpu_avg_highest_val(utility, "sys");
                     l = get_cpu_avg_lowest_val(utility, "sys");
@@ -888,27 +773,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_cpu_lowest_date(this_date_all, utility, "iowait");
                         set_cpu_lowest_time(time_value, utility, "iowait");
                     }
-                    /* code for postscript file utility 0 means, CPU all */
-                    if (utility == 0) {
-                        if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                          (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                          (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                          (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                          (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                          (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                       ) {
-                            horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_cpu_iowait[file_number]);
-                            vertical_value = VERTICAL_START_POINT_CPU_ALL +(VERTICAL_NOTCH_PERCENT * t);
-                            /* only when first in element */
-                            if (horizontal_value_cpu_iowait[file_number]== 0)
-                                /* drawing graph */
-                                draw_graph_to_ps("CPU all", "iowait", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                            else
-                                /* drawing graph */
-                                draw_graph_to_ps("CPU all", "iowait", file_number, horizontal_value, vertical_value, "no");
-                            horizontal_value_cpu_iowait[file_number]++;
-                        }
-                    }
+                    /* code for graph */
                 } else {
                     h = get_cpu_avg_highest_val(utility, "iowait");
                     l = get_cpu_avg_lowest_val(utility, "iowait");
@@ -988,27 +853,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_cpu_lowest_date(this_date_all, utility, "idle");
                         set_cpu_lowest_time(time_value, utility, "idle");
                     }
-                    /* code for postscript file utility 0 means, CPU all */
-                    if (utility == 0) {
-                        if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                          (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                          (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                          (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                          (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                          (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                       ) {
-                            horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_cpu_idle[file_number]);
-                            vertical_value = VERTICAL_START_POINT_CPU_ALL +(VERTICAL_NOTCH_PERCENT * t);
-                            /* only when first in element */
-                            if (horizontal_value_cpu_idle[file_number]== 0)
-                                /* drawing graph */
-                                draw_graph_to_ps("CPU all", "idle", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                            else
-                                /* drawing graph */
-                                draw_graph_to_ps("CPU all", "idle", file_number, horizontal_value, vertical_value, "no");
-                            horizontal_value_cpu_idle[file_number]++;
-                        }
-                    }
+                    /* code for graph */
                 } else {
                     h = get_cpu_avg_highest_val(utility, "idle");
                     l = get_cpu_avg_lowest_val(utility, "idle");
@@ -1116,39 +961,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_tasks_lowest_date(this_date_all, "proc");
                         set_tasks_lowest_time(time_value, "proc");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_tasks_proc[file_number]);
-                        vertical_value = VERTICAL_START_POINT_TASKS +(t * VERTICAL_NOTCH_TASKS_PROC);
-                        /* only when first in element */
-                        if (horizontal_value_tasks_proc[file_number]== 0)
-                        {
-                            /* drawing subtitle label */
-                            write_subtitle_to_ps("proc", file_number, HORIZONTAL_TASKS_SUBTITLE, VERTICAL_TASKS_SUBTITLE, this_date_all);
-                            /* drawing time label */
-                            write_time_value_to_ps("proc", file_number, horizontal_first_time_point,
-                                VERTICAL_FIRST_TIME_POINT_TASKS, horizontal_notch, horizontal_value_tasks_proc[file_number], time_value);
-                            /* drawing graph */
-                            draw_graph_to_ps("tasks", "proc", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        }else {
-                            /* drawing graph */
-                            draw_graph_to_ps("tasks", "proc", file_number, horizontal_value, vertical_value, "no");
-                            /* drawing time label */
-                            if ((horizontal_value_tasks_proc[file_number]% 12) == 0)
-                                write_time_value_to_ps("tasks", file_number, horizontal_first_time_point,
-                                    VERTICAL_FIRST_TIME_POINT_TASKS, horizontal_notch, horizontal_value_tasks_proc[file_number], time_value);
-                            else if ((horizontal_value_tasks_proc[file_number]% 6) == 0)
-                                write_time_value_to_ps("tasks", file_number, horizontal_first_time_point,
-                                    VERTICAL_FIRST_TIME_POINT_TASKS - 20, horizontal_notch, horizontal_value_tasks_proc[file_number], time_value);
-                        }
-                        horizontal_value_tasks_proc[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_tasks_avg_highest_val("proc");
                     l = get_tasks_avg_lowest_val("proc");
@@ -1228,25 +1041,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_tasks_lowest_date(this_date_all, "cswch");
                         set_tasks_lowest_time(time_value, "cswch");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_tasks_cswch[file_number]);
-                        vertical_value = VERTICAL_START_POINT_TASKS +(t * VERTICAL_NOTCH_TASKS_CSWCH);
-                        /* only when first in element */
-                        if (horizontal_value_tasks_cswch[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("tasks", "cswch", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("tasks", "cswch", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_tasks_cswch[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_tasks_avg_highest_val("cswch");
                     l = get_tasks_avg_lowest_val("cswch");
@@ -1354,40 +1149,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_pswap_lowest_date(this_date_all, "pswpin");
                         set_pswap_lowest_time(time_value, "pswpin");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_swapping_pswpin[file_number]);
-                        vertical_value = VERTICAL_START_POINT_SWAPPING +(t * VERTICAL_NOTCH_SWAPPING);
-                        /* only when first in element */
-                        if (horizontal_value_swapping_pswpin[file_number]== 0)
-                        {
-                            /* drawing subtitle label */
-                            write_subtitle_to_ps("pswpin", file_number, HORIZONTAL_SWAPPING_SUBTITLE,
-                                VERTICAL_SWAPPING_SUBTITLE, this_date_all);
-                            /* drawing time label */
-                            write_time_value_to_ps("pswpin", file_number, horizontal_first_time_point,
-                                VERTICAL_FIRST_TIME_POINT_SWAPPING, horizontal_notch, horizontal_value_swapping_pswpin[file_number], time_value);
-                            /* drawing graph */
-                            draw_graph_to_ps("swapping", "pswpin", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        } else {
-                            /* drawing graph */
-                            draw_graph_to_ps("swapping", "pswpin", file_number, horizontal_value, vertical_value, "no");
-                            /* drawing time label */
-                            if ((horizontal_value_swapping_pswpin[file_number]% 12) == 0)
-                                write_time_value_to_ps("swapping", file_number, horizontal_first_time_point,
-                                    VERTICAL_FIRST_TIME_POINT_SWAPPING, horizontal_notch, horizontal_value_swapping_pswpin[file_number], time_value);
-                            else if ((horizontal_value_swapping_pswpin[file_number]% 6) == 0)
-                                write_time_value_to_ps("swapping", file_number, horizontal_first_time_point,
-                                    VERTICAL_FIRST_TIME_POINT_SWAPPING - 20, horizontal_notch, horizontal_value_swapping_pswpin[file_number], time_value);
-                        }
-                        horizontal_value_swapping_pswpin[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_pswap_avg_highest_val("pswpin");
                     l = get_pswap_avg_lowest_val("pswpin");
@@ -1467,25 +1229,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_pswap_lowest_date(this_date_all, "pswpout");
                         set_pswap_lowest_time(time_value, "pswpout");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_swapping_pswpout[file_number]);
-                        vertical_value = VERTICAL_START_POINT_SWAPPING +(t * VERTICAL_NOTCH_SWAPPING);
-                        /* only when first in element */
-                        if (horizontal_value_swapping_pswpout[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("swapping", "pswpout", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("swapping", "pswpout", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_swapping_pswpout[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_pswap_avg_highest_val("pswpout");
                     l = get_pswap_avg_lowest_val("pswpout");
@@ -1629,38 +1373,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_paging_lowest_date(this_date_all, "pgpgin");
                         set_paging_lowest_time(time_value, "pgpgin");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_paging_pgpgin[file_number]);
-                        vertical_value = VERTICAL_START_POINT_PAGING +(t * VERTICAL_NOTCH_PAGING);
-                        /* only when first in element */
-                        if (horizontal_value_paging_pgpgin[file_number]== 0) {
-                            /* drawing subtitle label */
-                            write_subtitle_to_ps("paging", file_number, HORIZONTAL_PAGING_SUBTITLE, VERTICAL_PAGING_SUBTITLE, this_date_all);
-                            /* drawing time label */
-                            write_time_value_to_ps("paging", file_number, horizontal_first_time_point,
-                                VERTICAL_FIRST_TIME_POINT_PAGING, horizontal_notch, horizontal_value_paging_pgpgin[file_number], time_value);
-                            /* drawing graph */
-                            draw_graph_to_ps("paging", "pgpgin", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        } else {
-                            /* drawing graph */
-                            draw_graph_to_ps("paging", "pgpgin", file_number, horizontal_value, vertical_value, "no");
-                            /* drawing time label */
-                            if ((horizontal_value_paging_pgpgin[file_number]% 12) == 0)
-                                write_time_value_to_ps("paging", file_number, horizontal_first_time_point,
-                                    VERTICAL_FIRST_TIME_POINT_PAGING, horizontal_notch, horizontal_value_paging_pgpgin[file_number], time_value);
-                            else if ((horizontal_value_paging_pgpgin[file_number]% 6) == 0)
-                                write_time_value_to_ps("paging", file_number, horizontal_first_time_point,
-                                    VERTICAL_FIRST_TIME_POINT_PAGING - 20, horizontal_notch, horizontal_value_paging_pgpgin[file_number], time_value);
-                        }
-                        horizontal_value_paging_pgpgin[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_paging_avg_highest_val("pgpgin");
                     l = get_paging_avg_lowest_val("pgpgin");
@@ -1741,25 +1454,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_paging_lowest_date(this_date_all, "pgpgout");
                         set_paging_lowest_time(time_value, "pgpgout");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_paging_pgpgout[file_number]);
-                        vertical_value = VERTICAL_START_POINT_PAGING +(t * VERTICAL_NOTCH_PAGING);
-                        /* only when first in element */
-                        if (horizontal_value_paging_pgpgout[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("paging", "pgpgout", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("paging", "pgpgout", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_paging_pgpgout[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_paging_avg_highest_val("pgpgout");
                     l = get_paging_avg_lowest_val("pgpgout");
@@ -1840,25 +1535,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_paging_lowest_date(this_date_all, "fault");
                         set_paging_lowest_time(time_value, "fault");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_paging_fault[file_number]);
-                        vertical_value = VERTICAL_START_POINT_PAGING +(t * VERTICAL_NOTCH_PAGING_FAULT);
-                        /* only when first in element */
-                        if (horizontal_value_paging_fault[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("paging", "fault", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("paging", "fault", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_paging_fault[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_paging_avg_highest_val("fault");
                     l = get_paging_avg_lowest_val("fault");
@@ -1938,25 +1615,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_paging_lowest_date(this_date_all, "majflt");
                         set_paging_lowest_time(time_value, "majflt");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_paging_mjflt[file_number]);
-                        vertical_value = VERTICAL_START_POINT_PAGING +(t * VERTICAL_NOTCH_PAGING);
-                        /* only when first in element */
-                        if (horizontal_value_paging_mjflt[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("paging", "majflt", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("paging", "majflt", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_paging_mjflt[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_paging_avg_highest_val("majflt");
                     l = get_paging_avg_lowest_val("majflt");
@@ -2036,25 +1695,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_paging_lowest_date(this_date_all, "vmeff");
                         set_paging_lowest_time(time_value, "vmeff");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_paging_vmeff[file_number]);
-                        vertical_value = VERTICAL_START_POINT_PAGING +(t * VERTICAL_NOTCH_PERCENT);
-                        /* only when first in element */
-                        if (horizontal_value_paging_vmeff[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("paging", "vmeff", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("paging", "vmeff", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_paging_vmeff[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_paging_avg_highest_val("vmeff");
                     l = get_paging_avg_lowest_val("vmeff");
@@ -2175,42 +1816,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_io_transfer_rate_lowest_date(this_date_all, "tps");
                         set_io_transfer_rate_lowest_time(time_value, "tps");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_io_transfer_rate_tps[file_number]);
-                        vertical_value = VERTICAL_START_POINT_IO_TRANSFER_RATE +(VERTICAL_NOTCH_IO_TRANSFER_RATE_TPS * t);
-                        /* only when first in element */
-                        if (horizontal_value_io_transfer_rate_tps[file_number]== 0) {
-                            /* drawing subtitle label */
-                            write_subtitle_to_ps("io_transfer_rate", file_number, HORIZONTAL_IO_TRANSFER_RATE_SUBTITLE,
-                                VERTICAL_IO_TRANSFER_RATE_SUBTITLE, this_date_all);
-                            /* drawing time label */
-                            write_time_value_to_ps("io_transfer_rate", file_number, horizontal_first_time_point,
-                                VERTICAL_FIRST_TIME_POINT_IO_TRANSFER_RATE, horizontal_notch,
-                                    horizontal_value_io_transfer_rate_tps[file_number], time_value);
-                            /* drawing graph */
-                            draw_graph_to_ps("io_transfer_rate", "tps", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        } else {
-                            /* drawing graph */
-                            draw_graph_to_ps("io_transfer_rate", "tps", file_number, horizontal_value, vertical_value, "no");
-                            /* drawing time label */
-                            if ((horizontal_value_io_transfer_rate_tps[file_number]% 12) == 0)
-                                write_time_value_to_ps("io_transfer_rate", file_number, horizontal_first_time_point,
-                                    VERTICAL_FIRST_TIME_POINT_IO_TRANSFER_RATE, horizontal_notch,
-                                        horizontal_value_io_transfer_rate_tps[file_number], time_value);
-                            else if ((horizontal_value_io_transfer_rate_tps[file_number]% 6) == 0)
-                                write_time_value_to_ps("io_transfer_rate", file_number, horizontal_first_time_point,
-                                    VERTICAL_FIRST_TIME_POINT_IO_TRANSFER_RATE - 20, horizontal_notch,
-                                        horizontal_value_io_transfer_rate_tps[file_number], time_value);
-                        }
-                        horizontal_value_io_transfer_rate_tps[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_io_transfer_rate_avg_highest_val("tps");
                     l = get_io_transfer_rate_avg_lowest_val("tps");
@@ -2290,25 +1896,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_io_transfer_rate_lowest_date(this_date_all, "bread");
                         set_io_transfer_rate_lowest_time(time_value, "bread");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_io_transfer_rate_bread[file_number]);
-                        vertical_value = VERTICAL_START_POINT_IO_TRANSFER_RATE +(t * VERTICAL_NOTCH_IO_TRANSFER_RATE_BREAD);
-                        /* only when first in element */
-                        if (horizontal_value_io_transfer_rate_bread[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("io_transfer_rate", "bread", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("io_transfer_rate", "bread", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_io_transfer_rate_bread[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_io_transfer_rate_avg_highest_val("bread");
                     l = get_io_transfer_rate_avg_lowest_val("bread");
@@ -2388,25 +1976,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_io_transfer_rate_lowest_date(this_date_all, "bwrtn");
                         set_io_transfer_rate_lowest_time(time_value, "bwrtn");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_io_transfer_rate_bwrtn[file_number]);
-                        vertical_value = VERTICAL_START_POINT_IO_TRANSFER_RATE +(t * VERTICAL_NOTCH_IO_TRANSFER_RATE_BWRTN);
-                        /* only when first in element */
-                        if (horizontal_value_io_transfer_rate_bwrtn[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("io_transfer_rate", "bwrtn", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("io_transfer_rate", "bwrtn", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_io_transfer_rate_bwrtn[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_io_transfer_rate_avg_highest_val("bwrtn");
                     l = get_io_transfer_rate_avg_lowest_val("bwrtn");
@@ -2527,38 +2097,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_memory_lowest_date(this_date_all, "memused");
                         set_memory_lowest_time(time_value, "memused");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_memory_memused[file_number]);
-                        vertical_value = VERTICAL_START_POINT_MEMORY +(VERTICAL_NOTCH_PERCENT * t);
-                        /* only when first in element */
-                        if (horizontal_value_memory_memused[file_number]== 0) {
-                            /* drawing subtitle label */
-                            write_subtitle_to_ps("memory", file_number, HORIZONTAL_MEMORY_SUBTITLE, VERTICAL_MEMORY_SUBTITLE, this_date_all);
-                            /* drawing time label */
-                            write_time_value_to_ps("memory", file_number, horizontal_first_time_point,
-                                VERTICAL_FIRST_TIME_POINT_MEMORY, horizontal_notch, horizontal_value_memory_memused[file_number], time_value);
-                            /* drawing graph */
-                            draw_graph_to_ps("memory", "memused", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        } else {
-                            /* drawing graph */
-                            draw_graph_to_ps("memory", "memused", file_number, horizontal_value, vertical_value, "no");
-                            /* drawing time label */
-                            if ((horizontal_value_memory_memused[file_number]% 12) == 0)
-                                write_time_value_to_ps("memory", file_number, horizontal_first_time_point,
-                                    VERTICAL_FIRST_TIME_POINT_MEMORY, horizontal_notch, horizontal_value_memory_memused[file_number], time_value);
-                            else if ((horizontal_value_memory_memused[file_number]% 6) == 0)
-                                write_time_value_to_ps("memory", file_number, horizontal_first_time_point,
-                                    VERTICAL_FIRST_TIME_POINT_MEMORY - 20, horizontal_notch, horizontal_value_memory_memused[file_number], time_value);
-                        }
-                        horizontal_value_memory_memused[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_memory_avg_highest_val("memused");
                     l = get_memory_avg_lowest_val("memused");
@@ -2638,26 +2177,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_memory_lowest_date(this_date_all, "kbcommit");
                         set_memory_lowest_time(time_value, "kbcommit");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_memory_kbcommit[file_number]);
-                        /* note that we calculate t / nothch unlike other ones */
-                        vertical_value = VERTICAL_START_POINT_MEMORY +(t / VERTICAL_NOTCH_MEMORY_KBCOMMIT);
-                        /* only when first in element */
-                        if (horizontal_value_memory_kbcommit[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("memory", "kbcommit", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("memory", "kbcommit", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_memory_kbcommit[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_memory_avg_highest_val("kbcommit");
                     l = get_memory_avg_lowest_val("kbcommit");
@@ -2737,25 +2257,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_memory_lowest_date(this_date_all, "commit");
                         set_memory_lowest_time(time_value, "commit");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_memory_commit[file_number]);
-                        vertical_value = VERTICAL_START_POINT_MEMORY +(t * VERTICAL_NOTCH_PERCENT);
-                        /* only when first in element */
-                        if (horizontal_value_memory_commit[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("memory", "commit", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("memory", "commit", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_memory_commit[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_memory_avg_highest_val("commit");
                     l = get_memory_avg_lowest_val("commit");
@@ -2970,35 +2472,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_kernel_table_lowest_date(this_date_all, "dentunusd");
                         set_kernel_table_lowest_time(time_value, "dentunusd");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_kernel_table_dentunusd[file_number]);
-                        vertical_value = VERTICAL_START_POINT_KERNEL_TABLE +(t * VERTICAL_NOTCH_KERNEL_TABLE_DENTUNUSD);
-                        /* only when first in element */
-                        if (horizontal_value_kernel_table_dentunusd[file_number]== 0) {
-                            /* drawing subtitle label */
-                            write_subtitle_to_ps("kernel_table", file_number, HORIZONTAL_KERNEL_TABLE_SUBTITLE, VERTICAL_KERNEL_TABLE_SUBTITLE, this_date_all);
-                            /* drawing time label */
-                            write_time_value_to_ps("kernel_table", file_number, horizontal_first_time_point, VERTICAL_FIRST_TIME_POINT_KERNEL_TABLE, horizontal_notch, horizontal_value_kernel_table_dentunusd[file_number], time_value);
-                            /* drawing graph */
-                            draw_graph_to_ps("kernel_table", "dentunusd", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        } else {
-                            /* drawing graph */
-                            draw_graph_to_ps("kernel_table", "dentunusd", file_number, horizontal_value, vertical_value, "no");
-                            /* drawing time label */
-                            if ((horizontal_value_kernel_table_dentunusd[file_number]% 12) == 0)
-                                write_time_value_to_ps("kernel_table", file_number, horizontal_first_time_point, VERTICAL_FIRST_TIME_POINT_KERNEL_TABLE, horizontal_notch, horizontal_value_kernel_table_dentunusd[file_number], time_value);
-                            else if ((horizontal_value_kernel_table_dentunusd[file_number]% 6) == 0)
-                                write_time_value_to_ps("kernel_table", file_number, horizontal_first_time_point, VERTICAL_FIRST_TIME_POINT_KERNEL_TABLE - 20, horizontal_notch, horizontal_value_kernel_table_dentunusd[file_number], time_value);
-                        }
-                        horizontal_value_kernel_table_dentunusd[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_kernel_table_avg_highest_val("dentunusd");
                     l = get_kernel_table_avg_lowest_val("dentunusd");
@@ -3078,25 +2552,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_kernel_table_lowest_date(this_date_all, "file");
                         set_kernel_table_lowest_time(time_value, "file");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_kernel_table_file[file_number]);
-                        vertical_value = VERTICAL_START_POINT_KERNEL_TABLE +(t * VERTICAL_NOTCH_KERNEL_TABLE_FILE);
-                        /* only when first in element */
-                        if (horizontal_value_kernel_table_file[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("kernel_table", "file", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("kernel_table", "file", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_kernel_table_file[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_kernel_table_avg_highest_val("file");
                     l = get_kernel_table_avg_lowest_val("file");
@@ -3176,25 +2632,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_kernel_table_lowest_date(this_date_all, "inode");
                         set_kernel_table_lowest_time(time_value, "inode");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_kernel_table_inode[file_number]);
-                        vertical_value = VERTICAL_START_POINT_KERNEL_TABLE +(t * VERTICAL_NOTCH_KERNEL_TABLE_INODE);
-                        /* only when first in element */
-                        if (horizontal_value_kernel_table_inode[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("kernel_table", "inode", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("kernel_table", "inode", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_kernel_table_inode[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_kernel_table_avg_highest_val("inode");
                     l = get_kernel_table_avg_lowest_val("inode");
@@ -3340,35 +2778,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_ldavg_lowest_date(this_date_all, "runq_sz");
                         set_ldavg_lowest_time(time_value, "runq_sz");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_ldavg_runq[file_number]);
-                        vertical_value = VERTICAL_START_POINT_LDAVG +(VERTICAL_NOTCH_LDAVG * t);
-                        /* only when first in element */
-                        if (horizontal_value_ldavg_runq[file_number]== 0) {
-                            /* drawing subtitle label */
-                            write_subtitle_to_ps("ldavg", file_number, HORIZONTAL_LDAVG_SUBTITLE, VERTICAL_LDAVG_SUBTITLE, this_date_all);
-                            /* drawing time label */
-                            write_time_value_to_ps("ldavg", file_number, horizontal_first_time_point, VERTICAL_FIRST_TIME_POINT_LDAVG, horizontal_notch, horizontal_value_ldavg_runq[file_number], time_value);
-                            /* drawing graph */
-                            draw_graph_to_ps("ldavg", "runq", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        } else {
-                            /* drawing graph */
-                            draw_graph_to_ps("ldavg", "runq", file_number, horizontal_value, vertical_value, "no");
-                            /* drawing time label */
-                            if ((horizontal_value_ldavg_runq[file_number]% 12) == 0)
-                                write_time_value_to_ps("ldavg", file_number, horizontal_first_time_point, VERTICAL_FIRST_TIME_POINT_LDAVG, horizontal_notch, horizontal_value_ldavg_runq[file_number], time_value);
-                            else if ((horizontal_value_ldavg_runq[file_number]% 6) == 0)
-                                write_time_value_to_ps("ldavg", file_number, horizontal_first_time_point, VERTICAL_FIRST_TIME_POINT_LDAVG - 20, horizontal_notch, horizontal_value_ldavg_runq[file_number], time_value);
-                        }
-                        horizontal_value_ldavg_runq[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_ldavg_avg_highest_val("runq_sz");
                     l = get_ldavg_avg_lowest_val("runq_sz");
@@ -3449,25 +2859,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_ldavg_lowest_date(this_date_all, "plist_sz");
                         set_ldavg_lowest_time(time_value, "plist_az");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_ldavg_plist[file_number]);
-                        vertical_value = VERTICAL_START_POINT_LDAVG +(VERTICAL_NOTCH_LDAVG_PLIST * t);
-                        /* only when first in element */
-                        if (horizontal_value_ldavg_plist[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("ldavg", "plist", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("ldavg", "plist", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_ldavg_plist[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_ldavg_avg_highest_val("plist_sz");
                     l = get_ldavg_avg_lowest_val("plist_sz");
@@ -3548,25 +2940,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_ldavg_lowest_date(this_date_all, "ldavg_one");
                         set_ldavg_lowest_time(time_value, "ldavg_one");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_ldavg_ldavg_one[file_number]);
-                        vertical_value = VERTICAL_START_POINT_LDAVG +(VERTICAL_NOTCH_LDAVG * t);
-                        /* only when first in element */
-                        if (horizontal_value_ldavg_ldavg_one[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("ldavg", "ldavg_one", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("ldavg", "ldavg_one", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_ldavg_ldavg_one[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_ldavg_avg_highest_val("ldavg_one");
                     l = get_ldavg_avg_lowest_val("ldavg_one");
@@ -3646,25 +3020,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_ldavg_lowest_date( this_date_all, "ldavg_five");
                         set_ldavg_lowest_time( time_value, "ldavg_five");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_ldavg_ldavg_five[file_number]);
-                        vertical_value = VERTICAL_START_POINT_LDAVG +(VERTICAL_NOTCH_LDAVG * t);
-                        /* only when first in element */
-                        if (horizontal_value_ldavg_ldavg_five[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("ldavg", "ldavg_five", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("ldavg", "ldavg_five", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_ldavg_ldavg_five[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_ldavg_avg_highest_val("ldavg_five");
                     l = get_ldavg_avg_lowest_val("ldavg_five");
@@ -3744,25 +3100,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_ldavg_lowest_date(this_date_all, "ldavg_15");
                         set_ldavg_lowest_time(time_value, "ldavg_15");
                     }
-                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-                   ) {
-                        /* code for postscript file */
-                        horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_ldavg_ldavg_15[file_number]);
-                        vertical_value = VERTICAL_START_POINT_LDAVG +(VERTICAL_NOTCH_LDAVG * t);
-                        /* only when first in element */
-                        if (horizontal_value_ldavg_ldavg_15[file_number]== 0)
-                            /* drawing graph */
-                            draw_graph_to_ps("ldavg", "ldavg_15", file_number, HORIZONTAL_START_POINT, vertical_value, "yes");
-                        else
-                            /* drawing graph */
-                            draw_graph_to_ps("ldavg", "ldavg_15", file_number, horizontal_value, vertical_value, "no");
-                        horizontal_value_ldavg_ldavg_15[file_number]++;
-                    }
+                    /* code for graph */
                 } else {
                     h = get_ldavg_avg_highest_val("ldavg_15");
                     l = get_ldavg_avg_lowest_val("ldavg_15");
@@ -4504,481 +3842,6 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
     return 0;
 }
 
-void write_subtitle_to_ps(const char *item, int file_number, int horizontal_subtitle,
-    int vertical_subtitle, const char *this_date_all)
-{
-    char str_ps[150]= {'\0'};
-
-    /* for file cpu */
-    if (strcmp("CPU all", item) == 0) {
-        append_list(&ps_cpu_usr_obj[file_number], "% Label for CPU all");
-        append_list(&ps_cpu_usr_obj[file_number], " /Times-Roman ff 36 scf sf");
-        append_list(&ps_cpu_usr_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(file-no:%d %s (%s)) sh", horizontal_subtitle,
-            vertical_subtitle,file_number+ 1, get_hostname(), this_date_all);
-        append_list(&ps_cpu_usr_obj[file_number], str_ps);
-        append_list(&ps_cpu_usr_obj[file_number], "%");
-    } else if (strcmp("paging", item) == 0) {
-        append_list(&ps_paging_pgpgin_obj[file_number], "% Label for paging pgpgin");
-        append_list(&ps_paging_pgpgin_obj[file_number], " /Times-Roman ff 36 scf sf");
-        append_list(&ps_paging_pgpgin_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(file-no:%d %s (%s)) sh", horizontal_subtitle,
-            vertical_subtitle,file_number+ 1, get_hostname(), this_date_all);
-        append_list(&ps_paging_pgpgin_obj[file_number], str_ps);
-        append_list(&ps_paging_pgpgin_obj[file_number], "%");
-    /* for file mem */
-    } else if (strcmp("memory", item) == 0) {
-        append_list(&ps_memory_memused_obj[file_number], "% Label for memory");
-        append_list(&ps_memory_memused_obj[file_number], " /Times-Roman ff 36 scf sf");
-        append_list(&ps_memory_memused_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(file-no:%d %s (%s)) sh", horizontal_subtitle,
-            vertical_subtitle,file_number+ 1, get_hostname(), this_date_all);
-        append_list(&ps_memory_memused_obj[file_number], str_ps);
-        append_list(&ps_memory_memused_obj[file_number], "%");
-    } else if (strcmp("swapping", item) == 0) {
-        append_list(&ps_swapping_pswpin_obj[file_number], "% Label for swapping");
-        append_list(&ps_swapping_pswpin_obj[file_number], " /Times-Roman ff 36 scf sf");
-        append_list(&ps_swapping_pswpin_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(file-no:%d %s (%s)) sh", horizontal_subtitle,
-            vertical_subtitle,file_number+ 1, get_hostname(), this_date_all);
-        append_list(&ps_swapping_pswpin_obj[file_number], str_ps);
-        append_list(&ps_swapping_pswpin_obj[file_number], "%");
-    /* for file ldv */
-    } else if (strcmp("ldavg", item) == 0) {
-        append_list(&ps_ldavg_runq_obj[file_number], "% Label for ldavg");
-        append_list(&ps_ldavg_runq_obj[file_number], " /Times-Roman ff 36 scf sf");
-        append_list(&ps_ldavg_runq_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(file-no:%d %s (%s)) sh", horizontal_subtitle,
-            vertical_subtitle,file_number+ 1, get_hostname(), this_date_all);
-        append_list(&ps_ldavg_runq_obj[file_number], str_ps);
-        append_list(&ps_ldavg_runq_obj[file_number], "%");
-    } else if (strcmp("tasks", item) == 0) {
-        append_list(&ps_tasks_proc_obj[file_number], "% Label for tasks");
-        append_list(&ps_tasks_proc_obj[file_number], " /Times-Roman ff 36 scf sf");
-        append_list(&ps_tasks_proc_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(file-no:%d %s (%s)) sh", horizontal_subtitle,
-            vertical_subtitle,file_number+ 1, get_hostname(), this_date_all);
-        append_list(&ps_tasks_proc_obj[file_number], str_ps);
-        append_list(&ps_tasks_proc_obj[file_number], "%");
-    /* for file ior */
-    } else if (strcmp("io_transfer_rate", item) == 0) {
-        append_list(&ps_io_transfer_rate_tps_obj[file_number], "% Label for io transfer rate");
-        append_list(&ps_io_transfer_rate_tps_obj[file_number], " /Times-Roman ff 36 scf sf");
-        append_list(&ps_io_transfer_rate_tps_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(file-no:%d %s (%s)) sh", horizontal_subtitle,
-            vertical_subtitle,file_number+ 1, get_hostname(), this_date_all);
-        append_list(&ps_io_transfer_rate_tps_obj[file_number], str_ps);
-        append_list(&ps_io_transfer_rate_tps_obj[file_number], "%");
-    } else if (strcmp("kernel_table", item) == 0) {
-        append_list(&ps_kernel_table_dentunusd_obj[file_number], "% Label for kernel table");
-        append_list(&ps_kernel_table_dentunusd_obj[file_number], " /Times-Roman ff 36 scf sf");
-        append_list(&ps_kernel_table_dentunusd_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(file-no:%d %s (%s)) sh", horizontal_subtitle, 
-            vertical_subtitle,file_number+ 1, get_hostname(), this_date_all);
-        append_list(&ps_kernel_table_dentunusd_obj[file_number], str_ps);
-        append_list(&ps_kernel_table_dentunusd_obj[file_number], "%");
-    }
-}
-
-void write_time_value_to_ps(const char *item, int file_number, int horizontal_first_time_point,
-    int vertical_first_time_point, int notch, int count, const char *time_value)
-{
-    char str_ps[150]= {'\0'};
-
-    /* for file cpu */
-    if (strcmp("CPU all", item) == 0) {
-        snprintf(str_ps, MAX_INPUT, "%% Label for %s time_value", item);
-        append_list(&ps_cpu_label_obj[file_number], str_ps);
-        append_list(&ps_cpu_label_obj[file_number], " /Times-Roman ff 14 scf sf");
-        append_list(&ps_cpu_label_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(%s) sh ",(horizontal_first_time_point +(notch * count)), vertical_first_time_point, time_value);
-        append_list(&ps_cpu_label_obj[file_number], str_ps);
-    } else if (strcmp("paging", item) == 0) {
-        snprintf(str_ps, MAX_INPUT, "%% Label for %s time_value", item);
-        append_list(&ps_paging_label_obj[file_number], str_ps);
-        append_list(&ps_paging_label_obj[file_number], " /Times-Roman ff 14 scf sf");
-        append_list(&ps_paging_label_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(%s) sh ",(horizontal_first_time_point +(notch * count)), vertical_first_time_point, time_value);
-        append_list(&ps_paging_label_obj[file_number], str_ps);
-    /* for file mem */
-    } else if (strcmp("memory", item) == 0) {
-        snprintf(str_ps, MAX_INPUT, "%% Label for %s time_value", item);
-        append_list(&ps_memory_label_obj[file_number], str_ps);
-        append_list(&ps_memory_label_obj[file_number], " /Times-Roman ff 14 scf sf");
-        append_list(&ps_memory_label_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(%s) sh ",(horizontal_first_time_point +(notch * count)), vertical_first_time_point, time_value);
-        append_list(&ps_memory_label_obj[file_number], str_ps);
-    } else if (strcmp("swapping", item) == 0) {
-        snprintf(str_ps, MAX_INPUT, "%% Label for %s time_value", item);
-        append_list(&ps_swapping_label_obj[file_number], str_ps);
-        append_list(&ps_swapping_label_obj[file_number], " /Times-Roman ff 14 scf sf");
-        append_list(&ps_swapping_label_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(%s) sh ",(horizontal_first_time_point +(notch * count)), vertical_first_time_point, time_value);
-        append_list(&ps_swapping_label_obj[file_number], str_ps);
-    /* for file ldv */
-    } else if (strcmp("ldavg", item) == 0) {
-        snprintf(str_ps, MAX_INPUT, "%% Label for %s time_value", item);
-        append_list(&ps_ldavg_label_obj[file_number], str_ps);
-        append_list(&ps_ldavg_label_obj[file_number], " /Times-Roman ff 14 scf sf");
-        append_list(&ps_ldavg_label_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(%s) sh ",(horizontal_first_time_point +(notch * count)), vertical_first_time_point, time_value);
-        append_list(&ps_ldavg_label_obj[file_number], str_ps);
-    } else if (strcmp("tasks", item) == 0) {
-        snprintf(str_ps, MAX_INPUT, "%% Label for %s time_value", item);
-        append_list(&ps_tasks_label_obj[file_number], str_ps);
-        append_list(&ps_tasks_label_obj[file_number], " /Times-Roman ff 14 scf sf");
-        append_list(&ps_tasks_label_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(%s) sh ",(horizontal_first_time_point +(notch * count)), vertical_first_time_point, time_value);
-        append_list(&ps_tasks_label_obj[file_number], str_ps);
-    /* for file ior */
-    } else if (strcmp("io_transfer_rate", item) == 0) {
-        snprintf(str_ps, MAX_INPUT, "%% Label for %s time_value", item);
-        append_list(&ps_io_transfer_rate_label_obj[file_number], str_ps);
-        append_list(&ps_io_transfer_rate_label_obj[file_number], " /Times-Roman ff 14 scf sf");
-        append_list(&ps_io_transfer_rate_label_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(%s) sh ",(horizontal_first_time_point +(notch * count)), vertical_first_time_point, time_value);
-        append_list(&ps_io_transfer_rate_label_obj[file_number], str_ps);
-    } else if (strcmp("kernel_table", item) == 0) {
-        snprintf(str_ps, MAX_INPUT, "%% Label for %s time_value", item);
-        append_list(&ps_kernel_table_label_obj[file_number], str_ps);
-        append_list(&ps_kernel_table_label_obj[file_number], " /Times-Roman ff 14 scf sf");
-        append_list(&ps_kernel_table_label_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-        snprintf(str_ps, MAX_INPUT, "%d %d m(%s) sh ",(horizontal_first_time_point +(notch * count)), vertical_first_time_point, time_value);
-        append_list(&ps_kernel_table_label_obj[file_number], str_ps);
-    }
-}
-
-void write_restart_str_to_ps(int file_number, char *line)
-{
-    char str_ps[150]= {'\0'};
-
-    append_list(&ps_restart_obj[file_number], "% Label for CPU all on Linux RESTART");
-    append_list(&ps_restart_obj[file_number], " /Times-Roman ff 18 scf sf");
-    append_list(&ps_restart_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-    if (linux_restart_count[file_number]== 0)
-        snprintf(str_ps, MAX_INPUT, "%d %d m(Linux RESTART %s) sh", horizontal_linux_restart_point, vertical_linux_restart_point, line);
-    else
-        snprintf(str_ps, MAX_INPUT, "%d %d m(%s) sh", horizontal_linux_restart_point + 140 + linux_restart_count[file_number]* 80, vertical_linux_restart_point, line);
-    append_list(&ps_restart_obj[file_number], str_ps);
-    append_list(&ps_restart_obj[file_number], "%");
-}
-
-void draw_graph_to_ps(const char *item, const char *element, int file_number, double horizontal_value, double vertical_value, const char *start)
-{
-    char str_ps[150]= {'\0'};
-
-    /* for file cpu */
-    if (strcmp("CPU all", item) == 0) {
-        if (strcmp("usr", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_cpu_usr_obj[file_number], "%graph for CPU all usr");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_cpu_usr_obj[file_number], " 0.000 1.000 0.000 rgb 1 lw");
-                append_list(&ps_cpu_usr_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_cpu_usr_obj[file_number], str_ps);
-            }
-        } else if (strcmp("sys", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_cpu_sys_obj[file_number], "%");
-                append_list(&ps_cpu_sys_obj[file_number], "%graph for CPU all sys");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_cpu_sys_obj[file_number], " 0.000 0.000 1.000 rgb 1 lw");
-                append_list(&ps_cpu_sys_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_cpu_sys_obj[file_number], str_ps);
-            }
-        } else if (strcmp("iowait", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_cpu_iowait_obj[file_number], "%");
-                append_list(&ps_cpu_iowait_obj[file_number], "%graph for CPU all iowait");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_cpu_iowait_obj[file_number], " 1.000 0.000 0.000 rgb 1 lw");
-                append_list(&ps_cpu_iowait_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_cpu_iowait_obj[file_number], str_ps);
-            }
-        } else if (strcmp("idle", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_cpu_idle_obj[file_number], "%");
-                append_list(&ps_cpu_idle_obj[file_number], "%graph for CPU all idle");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_cpu_idle_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-                append_list(&ps_cpu_idle_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_cpu_idle_obj[file_number], str_ps);
-            }
-        }
-    } else if (strcmp("paging", item) == 0) {
-        if (strcmp("pgpgin", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_paging_pgpgin_obj[file_number], "%graph for paging pgpgin");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_paging_pgpgin_obj[file_number], " 1.000 0.000 0.000 rgb 1 lw");
-                append_list(&ps_paging_pgpgin_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_paging_pgpgin_obj[file_number], str_ps);
-            }
-        } else if (strcmp("pgpgout", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_paging_pgpgout_obj[file_number], "%");
-                append_list(&ps_paging_pgpgout_obj[file_number], "%graph for paging pgpgout");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_paging_pgpgout_obj[file_number], " 0.000 1.000 0.000 rgb 1 lw");
-                append_list(&ps_paging_pgpgout_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_paging_pgpgout_obj[file_number], str_ps);
-            }
-        } else if (strcmp("fault", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_paging_fault_obj[file_number], "%");
-                append_list(&ps_paging_fault_obj[file_number], "%graph for paging fault");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_paging_fault_obj[file_number], " 0.000 0.000 1.000 rgb 1 lw");
-                append_list(&ps_paging_fault_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_paging_fault_obj[file_number], str_ps);
-            }
-        } else if (strcmp("majflt", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_paging_mjflt_obj[file_number], "%");
-                append_list(&ps_paging_mjflt_obj[file_number], "%graph for paging mjflt");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_paging_mjflt_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-                append_list(&ps_paging_mjflt_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_paging_mjflt_obj[file_number], str_ps);
-            }
-        } else if (strcmp("vmeff", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_paging_vmeff_obj[file_number], "%");
-                append_list(&ps_paging_vmeff_obj[file_number], "%graph for paging vmeff");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_paging_vmeff_obj[file_number], " 1.000 1.000 0.000 rgb 1 lw");
-                append_list(&ps_paging_vmeff_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_paging_vmeff_obj[file_number], str_ps);
-            }
-        }
-    /* for file mem */
-    } else if (strcmp("memory", item) == 0) {
-        if (strcmp("memused", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_memory_memused_obj[file_number], "%graph for memory memused");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_memory_memused_obj[file_number], " 0.000 0.000 1.000 rgb 1 lw");
-                append_list(&ps_memory_memused_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_memory_memused_obj[file_number], str_ps);
-            }
-        } else if (strcmp("kbcommit", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_memory_commit_obj[file_number], "%");
-                append_list(&ps_memory_commit_obj[file_number], "%graph for memory commit");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_memory_commit_obj[file_number], " 1.000 0.000 0.000 rgb 1 lw");
-                append_list(&ps_memory_commit_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_memory_commit_obj[file_number], str_ps);
-            }
-        } else if (strcmp("commit", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_memory_kbcommit_obj[file_number], "%");
-                append_list(&ps_memory_kbcommit_obj[file_number], "%graph for memory kbcommit");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_memory_kbcommit_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-                append_list(&ps_memory_kbcommit_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_memory_kbcommit_obj[file_number], str_ps);
-            }
-        }
-    } else if (strcmp("swapping", item) == 0) {
-        if (strcmp("pswpin", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_swapping_pswpin_obj[file_number], "%graph for swapping pswpin");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_swapping_pswpin_obj[file_number], " 0.000 0.000 1.000 rgb 1 lw");
-                append_list(&ps_swapping_pswpin_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_swapping_pswpin_obj[file_number], str_ps);
-            }
-        } else if (strcmp("pswpout", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_swapping_pswpout_obj[file_number], "%");
-                append_list(&ps_swapping_pswpout_obj[file_number], "%graph for swapping pswpout");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_swapping_pswpout_obj[file_number], " 0.000 1.000 0.000 rgb 1 lw");
-                append_list(&ps_swapping_pswpout_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_swapping_pswpout_obj[file_number], str_ps);
-            }
-        }
-    /* for file ldv */
-    } else if (strcmp("ldavg", item) == 0) {
-        if (strcmp("runq", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_ldavg_runq_obj[file_number], "%graph for ldavg runq");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_ldavg_runq_obj[file_number], " 0.000 0.000 1.000 rgb 1 lw");
-                append_list(&ps_ldavg_runq_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_ldavg_runq_obj[file_number], str_ps);
-            }
-        } else if (strcmp("plist", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_ldavg_plist_obj[file_number], "%");
-                append_list(&ps_ldavg_plist_obj[file_number], "%graph for ldavg plist");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_ldavg_plist_obj[file_number], " 1.000 0.000 0.000 rgb 1 lw");
-                append_list(&ps_ldavg_plist_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_ldavg_plist_obj[file_number], str_ps);
-            }
-        } else if (strcmp("ldavg_one", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_ldavg_ldavg_one_obj[file_number], "%");
-                append_list(&ps_ldavg_ldavg_one_obj[file_number], "%graph for ldavg ldavg_one");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_ldavg_ldavg_one_obj[file_number], " 0.000 1.000 0.000 rgb 1 lw");
-                append_list(&ps_ldavg_ldavg_one_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_ldavg_ldavg_one_obj[file_number], str_ps);
-            }
-        } else if (strcmp("ldavg_five", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_ldavg_ldavg_five_obj[file_number], "%");
-                append_list(&ps_ldavg_ldavg_five_obj[file_number], "%graph for ldavg ldavg_five");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_ldavg_ldavg_five_obj[file_number], " 0.000 1.000 1.000 rgb 1 lw");
-                append_list(&ps_ldavg_ldavg_five_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_ldavg_ldavg_five_obj[file_number], str_ps);
-            }
-        } else if (strcmp("ldavg_15", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_ldavg_ldavg_15_obj[file_number], "%");
-                append_list(&ps_ldavg_ldavg_15_obj[file_number], "%graph for ldavg ldavg_15");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_ldavg_ldavg_15_obj[file_number], " 0.000 0.000 0.000 rgb 1 lw");
-                append_list(&ps_ldavg_ldavg_15_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_ldavg_ldavg_15_obj[file_number], str_ps);
-            }
-        }
-    } else if (strcmp("tasks", item) == 0) {
-        if (strcmp("proc", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_tasks_proc_obj[file_number], "%graph for tasks proc");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_tasks_proc_obj[file_number], " 0.000 0.000 1.000 rgb 1 lw");
-                append_list(&ps_tasks_proc_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_tasks_proc_obj[file_number], str_ps);
-            }
-        } else if (strcmp("cswch", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_tasks_cswch_obj[file_number], "%");
-                append_list(&ps_tasks_cswch_obj[file_number], "%graph for tasks cswch");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_tasks_cswch_obj[file_number], " 0.000 1.000 0.000 rgb 1 lw");
-                append_list(&ps_tasks_cswch_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_tasks_cswch_obj[file_number], str_ps);
-            }
-        }
-    /* for file ior */
-    } else if (strcmp("io_transfer_rate", item) == 0) {
-        if (strcmp("tps", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_io_transfer_rate_tps_obj[file_number], "%graph for io transfer rate tps");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_io_transfer_rate_tps_obj[file_number], " 0.000 0.000 1.000 rgb 1 lw");
-                append_list(&ps_io_transfer_rate_tps_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_io_transfer_rate_tps_obj[file_number], str_ps);
-            }
-        } else if (strcmp("bread", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_io_transfer_rate_bread_obj[file_number], "%");
-                append_list(&ps_io_transfer_rate_bread_obj[file_number], "%graph for io transfer rate bread");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_io_transfer_rate_bread_obj[file_number], " 0.000 1.000 0.000 rgb 1 lw");
-                append_list(&ps_io_transfer_rate_bread_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_io_transfer_rate_bread_obj[file_number], str_ps);
-            }
-        } else if (strcmp("bwrtn", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_io_transfer_rate_bwrtn_obj[file_number], "%");
-                append_list(&ps_io_transfer_rate_bwrtn_obj[file_number], "%graph for io transfer rate bwrtn");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_io_transfer_rate_bwrtn_obj[file_number], " 1.000 0.000 0.000 rgb 1 lw");
-                append_list(&ps_io_transfer_rate_bwrtn_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_io_transfer_rate_bwrtn_obj[file_number], str_ps);
-            }
-        }
-    } else if (strcmp("kernel_table", item) == 0) {
-        if (strcmp("dentunusd", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_kernel_table_dentunusd_obj[file_number], "%graph for kernel table dentunusd");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s",horizontal_value, vertical_value, " m");
-                append_list(&ps_kernel_table_dentunusd_obj[file_number], " 0.000 0.000 1.000 rgb 1 lw");
-                append_list(&ps_kernel_table_dentunusd_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_kernel_table_dentunusd_obj[file_number], str_ps);
-            }
-        } else if (strcmp("file", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_kernel_table_file_obj[file_number], "%");
-                append_list(&ps_kernel_table_file_obj[file_number], "%graph for kenel table file");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_kernel_table_file_obj[file_number], " 1.000 0.000 0.000 rgb 1 lw");
-                append_list(&ps_kernel_table_file_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_kernel_table_file_obj[file_number], str_ps);
-            }
-        } else if (strcmp("inode", element) == 0) {
-            if (strcmp("yes", start) == 0) {
-                append_list(&ps_kernel_table_inode_obj[file_number], "%");
-                append_list(&ps_kernel_table_inode_obj[file_number], "%graph for kernel table inode");
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " m");
-                append_list(&ps_kernel_table_inode_obj[file_number], " 0.000 1.000 0.000 rgb 1 lw");
-                append_list(&ps_kernel_table_inode_obj[file_number], str_ps);
-            } else if (strcmp("no", start) == 0) {
-                snprintf(str_ps, MAX_INPUT, "%f %f %s", horizontal_value, vertical_value, " l");
-                append_list(&ps_kernel_table_inode_obj[file_number], str_ps);
-            }
-        }
-    }
-}
-
 int get_word_line(int file_number, char **line, int SAR_OPTION, int MESSAGE_ONLY, const char *time_span)
 {
     int PM = 0;
@@ -4994,8 +3857,6 @@ int get_word_line(int file_number, char **line, int SAR_OPTION, int MESSAGE_ONLY
             /* this clause will be save for future use maybe */
             if (strstr(*line, "RESTART")) {
                 set_token_column(file_number, *line, "Linux", 1, SAR_OPTION);
-                /* for ps file */
-                write_restart_str_to_ps(file_number, *line);
                 linux_restart_count[file_number]++;
             }
             else
