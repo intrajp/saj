@@ -618,7 +618,7 @@ int main(int argc, char* argv[])
          (double)(tv2.tv_usec - tv1.tv_usec) / 1000000 +
          (double)(tv2.tv_sec - tv1.tv_sec));
 
-    return 0;
+    exit(EXIT_SUCCESS);
 }
 
 int delete_files(void)
