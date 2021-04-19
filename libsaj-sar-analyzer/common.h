@@ -2737,18 +2737,6 @@ void set_this_date(const char *date_string);
 void set_this_date_all(const char *date_string);
 
 /*
- * Function Name: tar_pdf_files()
- *
- * This function tar pdf files  
- *
- *  Caller : main()
- *
- *  Calls : system() system call
- *
- */
-void tar_pdf_files(const char *pdf_file_pre);
-
-/*
  * Function Name: remove_unneeded_files()
  *
  * This function removes unneeded files  
@@ -2759,57 +2747,6 @@ void tar_pdf_files(const char *pdf_file_pre);
  *
  */
 void remove_unneeded_files(const char *filename, const char *extension);
-
-/*
- * Function Name: postscript_to_pdf()
- *
- * This function convert postscript file to pdf file
- *
- *  Caller : main()
- *
- *  Calls : system() system call
- *
- */
-void postscript_to_pdf(const char *filename);
-
-/*
- * Function Name: write_subtitle_to_ps()
- *
- * This function writes subtitle to ps
- *
- *  Caller : set_token_items()
- *
- *  Calls : none 
- *
- */
-void write_subtitle_to_ps(const char *item, int file_number, int horizontal_subtitle, 
-                          int vertical_subtitle, const char *this_date_all);
-
-/*
- * Function Name: write_time_value_to_ps()
- *
- * This function writes time_value to ps
- *
- *  Caller : set_token_items()
- *
- *  Calls : none 
- *
- */
-void write_time_value_to_ps(const char *item, int file_number, int horizontal_first_time_point, 
-                            int vertical_first_time_point, int notch, int count, const char *time_value);
-
-/*
- * Function Name: draw_graph_to_ps()
- *
- * This function draws graph to ps
- *
- *  Caller : set_token_items()
- *
- *  Calls : none 
- *
- */
-void draw_graph_to_ps(const char *item, const char *element, int file_number, double horizontal_value, 
-                      double vertical_value, const char *start);
 
 /*
  * Function Name: check_time_value()
@@ -2833,7 +2770,5 @@ double check_time_value(double initial_val, double horizontal_notch, int count, 
  *  Calls : none 
  */
 int check_time_value_is_in_time_span(const char *time_span_str, const char *time_value);
-
-void write_restart_str_to_ps(int file_number, char *line);
 
 #endif /* SAJ_COMMON_H */
