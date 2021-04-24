@@ -261,6 +261,15 @@ void print_list(node** obj)
     }
 }
 
+void print_list2(node2** obj)
+{
+    node2* ptr_tmp = *obj;
+    while (ptr_tmp != NULL) {
+        printf("%s\n", ptr_tmp->_line);
+        ptr_tmp = ptr_tmp->next;
+    }
+}
+
 const char* echo_list(node** obj)
 {
     node* ptr_tmp = *obj;

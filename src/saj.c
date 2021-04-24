@@ -556,6 +556,10 @@ int main(int argc, char* argv[])
     /* writing "Linux" lines (top of sar file) to result file */
     print_and_file_write_analyzed_files(&line_all_obj, "Linux", NULL, fp_sar_w);
 
+///////////////testing/////////////////////////
+    print_list2(&svg_cpu_usr_obj);
+///////////////end testing/////////////////////////
+
     puts("------------------------");
 
     if (sar_only == 1) {
