@@ -174,7 +174,7 @@ const char* get_sos_analyze_file_time(void);
 /*
  * Function Name: get_sos_analyze_file_name_to_be_written()
  *
- * This function returns sos_file_name_to_be_written for analyzed result
+ * This function returns sos_analyze_file_name_to_be_written for analyzed result
  * 
  * Caller : main()
  *
