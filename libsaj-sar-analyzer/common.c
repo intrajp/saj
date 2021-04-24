@@ -241,7 +241,7 @@ void read_write_file(DIR *dir, const char *dname, char *sar_arr[], int files_n,
     /* open svg dummy file here just to set data to the each object */
 
     /* appending headers to svg obj */
-    //append_header_to_svg_objs(&svg_common_cpu_obj[i], fp_svg_w);
+    //append_header_to_svg_objs(&svg_common_cpu_obj, fp_svg_w);
     /* appending rectangulars to svg obj */
     //append_rectangular_to_svg_objs(&svg_common_cpu_obj, fp_svg_w, "up");
     //append_rectangular_to_svg_objs(&svg_common_cpu_obj, fp_svg_w, "down");
@@ -1873,6 +1873,8 @@ int create_sar_analyzer_obj()
     for (v = 0; v < MAX_NETWORK_DEVICE_NUMBERS; v++)
         init_list(&report_network_down_obj[v]);
     init_list(&report_overall_judgement_obj);
+    init_list(&svg_common_cpu_obj);
+    init_list(&svg_cpu_usr_obj);
 
     return 0;
 }
@@ -1946,6 +1948,8 @@ int free_sar_analyzer_obj()
     for (v = 0; v < MAX_NETWORK_DEVICE_NUMBERS; v++)
         clear_list(&report_network_down_obj[v]);
     clear_list(&report_overall_judgement_obj);
+    clear_list(&svg_common_cpu_obj);
+    clear_list(&svg_cpu_usr_obj);
 
     return 0;
 }

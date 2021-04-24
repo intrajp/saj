@@ -241,7 +241,7 @@ void read_write_file(DIR *dir, const char *dname, char *sar_arr[], int files_n,
     /* open svg dummy file here just to set data to the each object */
 
     /* appending headers to svg obj */
-    //append_header_to_svg_objs(&svg_common_cpu_obj[i], fp_svg_w);
+    //append_header_to_svg_objs(&svg_common_cpu_obj, fp_svg_w);
     /* appending rectangulars to svg obj */
     //append_rectangular_to_svg_objs(&svg_common_cpu_obj, fp_svg_w, "up");
     //append_rectangular_to_svg_objs(&svg_common_cpu_obj, fp_svg_w, "down");

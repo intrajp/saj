@@ -2266,6 +2266,7 @@ extern struct line_data *report_network_down_obj[MAX_NETWORK_DEVICE_NUMBERS];
 extern struct line_data *report_overall_judgement_obj;
 /* svg obj should go here */
 extern struct line_data *svg_common_cpu_obj;
+extern struct line_data *svg_cpu_usr_obj;
 
 /*
  * Function Name: initialize_avg_checked_int()
