@@ -48,6 +48,17 @@ typedef struct line_data
 } node;
 
 /*
+ * Type for line retrieved from a svg file.
+ */
+typedef struct line_data2
+{
+    const char _line[MAX_LINE_LENGTH - 1];
+    const char _line2[MAX_LINE_LENGTH - 1];
+    struct line_data *next;
+
+} node2;
+
+/*
  * Declare type of file_data which should contain dir or file name 
  */
 typedef struct

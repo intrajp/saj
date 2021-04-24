@@ -1024,7 +1024,7 @@ struct line_data svg_common_cpu_obj_raw =
     };
 
 /* svg_cpu_usr_obj */
-struct line_data svg_cpu_usr_obj_raw =
+struct line_data2 svg_cpu_usr_obj_raw =
     {
         "", /* each line */
         "", /* each line */
@@ -1096,7 +1096,7 @@ struct line_data *report_overall_judgement_obj = &report_overall_judgement_obj_r
 /* for each file */
 struct line_data *ps_common_cpu_obj = { &svg_common_cpu_obj_raw };
 /* for file cpu */
-struct line_data *ps_cpu_usr_obj = { &svg_cpu_usr_obj_raw };
+struct line_data2 *ps_cpu_usr_obj = { &svg_cpu_usr_obj_raw };
 
 /*
  *  This function initialzes check int

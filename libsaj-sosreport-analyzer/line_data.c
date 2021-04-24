@@ -30,7 +30,15 @@ struct line_data tmp_obj_raw =
         NULL /* next pointer */
     };
 
+/* tmp2_obj */
+struct line_data tmp2_obj_raw =
+    {
+        "\0", /* each line */
+        "\0", /* each line */
+        NULL /* next pointer */
+
 struct line_data* tmp_obj = &tmp_obj_raw;
+struct line_data2* tmp2_obj = &tmp2_obj_raw;
 
 int init_list(node** obj)
 {
@@ -68,6 +76,32 @@ void set_list(node* obj, char* line, node* obj_next)
         strncpy((char*)obj->_line, test_line, 1);
     else
         strncpy((char*)obj->_line, line, MAX_LINE_LENGTH - 1);
+    obj->next = obj_next;
+    free(obj_next);
+}
+
+void set_list2(node2* obj, char* line, char* line2, node2* obj_next)
+{
+    const char* test_line = "\0";
+    const char* test_line2 = "\0";
+    size_t len = 0;
+    len = strlen(line);
+    len2 = strlen(line2);
+    if (len < 0) {
+        fprintf(stderr, "can't set %s\n", line);
+        exit (EXIT_FAILURE);
+    }
+    if (len2 < 0) {
+        fprintf(stderr, "can't set %s\n", line2);
+        exit (EXIT_FAILURE);
+    }
+    if ((len > MAX_LINE_LENGTH) && (len2 > MAX_LINE_LENGTH)) {
+        strncpy((char*)obj->_line, test_line, 1);
+        strncpy((char*)obj->_line2, test_line2, 1);
+    } else {
+        strncpy((char*)obj->_line, line, MAX_LINE_LENGTH - 1);
+        strncpy((char*)obj->_line2, line2, MAX_LINE_LENGTH - 1);
+    }
     obj->next = obj_next;
     free(obj_next);
 }
