@@ -196,6 +196,16 @@ void file_write_list(node **obj, FILE *fp_w);
 int init_list(node **obj);
 
 /*
+ * Function Name: init_list2()
+ *
+ * This function initializes the line2 list object ( node2 ) 
+ *
+ *  Caller : create_sar_analyzer_obj()
+ *
+ */
+int init_list2(node2 **obj);
+
+/*
  * Function Name: clear_list()
  *
  * This function clears the line list object (node) 
@@ -206,5 +216,17 @@ int init_list(node **obj);
  *
  */
 int clear_list(node **obj);
+
+/*
+ * Function Name: clear_list2()
+ *
+ * This function clears the line list2 object (node2) 
+ *
+ *  Caller : free_sar_analyzer_obj()
+ *
+ *  Calls : delete_obj()
+ *
+ */
+int clear_list2(node2 **obj);
 
 #endif /* SAJ_COMMON_LINE_DATA_H */

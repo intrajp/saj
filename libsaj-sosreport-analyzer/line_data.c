@@ -48,6 +48,13 @@ int init_list(node** obj)
     return 0;
 }
 
+int init_list(node2** obj)
+{
+    *obj = NULL;
+
+    return 0;
+}
+
 static node* __allocate_mem_to_one_node( void )
 {
     return (struct line_data*)calloc(1, sizeof(struct line_data));
@@ -257,6 +264,16 @@ int clear_list(node** obj)
 {
     while (*obj != NULL) {
         node* obj_new = (*obj) -> next;
+        free(*obj);
+        *obj = obj_new;
+    }
+    return 0;
+}
+
+int clear_list2(node2** obj)
+{
+    while (*obj != NULL) {
+        node2* obj_new = (*obj) -> next;
         free(*obj);
         *obj = obj_new;
     }
