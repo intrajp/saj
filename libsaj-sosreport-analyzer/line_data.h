@@ -33,9 +33,9 @@
 int init_list(node** obj);
 int init_list2(node2** obj);
 void set_list(node* obj, char* line, node* obj_next);
-void set_list2(node2* obj, char* line, char* line, node2* obj_next);
+void set_list2(node2* obj, char* line, char* line2, node2* obj_next);
 int append_list(node** obj, char* line);
-int append_list2(node2** obj, char* line, char* line);
+int append_list2(node2** obj, char* line, char* line2);
 int bubble_sort_object_by_the_string(char* str_arr[MAX_ANALYZE_FILES_FOR_SOSREPORT_DIR], node** obj);
 int print_and_file_write_analyzed_files(node** obj, const char* expression , const char* word, FILE* fp_w);
 void print_list(node** obj);

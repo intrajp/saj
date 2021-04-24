@@ -110,7 +110,7 @@ void set_list(node *obj, char *line, node *obj_next);
  *  Caller : append_list2()
  *
  */
-void set_list2(node2 *obj, char *line, char *line, node2 *obj_next);
+void set_list2(node2 *obj, char *line, char *line2, node2 *obj_next);
 
 /*
  * Function Name: append_list()
@@ -138,7 +138,7 @@ int append_list(node **obj, char *line);
  *  Calls : insert_node_top_of_the_list2()
  *
  */
-int append_list2(node2 **obj, char *line, char *line);
+int append_list2(node2 **obj, char *line, char *line2);
 
 /*
  * Function Name: move_obj_to_the_last()
