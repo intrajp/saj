@@ -1921,6 +1921,7 @@ int free_sar_analyzer_obj()
     for (v = 0; v < MAX_NETWORK_DEVICE_NUMBERS; v++)
         clear_list(&report_network_down_obj[v]);
     clear_list(&report_overall_judgement_obj);
+    clear_list(&svg_common_cpu_obj);
 
     return 0;
 }
