@@ -620,7 +620,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                     memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                     snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", t);
 
-                    append_list2(&svg_cpu_usr_obj, str_tmp_echo, this_date);
+                    append_list2(&svg_cpu_usr_obj, str_tmp_echo, this_date_all);
 
                 } else {
                     t = strtod(token, &endp);
