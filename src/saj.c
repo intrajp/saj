@@ -579,8 +579,8 @@ int main(int argc, char* argv[])
 
     char str_tmp[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp, '\0', sizeof(str_tmp));
-    snprintf(str_tmp,MAX_LINE_LENGTH, "%s%s%d%s", file_svg_write, "-cpu-", x, ".svg");
-    fp_ps_w = file_open_check(fp_ps_w, str_tmp,"a", sar_only);
+    snprintf(str_tmp,MAX_LINE_LENGTH, "%s%s%d%s", file_svg_write, "-cpu-.svg");
+    fp_svg_w = file_open_check(fp_svg_w, str_tmp,"a", sar_only);
 
     /* freeing sar-analyzer objects */
     free_sar_analyzer_obj();
