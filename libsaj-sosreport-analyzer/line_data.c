@@ -31,11 +31,12 @@ struct line_data tmp_obj_raw =
     };
 
 /* tmp2_obj */
-struct line_data tmp2_obj_raw =
+struct line_data2 tmp2_obj_raw =
     {
         "\0", /* each line */
         "\0", /* each line */
         NULL /* next pointer */
+    };
 
 struct line_data* tmp_obj = &tmp_obj_raw;
 struct line_data2* tmp2_obj = &tmp2_obj_raw;
@@ -84,7 +85,7 @@ void set_list2(node2* obj, char* line, char* line2, node2* obj_next)
 {
     const char* test_line = "\0";
     const char* test_line2 = "\0";
-    size_t len = 0;
+    size_t len, len2 = 0;
     len = strlen(line);
     len2 = strlen(line2);
     if (len < 0) {
