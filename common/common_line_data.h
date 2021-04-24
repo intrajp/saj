@@ -62,8 +62,8 @@ typedef struct
     char sos_analyze_file_time[MAX_LINE_LENGTH];
     /* sar file name to be written */
     char sar_file_name_to_be_written[MAX_LINE_LENGTH];
-    /* postscript file name to be written */
-    char ps_file_name_to_be_written[MAX_LINE_LENGTH];
+    /* svg file name to be written */
+    char svg_file_name_to_be_written[MAX_LINE_LENGTH];
     /* log file name to be written */
     char log_file_name_to_be_written[MAX_LINE_LENGTH];
 } file_data;
