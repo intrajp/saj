@@ -584,10 +584,10 @@ int main(int argc, char* argv[])
 
     char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
-    snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%s%s", file_svg_write, "-<item>.ps");
+    snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%s%s", file_svg_write, "-<item>.svg");
     printf("Please check graphs in the svg file: %s\n\n", str_tmp_echo);
     /* close the file pointers */
-    fclose(fp_ps_w);
+    fclose(fp_svg_w);
 
     /* freeing sar-analyzer objects */
     free_sar_analyzer_obj();
