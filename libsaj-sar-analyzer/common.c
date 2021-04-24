@@ -225,6 +225,31 @@ void read_write_file(DIR *dir, const char *dname, char *sar_arr[], int files_n,
     initialize_avg_checked_int();
     read_sar_cpu_as_paragraph(sar_full_path_arr[0]);
 
+    FILE *fp_svg_w;
+
+    /* open svg dummy file here just to set data to the each object */
+    /* -------- svg file -------- */
+    if ((fp_svg_w = fopen("dummy.svg", "a")) == NULL) {
+        fprintf(stderr, "can't open file (%s): %s\n", "dummy.svg", strerror(errno));
+        for (i = 0; i < files_n; i++)
+            sar_arr[i]=NULL;
+        free_sar_analyzer_obj();
+        exit(EXIT_FAILURE);
+    }
+    unlink("dummy.svg");
+
+    /* open svg dummy file here just to set data to the each object */
+
+    /* appending headers to svg obj */
+    //append_header_to_svg_objs(&svg_common_cpu_obj[i], fp_svg_w);
+    /* appending rectangulars to svg obj */
+    //append_rectangular_to_svg_objs(&svg_common_cpu_obj, fp_svg_w, "up");
+    //append_rectangular_to_svg_objs(&svg_common_cpu_obj, fp_svg_w, "down");
+    /* appending labels to svg obj */
+    //append_labels_to_svg_obj(&svg_common_cpu_obj, fp_svg_w, "cpu");
+
+    pclose(fp_svg_w);
+
     /* read sar files */
     for (i = 0; i < files_n; i++) {
         char str_tmp[17] = "--------file no.";
