@@ -1094,9 +1094,9 @@ struct line_data *report_thrashing_obj = &report_thrashing_obj_raw;
 struct line_data *report_network_down_obj [ MAX_NETWORK_DEVICE_NUMBERS ] = { &report_network_down_obj_raw };
 struct line_data *report_overall_judgement_obj = &report_overall_judgement_obj_raw;
 /* for each file */
-struct line_data *ps_common_cpu_obj = { &svg_common_cpu_obj_raw };
+struct line_data *svg_common_cpu_obj = &svg_common_cpu_obj_raw;
 /* for file cpu */
-struct line_data2 *ps_cpu_usr_obj = { &svg_cpu_usr_obj_raw };
+struct line_data2 *svg_cpu_usr_obj = &svg_cpu_usr_obj_raw;
 
 /*
  *  This function initialzes check int
