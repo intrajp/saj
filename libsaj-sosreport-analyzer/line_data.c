@@ -48,7 +48,7 @@ int init_list(node** obj)
     return 0;
 }
 
-int init_list(node2** obj)
+int init_list2(node2** obj)
 {
     *obj = NULL;
 
