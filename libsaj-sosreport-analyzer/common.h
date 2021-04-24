@@ -38,6 +38,7 @@
 volatile extern node_m* member_obj;
 
 extern struct line_data* tmp_obj;
+extern struct line_data2* tmp2_obj;
 extern struct dir_file_name* sos_dir_file_obj;
 extern struct line_data* hostname_sos_obj;
 extern struct line_data* sos_version_obj;
