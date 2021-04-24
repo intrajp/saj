@@ -476,6 +476,7 @@ int main(int argc, char* argv[])
     file_to_write(SAR_OPTION);
 
     const char* sar_file_write = "";
+    char* file_svg_write = "";
     /* --------  for file write --------*/
     sar_file_write = get_sar_file_name_to_be_written();
     file_svg_write = (char *)get_svg_file_name_to_be_written();
