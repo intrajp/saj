@@ -225,7 +225,7 @@ void read_write_file(DIR *dir, const char *dname, char *sar_arr[], int files_n,
     initialize_avg_checked_int();
     read_sar_cpu_as_paragraph(sar_full_path_arr[0]);
 
-    FILE *fp_svg_w[MAX_ANALYZE_FILES];
+    FILE *fp_svg_w;
 
     /* open svg dummy file here just to set data to the each object */
     /* -------- svg file -------- */
