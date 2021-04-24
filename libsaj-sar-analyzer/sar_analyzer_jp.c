@@ -614,15 +614,21 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_cpu_lowest_date(this_date_all, utility, "usr");
                         set_cpu_lowest_time(time_value, utility, "usr");
                     }
-                    /* code for graph */
-
+                    /* code for graph file utility 0 means, CPU all */
                     char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
                     char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                    char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
                     memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                     memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                    memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
                     snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", t);
-                    snprintf(str_tmp_echo2, MAX_LINE_LENGTH, "%s %s", this_date_all, time_value);
+                    if (utility == 0) {
+                        snprintf(str_tmp_echo2, MAX_LINE_LENGTH, "%s,%s,%s", "CPU All", this_date_all, time_value);
+                    } else {
+                        snprintf(str_tmp_echo2, MAX_LINE_LENGTH, "%s%d,%s,%s", "CPU ", utility, this_date_all, time_value);
+                    }
                     append_list2(&svg_cpu_usr_obj, str_tmp_echo, str_tmp_echo2);
+                    /* end code for graph */
 
                 } else {
                     t = strtod(token, &endp);
