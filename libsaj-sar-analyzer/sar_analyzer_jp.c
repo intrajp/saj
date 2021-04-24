@@ -615,6 +615,13 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_cpu_lowest_time(time_value, utility, "usr");
                     }
                     /* code for graph */
+
+                    char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                    memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                    snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", t);
+
+                    append_list2(&svg_cpu_usr_obj, str_tmp_echo, this_date);
+
                 } else {
                     t = strtod(token, &endp);
                     h = get_cpu_avg_highest_val(utility, "usr");
