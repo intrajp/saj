@@ -265,7 +265,7 @@ void print_list2(node2** obj)
 {
     node2* ptr_tmp = *obj;
     while (ptr_tmp != NULL) {
-        printf("%s\n", ptr_tmp->_line);
+        printf("%s, ", ptr_tmp->_line);
         printf("%s\n", ptr_tmp->_line2);
         ptr_tmp = ptr_tmp->next;
     }
