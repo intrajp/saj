@@ -475,11 +475,12 @@ int main(int argc, char* argv[])
     /* creating file name to be written from SAR_OPTION */
     file_to_write(SAR_OPTION);
 
-
     const char* sar_file_write = "";
     /* --------  for file write --------*/
     sar_file_write = get_sar_file_name_to_be_written();
+    file_svg_write = (char *)get_svg_file_name_to_be_written();
     FILE* fp_sar_w = NULL;
+    FILE* fp_svg_w = NULL;
 
     /* open result file */
     fp_sar_w = file_open_check(fp_sar_w, sar_file_write,"a", sar_only);
