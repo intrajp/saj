@@ -52,8 +52,8 @@ typedef struct line_data
  */
 typedef struct line_data2
 {
-    const char _line[MAX_LINE_LENGTH - 1];
-    const char _line2[MAX_LINE_LENGTH - 1];
+    const char _line[MAX_LINE_LENGTH];
+    const char _line2[MAX_LINE_LENGTH];
     struct line_data2 *next;
 
 } node2;
