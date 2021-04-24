@@ -2264,51 +2264,8 @@ extern struct line_data *report_network_error_explanation_obj;
 extern struct line_data *report_thrashing_obj;
 extern struct line_data *report_network_down_obj[MAX_NETWORK_DEVICE_NUMBERS];
 extern struct line_data *report_overall_judgement_obj;
-/* ps obj should go here */
-extern struct line_data *ps_common_cpu_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_common_memory_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_common_ldavg_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_common_io_transfer_rate_obj[MAX_ANALYZE_FILES];
-/* for file cpu */
-extern struct line_data *ps_cpu_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_cpu_usr_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_cpu_sys_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_cpu_iowait_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_cpu_idle_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_pgpgin_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_pgpgout_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_fault_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_mjflt_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_vmeff_obj[MAX_ANALYZE_FILES];
-/* for file memory */
-extern struct line_data *ps_memory_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_memory_memused_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_memory_kbcommit_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_memory_commit_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_swapping_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_swapping_pswpin_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_swapping_pswpout_obj[MAX_ANALYZE_FILES];
-/* for file ldavg */
-extern struct line_data *ps_ldavg_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_ldavg_runq_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_ldavg_plist_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_ldavg_ldavg_one_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_ldavg_ldavg_five_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_ldavg_ldavg_15_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_restart_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_tasks_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_tasks_proc_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_tasks_cswch_obj[MAX_ANALYZE_FILES];
-/* for file io_transfer_rate */
-extern struct line_data *ps_io_transfer_rate_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_io_transfer_rate_tps_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_io_transfer_rate_bread_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_io_transfer_rate_bwrtn_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_kernel_table_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_kernel_table_dentunusd_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_kernel_table_file_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_kernel_table_inode_obj[MAX_ANALYZE_FILES];
+/* svg obj should go here */
+extern struct line_data *svg_common_cpu_obj;
 
 /*
  * Function Name: initialize_avg_checked_int()
