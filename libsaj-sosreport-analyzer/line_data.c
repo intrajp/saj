@@ -60,6 +60,11 @@ static node* __allocate_mem_to_one_node( void )
     return (struct line_data*)calloc(1, sizeof(struct line_data));
 }
 
+static node2* __allocate_mem_to_one_node2( void )
+{
+    return (struct line_data2*)calloc(1, sizeof(struct line_data2));
+}
+
 static int __insert_node_top_of_the_list(node** obj, char* line)
 {
     /* setting current obj to the new obj */
@@ -67,6 +72,17 @@ static int __insert_node_top_of_the_list(node** obj, char* line)
     *obj = __allocate_mem_to_one_node();
     /* setting current obj the the next pointer, this makes new object to the top of the list */
     set_list(*obj, line, obj_next);
+
+    return 0;
+}
+
+static int __insert_node_top_of_the_list2(node2** obj, char* line, char* line2)
+{
+    /* setting current obj to the new obj */
+    node2 *obj_next = *obj;
+    *obj = __allocate_mem_to_one_node2();
+    /* setting current obj the the next pointer, this makes new object to the top of the list */
+    set_list2(*obj, line, line2, obj_next);
 
     return 0;
 }
@@ -126,6 +142,23 @@ int append_list(node** obj, char* line)
             obj_new = obj_new->next;
         obj_new->next = __allocate_mem_to_one_node();
         set_list(obj_new->next, line, NULL);
+    }
+
+    return 0;
+}
+
+int append_list2(node2** obj, char* line, char* line2)
+{
+    /* if no node2 found in the object, insert node2 in the very top of it */
+    if (*obj == NULL) {
+        __insert_node_top_of_the_list2(obj, line, line2);
+    /* if some node2 exists in the object, find the very last of it and appending the new node2 */
+    } else {
+        node2 *obj_new = *obj;
+        while (obj_new->next != NULL)
+            obj_new = obj_new->next;
+        obj_new->next = __allocate_mem_to_one_node2();
+        set_list2(obj_new->next, line, line2, NULL);
     }
 
     return 0;

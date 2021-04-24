@@ -102,6 +102,17 @@ struct dir_file_name
 void set_list(node *obj, char *line, node *obj_next);
 
 /*
+ * Function Name: set_list2()
+ *
+ * This function sets values to the list2 object (node2) 
+ *
+ *  Caller : insert_node_top_of_the_list2()
+ *  Caller : append_list2()
+ *
+ */
+void set_list2(node2 *obj, char *line, char *line, node2 *obj_next);
+
+/*
  * Function Name: append_list()
  *
  * This function appends new object to the list object (node) 
@@ -114,6 +125,20 @@ void set_list(node *obj, char *line, node *obj_next);
  *
  */
 int append_list(node **obj, char *line);
+
+/*
+ * Function Name: append_list2()
+ *
+ * This function appends new object to the list2 object (node2) 
+ *
+ *  Caller : allocate_mem_to_one_node2()
+ *  Caller : set_list2()
+ *
+ *  Calls : allocate_mem_to_one_node2()
+ *  Calls : insert_node_top_of_the_list2()
+ *
+ */
+int append_list2(node2 **obj, char *line, char *line);
 
 /*
  * Function Name: move_obj_to_the_last()
@@ -136,36 +161,6 @@ int move_obj_to_the_last(node **obj, int x);
 int print_and_file_write_analyzed_files(node **obj, const char *expression, const char *word, FILE *fp_w);
 
 /*
- * Function Name: append_header_to_ps_objs()
- *
- * This function appends postscript header to ps files
- *
- *  Caller : common.c()
- *
- */
-int append_header_to_ps_objs(node **obj, FILE *fp_w);
-
-/*
- * Function Name: append_rectangular_to_ps_objs()
- *
- * This function appends rectangular to ps files
- *
- *  Caller : common.c()
- *
- */
-int append_rectangular_to_ps_objs(node **obj, FILE *fp_w, const char *element);
-
-/*
- * Function Name: append_labels_to_ps_obj()
- *
- * This function appends postscript labels to ps file 
- *
- *  Caller : main()
- *
- */
-int append_labels_to_ps_obj(node **obj, FILE *fp_w, const char *item);
-
-/*
  * Function Name: print_list()
  *
  * This function prints the list nodes
@@ -176,6 +171,16 @@ int append_labels_to_ps_obj(node **obj, FILE *fp_w, const char *item);
 void print_list(node **obj);
 
 /*
+ * Function Name: print_list2()
+ *
+ * This function prints the list2 nodes
+ *
+ *  Caller : main()
+ *
+ */
+void print_list2(node2 **obj);
+
+/*
  * Function Name: file_write_list()
  * 
  * This function writes list nodes to the file
@@ -184,6 +189,16 @@ void print_list(node **obj);
  *
  */
 void file_write_list(node **obj, FILE *fp_w);
+
+/*
+ * Function Name: file_write_list2()
+ * 
+ * This function writes list2 nodes to the file
+ *
+ *  Caller : main()
+ *
+ */
+void file_write_list2(node2 **obj, FILE *fp_w);
 
 /*
  * Function Name: init_list()
