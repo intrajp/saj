@@ -20,6 +20,7 @@
  * 02110-1301 USA
  */
 
+#include <string.h>
 #include "common.h"
 #include "line_data.h"
 
@@ -225,6 +226,7 @@ int bubble_sort_object_by_the_string2(char* str_arr[20000], node2** obj)
         }
     }
     /* end bubble sort */
+    free(ptr_tmp);
     return obj_size;
 }
 
@@ -333,6 +335,34 @@ void file_write_list_(node** obj, FILE* fp_w)
     }
     ptr_tmp = NULL;
     free(ptr_tmp);
+}
+
+char* get_sar_value_from_string(char* str)
+{
+    char* p = NULL;
+
+    p = str;
+    int i = 0;
+    while(i<4) {
+        if (p == NULL)
+            break;
+        p = strstr(p+1, ",");
+        i++;
+    }
+    p = p+1;
+
+    return p;
+}
+
+void file_write_svg(char* str, int data_lines, double width, FILE* fp_w)
+{
+    if (data_lines == 0) {
+        fprintf(fp_w, "%s\n", "<svg width=\"1010\" height=\"150\" xmlns=\"http://www.w3.org/2000/svg\">");
+        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"10\" y2=\"500\" stroke=\"gray\"/>");
+        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"500\" x2=\"1010\" y2=\"500\" stroke=\"gray\"/>");
+    } else {
+        fprintf(fp_w, "%s\n", str);
+    }
 }
 
 int clear_list(node** obj)

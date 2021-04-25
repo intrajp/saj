@@ -556,22 +556,6 @@ int main(int argc, char* argv[])
     /* writing "Linux" lines (top of sar file) to result file */
     print_and_file_write_analyzed_files(&line_all_obj, "Linux", NULL, fp_sar_w);
 
-    /////////////// testing /////////////////////////
-    print_list2(&svg_cpu_usr_obj);
-    /* bubble sort svg obj */
-    char* str_svg[20001] = { NULL };
-    memset(str_svg, '\0', sizeof(str_svg));
-    int size = bubble_sort_object_by_the_string2(str_svg, &svg_cpu_usr_obj);
-    /* end bubble sort svg obj */
-    puts("---- sorted ----");
-    for(int i=0; i<size;i++) {
-        if (strstr(str_svg[i], "CPU All"))
-            printf("%d:%s\n", i, str_svg[i]);
-    }
-    puts("---- end sorted ----");
-    printf("%d\n", size);
-    /////////////// end testing /////////////////////////
-
     puts("------------------------");
 
     if (sar_only == 1) {
@@ -597,6 +581,42 @@ int main(int argc, char* argv[])
     memset(str_tmp_svg, '\0', sizeof(str_tmp_svg));
     snprintf(str_tmp_svg,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-cpu-.svg");
     fp_svg_w = file_open_check(fp_svg_w, str_tmp_svg,"a", sar_only);
+
+    /////////////// testing /////////////////////////
+    ////print_list2(&svg_cpu_usr_obj);
+    /* bubble sort svg obj */
+    char* str_svg[20000] = { NULL };
+    memset(str_svg, '\0', sizeof(str_svg));
+    double size = bubble_sort_object_by_the_string2(str_svg, &svg_cpu_usr_obj);
+    /* end bubble sort svg obj */
+    double horizontal_notch = 1000/size;
+    double width = 10.0;
+    char str_svg_draw[200000];
+    memset(str_svg_draw, '\0', sizeof(str_svg_draw));
+    // now testing with cpu usr with green
+    strncat(str_svg_draw, "  <path stroke=\"green\" fill=\"none\" d=\"M 10 0 L " , 200000 - 1);
+    char str_horizontal_notch[256];
+    memset(str_horizontal_notch, '\0', sizeof(str_horizontal_notch));
+    char str_hight[256];
+    memset(str_hight, '\0', sizeof(str_hight));
+    double j = 0.0;
+    for(int i=0; i<size; i++) {
+        if (strstr(str_svg[i], "CPU All")) {
+            width = width + horizontal_notch;
+            snprintf(str_horizontal_notch, MAX_FILE_NAME_LENGTH, "%f ", width);
+            strncat(str_svg_draw, str_horizontal_notch, 200000 - 1);
+            snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
+            strncat(str_svg_draw, str_hight, 200000 - 1);
+            if (j == 0.0)
+                file_write_svg(str_svg_draw, 0, width, fp_svg_w); 
+            j = j + 1.0;
+        }           
+    }
+    strncat(str_svg_draw, "\"/>", 200000 - 1);
+    fprintf(fp_svg_w, "%s\n", str_svg_draw);
+    fprintf(fp_svg_w, "%s\n", "</svg>");
+    printf("%f\n", size);
+    /////////////// end testing /////////////////////////
 
     char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
