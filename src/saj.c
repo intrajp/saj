@@ -556,9 +556,19 @@ int main(int argc, char* argv[])
     /* writing "Linux" lines (top of sar file) to result file */
     print_and_file_write_analyzed_files(&line_all_obj, "Linux", NULL, fp_sar_w);
 
-///////////////testing/////////////////////////
+    ///////////////testing/////////////////////////
     print_list2(&svg_cpu_usr_obj);
-///////////////end testing/////////////////////////
+    /* bubble sort svg obj */
+    char *str_svg[20001] = { NULL };
+    memset(str_svg, '\0', sizeof(str_svg));
+    int size = bubble_sort_object_by_the_string2(str_svg, &svg_cpu_usr_obj);
+    /* end bubble sort svg obj */
+    puts("---- sorted ----");
+    for(int i=0; i<size;i++) 
+        printf("%d:%s\n", i, (char*) & (str_svg[i][0]));
+    puts("---- end sorted ----");
+    printf("%d\n", size);
+    ///////////////end testing/////////////////////////
 
     puts("------------------------");
 

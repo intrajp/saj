@@ -196,6 +196,44 @@ int bubble_sort_object_by_the_string(char* str_arr[MAX_ANALYZE_FILES_FOR_SOSREPO
     return obj_size;
 }
 
+/* sort svg obj */
+int bubble_sort_object_by_the_string2(char* str_arr[20000], node2** obj) 
+{
+    node2* ptr_tmp = *obj;
+    char* str_tmp = NULL;
+    int obj_size = 0, ii = 0;
+
+    for (int i = 0; i < 20000; i++)
+        str_arr[i] = NULL; 
+
+    /* read from object and copy strings to an array */
+    while (ptr_tmp != NULL) {
+        char str_merge[MAX_LINE_LENGTH * 2] = {'\0'};
+        strncpy(str_merge, ptr_tmp->_line, MAX_LINE_LENGTH);
+        strncat(str_merge, ptr_tmp->_line2, MAX_LINE_LENGTH * 2 - 1);
+        printf("str_merge:%s\n", str_merge);
+        str_arr[obj_size] = (char*) & (ptr_tmp->_line[0]); 
+        printf("str_arr[%d]:%s\n", obj_size, str_arr[obj_size]);
+        obj_size++;
+        ptr_tmp = ptr_tmp->next;
+    }
+
+    /* bubble sort the array */
+    for (int j= 0; j < obj_size; j++) {
+        /* This makes largest item to the end of an array. */
+        for (int i = 0; i < obj_size - (1 + j); i++) {
+            ii = i + 1;
+            if (strcmp(str_arr[i], str_arr[ii]) > 0) {
+                str_tmp = str_arr[i]; 
+                str_arr[i] = str_arr[ii]; 
+                str_arr[ii] = str_tmp; 
+            }
+        }
+    }
+    /* end bubble sort */
+    return obj_size;
+}
+
 char* search_list(node** obj, const volatile char* line, char result[MAX_LINE_LENGTH])
 {
     node* ptr_tmp = *obj;
