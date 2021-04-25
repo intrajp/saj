@@ -358,8 +358,8 @@ void file_write_svg(char* str, int data_lines, double width, FILE* fp_w)
 {
     if (data_lines == 0) {
         fprintf(fp_w, "%s\n", "<svg width=\"1010\" height=\"150\" xmlns=\"http://www.w3.org/2000/svg\">");
-        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"10\" y2=\"500\" stroke=\"gray\"/>");
-        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"500\" x2=\"1010\" y2=\"500\" stroke=\"gray\"/>");
+        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"10\" y2=\"100\" stroke=\"gray\"/>");
+        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"100\" x2=\"1010\" y2=\"100\" stroke=\"gray\"/>");
     } else {
         fprintf(fp_w, "%s\n", str);
     }
