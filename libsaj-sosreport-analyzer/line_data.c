@@ -354,7 +354,7 @@ char* get_sar_value_from_string(char* str)
     return p;
 }
 
-void file_write_svg(char* item, char* str, int data_lines, char* item, double width, FILE* fp_w)
+void file_write_svg(char* item, char* str, int data_lines, double width, FILE* fp_w)
 {
     if ((strcmp(item, "cpu_usr") == 0) && (data_lines == 0)) {
         fprintf(fp_w, "%s\n", "<svg width=\"1010\" height=\"150\" xmlns=\"http://www.w3.org/2000/svg\">");
