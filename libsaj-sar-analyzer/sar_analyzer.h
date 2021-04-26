@@ -1039,6 +1039,14 @@ struct line_data2 svg_cpu_sys_obj_raw =
         NULL /* next pointer */
     };
 
+/* svg_cpu_iowait_obj */
+struct line_data2 svg_cpu_iowait_obj_raw =
+    {
+        "", /* each line */
+        "", /* each line */
+        NULL /* next pointer */
+    };
+
 /* declaring pointers */
 struct sar_analyzer_data *sar_analyzer_obj = &sar_analyzer_obj_raw;
 struct sar_analyzer_data_all *sar_analyzer_all_obj = &sar_analyzer_all_obj_raw;
@@ -1106,6 +1114,7 @@ struct line_data *svg_common_cpu_obj = &svg_common_cpu_obj_raw;
 /* for file cpu */
 struct line_data2* svg_cpu_usr_obj = &svg_cpu_usr_obj_raw;
 struct line_data2* svg_cpu_sys_obj = &svg_cpu_sys_obj_raw;
+struct line_data2* svg_cpu_iowait_obj = &svg_cpu_iowait_obj_raw;
 
 /*
  *  This function initialzes check int

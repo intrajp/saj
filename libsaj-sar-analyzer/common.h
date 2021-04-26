@@ -2268,6 +2268,7 @@ extern struct line_data *report_overall_judgement_obj;
 extern struct line_data *svg_common_cpu_obj;
 extern struct line_data2 *svg_cpu_usr_obj;
 extern struct line_data2 *svg_cpu_sys_obj;
+extern struct line_data2 *svg_cpu_iowait_obj;
 
 /*
  * Function Name: initialize_avg_checked_int()

@@ -586,6 +586,7 @@ int main(int argc, char* argv[])
     void create_svg_file(node2** obj, char* item, FILE* fp_w);
     create_svg_file(&svg_cpu_usr_obj, "cpu_usr", fp_svg_w);
     create_svg_file(&svg_cpu_sys_obj, "cpu_sys", fp_svg_w);
+    create_svg_file(&svg_cpu_iowait_obj, "cpu_iowait", fp_svg_w);
     /* end create svg files */
 
     char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
@@ -622,6 +623,8 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
         strncat(str_svg_draw, "  <path stroke=\"green\" fill=\"none\" d=\"M 10 0 L " , 200000 - 1);
     } else if (strcmp(item, "cpu_sys") == 0) {
         strncat(str_svg_draw, "  <path stroke=\"blue\" fill=\"none\" d=\"M 10 0 L " , 200000 - 1);
+    } else if (strcmp(item, "cpu_iowait") == 0) {
+        strncat(str_svg_draw, "  <path stroke=\"red\" fill=\"none\" d=\"M 10 0 L " , 200000 - 1);
     }
     char str_horizontal_notch[256];
     memset(str_horizontal_notch, '\0', sizeof(str_horizontal_notch));
@@ -644,7 +647,7 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
     }
     strncat(str_svg_draw, "\"/>", 200000 - 1);
     fprintf(fp_w, "%s\n", str_svg_draw);
-    if (strcmp(item, "cpu_usr") != 0) {
+    if (strcmp(item, "cpu_iowait") == 0) {
         fprintf(fp_w, "%s\n", "</svg>");
     }
 }
