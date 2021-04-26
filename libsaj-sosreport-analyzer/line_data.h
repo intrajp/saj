@@ -47,7 +47,7 @@ void file_write_list2(node2** obj, FILE* fp_w);
 void file_write_list_(node** obj, FILE* fp_w);
 int clear_list(node** obj);
 char* get_sar_value_from_string(char* str);
-void file_write_svg(char* str, int data_lines, double width, FILE* fp_w);
+void file_write_svg(char* item, char* str, int data_lines, double width, FILE* fp_w);
 int clear_list2(node2** obj);
 
 /*

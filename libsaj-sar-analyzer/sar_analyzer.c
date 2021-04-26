@@ -614,7 +614,8 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_cpu_lowest_date(this_date_all, utility, "usr");
                         set_cpu_lowest_time(time_value, utility, "usr");
                     }
-                   if ((strstr(time_value, ":00:") != NULL) ||
+                    /* code for graph */
+                    if ((strstr(time_value, ":00:") != NULL) ||
                         (strstr(time_value, ":10:") != NULL) ||
                         (strstr(time_value, ":20:") != NULL) ||
                         (strstr(time_value, ":30:") != NULL) ||
@@ -713,6 +714,25 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_cpu_lowest_time(time_value, utility, "sys");
                     }
                     /* code for graph */
+                    if ((strstr(time_value, ":00:") != NULL) ||
+                        (strstr(time_value, ":10:") != NULL) ||
+                        (strstr(time_value, ":20:") != NULL) ||
+                        (strstr(time_value, ":30:") != NULL) ||
+                        (strstr(time_value, ":40:") != NULL) ||
+                        (strstr(time_value, ":50:") != NULL)) {
+                            char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                            char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                            char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                            memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                            memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                            memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                            snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", 100 - t);
+                            if (utility == 0) {
+                                snprintf(str_tmp_echo2, MAX_LINE_LENGTH, "%s,%s,%s,%s,%s", "CPU All", "cpu_sys", this_date_all, time_value, str_tmp_echo);
+                                append_list2(&svg_cpu_sys_obj, str_tmp_echo2, str_tmp_echo);
+                        }
+                    }
+                    /* end code for graph */
                 } else {
                     h = get_cpu_avg_highest_val(utility, "sys");
                     l = get_cpu_avg_lowest_val(utility, "sys");

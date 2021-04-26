@@ -608,9 +608,38 @@ int main(int argc, char* argv[])
             snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
             strncat(str_svg_draw, str_hight, 200000 - 1);
             if (j == 0.0)
-                file_write_svg(str_svg_draw, 0, width, fp_svg_w); 
+                file_write_svg("cpu_usr", str_svg_draw, 0, width, fp_svg_w); 
             j = j + 1.0;
         }           
+    }
+    strncat(str_svg_draw, "\"/>", 200000 - 1);
+    fprintf(fp_svg_w, "%s\n", str_svg_draw);
+    //fprintf(fp_svg_w, "%s\n", "</svg>");
+    printf("%f\n", size);
+    /////////////// end testing /////////////////////////
+    /////////////// testing /////////////////////////
+    ////print_list2(&svg_cpu_sys_obj);
+    /* bubble sort svg obj */
+    memset(str_svg, '\0', sizeof(str_svg));
+    size = bubble_sort_object_by_the_string2(str_svg, &svg_cpu_sys_obj);
+    /* end bubble sort svg obj */
+    horizontal_notch = 1000/size;
+    width = 10.0;
+    memset(str_svg_draw, '\0', sizeof(str_svg_draw));
+    // now testing with cpu usr with green
+    strncat(str_svg_draw, "  <path stroke=\"blue\" fill=\"none\" d=\"M 10 0 L " , 200000 - 1);
+    memset(str_horizontal_notch, '\0', sizeof(str_horizontal_notch));
+    memset(str_hight, '\0', sizeof(str_hight));
+    j = 0.0;
+    for(int i=0; i<size; i++) {
+        if (strstr(str_svg[i], "CPU All")) {
+            width = width + horizontal_notch;
+            snprintf(str_horizontal_notch, MAX_FILE_NAME_LENGTH, "%f ", width);
+            strncat(str_svg_draw, str_horizontal_notch, 200000 - 1);
+            snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
+            strncat(str_svg_draw, str_hight, 200000 - 1);
+            j = j + 1.0;
+        }
     }
     strncat(str_svg_draw, "\"/>", 200000 - 1);
     fprintf(fp_svg_w, "%s\n", str_svg_draw);
