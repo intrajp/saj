@@ -651,6 +651,12 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
     strncat(str_svg_draw, "\"/>", 200000 - 1);
     fprintf(fp_w, "%s\n", str_svg_draw);
     if (strcmp(item, "cpu_idle") == 0) {
+        fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
+        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"130\">green cpu_usr</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"145\">blue cpu_sys</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"130\">red cpu_iowait</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"145\">yellow cpu_idle</text>");
+        fprintf(fp_w, "%s\n", "</g>");
         fprintf(fp_w, "%s\n", "</svg>");
     }
 }
