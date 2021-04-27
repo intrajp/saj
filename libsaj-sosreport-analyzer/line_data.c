@@ -257,6 +257,17 @@ char* search_list(node** obj, const volatile char* line, char result[MAX_LINE_LE
     return result_p;
 }
 
+char* search_first_string(node** obj, char* str)
+{
+    node* ptr_tmp = *obj;
+    while (ptr_tmp != NULL) {
+        if (strstr(ptr_tmp->_line, str) != NULL)
+            return (char*) ptr_tmp->_line;
+        ptr_tmp = ptr_tmp->next;
+    }
+    return "nothing";
+}
+
 int print_and_file_write_analyzed_files(node** obj, const char* expression , const char* word, FILE* fp_w)
 {
     node* ptr_tmp = *obj;
@@ -371,7 +382,7 @@ char* get_date_from_string(char* str)
     return p;
 }
 
-char* terminate_string(char* str, int point)
+char* terminate_string(char* str, int point, char* delimiter)
 {
     int position;
     char* p = NULL;
@@ -381,7 +392,8 @@ char* terminate_string(char* str, int point)
     while(i<point) {
         if (p == NULL)
             break;
-        p = strstr(p+1, ",");
+        //p = strstr(p+1, ",");
+        p = strstr(p+1, delimiter);
         i++;
     }
     position = p - str;
@@ -405,7 +417,7 @@ void file_write_date_svg(char* item, char* str, int data_lines, double width, ch
 {
     if ((strcmp(item, "cpu_usr") == 0) && (data_lines == 0)) {
         fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
-        char str_date[MAX_FILE_NAME_LENGTH];
+        char str_date[MAX_LINE_LENGTH];
         memset(str_date, '\0', sizeof(str_date));
         char* str_date_first = NULL;
         if (strcmp(start, "start") == 0)
@@ -413,8 +425,8 @@ void file_write_date_svg(char* item, char* str, int data_lines, double width, ch
         if (strcmp(start, "end") == 0)
             str_date_first = "   <text x=\"905\" y=\"110\">";
         char* str_date_last = "</text>";
-        snprintf(str_date, MAX_FILE_NAME_LENGTH, "%s%s%s\n", str_date_first, str, str_date_last);
-        fprintf(fp_w, "%s\n", str_date);
+        snprintf(str_date, MAX_LINE_LENGTH, "%s%s%s\n", str_date_first, str, str_date_last);
+        fprintf(fp_w, "%s", str_date);
         fprintf(fp_w, "%s\n", "</g>");
     }
 }

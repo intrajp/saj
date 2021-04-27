@@ -609,6 +609,19 @@ int main(int argc, char* argv[])
     exit(EXIT_SUCCESS);
 }
 
+void write_linux_line_to_file(node** obj, FILE* fp_w)
+{
+    char* str_thisbox_pre;
+    char str_thisbox[MAX_LINE_LENGTH];
+    memset(str_thisbox, '\0', sizeof(str_thisbox));
+    char* str_linux_first = "   <text x=\"400\" y=\"110\">";
+    char* str_linux_last = "</text>";
+    str_thisbox_pre = search_first_string(obj, "Linux");
+    terminate_string(str_thisbox_pre, 2, " ");
+    snprintf(str_thisbox, MAX_LINE_LENGTH, "%s%s%s\n", str_linux_first, str_thisbox_pre, str_linux_last);
+    fprintf(fp_w, "%s", str_thisbox);
+}
+
 void create_svg_file(node2** obj, char* item, FILE* fp_w)
 {
     /* bubble sort svg obj */
@@ -644,9 +657,8 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
             snprintf(str_horizontal_notch, MAX_FILE_NAME_LENGTH, "%f ", width);
             strncat(str_svg_draw, str_horizontal_notch, 200000 - 1);
             snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
-            // getting date string
             snprintf(str_date, MAX_FILE_NAME_LENGTH, "%s ", get_date_from_string(str_svg[i]));
-            snprintf(str_date_only, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 2));
+            snprintf(str_date_only, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 2, ","));
             strncat(str_svg_draw, str_hight, 200000 - 1);
             if (strcmp(item, "cpu_usr") == 0) {
                 if (j == 0.0) {
@@ -669,9 +681,11 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
         fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"130\" fill=\"red\">red cpu_iowait</text>");
         fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"145\" fill=\"yellow\">yellow cpu_idle</text>");
         fprintf(fp_w, "%s\n", "</g>");
+        write_linux_line_to_file(&line_all_obj, fp_w);
         fprintf(fp_w, "%s\n", "</svg>");
     }
 }
+
 
 int delete_files(void)
 {

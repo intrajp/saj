@@ -614,6 +614,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_cpu_lowest_date(this_date_all, utility, "usr");
                         set_cpu_lowest_time(time_value, utility, "usr");
                     }
+                    /* code for graph */
                     if ((strstr(time_value, ":00:") != NULL) ||
                         (strstr(time_value, ":10:") != NULL) ||
                         (strstr(time_value, ":20:") != NULL) ||
