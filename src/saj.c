@@ -627,7 +627,7 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
     } else if (strcmp(item, "cpu_iowait") == 0) {
         strncat(str_svg_draw, "  <path stroke=\"red\" fill=\"none\" d=\"M 10 100 L " , 200000 - 1);
     } else if (strcmp(item, "cpu_idle") == 0) {
-        strncat(str_svg_draw, "  <path stroke=\"yellow\" fill=\"none\" d=\"M 10 100 L " , 200000 - 1);
+        strncat(str_svg_draw, "  <path stroke=\"yellow\" fill=\"none\" d=\"M 10 0 L " , 200000 - 1);
     }
     char str_horizontal_notch[256];
     memset(str_horizontal_notch, '\0', sizeof(str_horizontal_notch));
