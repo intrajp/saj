@@ -632,7 +632,11 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
     char str_horizontal_notch[256];
     memset(str_horizontal_notch, '\0', sizeof(str_horizontal_notch));
     char str_hight[256];
+    char str_date[256];
+    char str_date_only[256];
     memset(str_hight, '\0', sizeof(str_hight));
+    memset(str_date, '\0', sizeof(str_date));
+    memset(str_date_only, '\0', sizeof(str_date_only));
     double j = 0.0;
     for(int i=0; i<size; i++) {
         if (strstr(str_svg[i], "CPU All")) {
@@ -640,14 +644,22 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
             snprintf(str_horizontal_notch, MAX_FILE_NAME_LENGTH, "%f ", width);
             strncat(str_svg_draw, str_horizontal_notch, 200000 - 1);
             snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
+            // getting date string
+            snprintf(str_date, MAX_FILE_NAME_LENGTH, "%s ", get_date_from_string(str_svg[i]));
+            snprintf(str_date_only, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 2));
             strncat(str_svg_draw, str_hight, 200000 - 1);
             if (strcmp(item, "cpu_usr") == 0) {
-                if (j == 0.0)
+                if (j == 0.0) {
                     file_write_svg(item, str_svg_draw, 0, width, fp_w); 
+                    // start date
+                    file_write_date_svg(item, str_date_only, 0, width, "start", fp_w); 
+                }
             }
             j = j + 1.0;
         }           
     }
+    // end date
+    file_write_date_svg(item, str_date_only, 0, width, "end", fp_w); 
     strncat(str_svg_draw, "\"/>", 200000 - 1);
     fprintf(fp_w, "%s\n", str_svg_draw);
     if (strcmp(item, "cpu_idle") == 0) {

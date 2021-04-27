@@ -354,6 +354,42 @@ char* get_sar_value_from_string(char* str)
     return p;
 }
 
+char* get_date_from_string(char* str)
+{
+    char* p = NULL;
+
+    p = str;
+    int i = 0;
+    while(i<2) {
+        if (p == NULL)
+            break;
+        p = strstr(p+1, ",");
+        i++;
+    }
+    p = p+1;
+
+    return p;
+}
+
+char* terminate_string(char* str, int point)
+{
+    int position;
+    char* p = NULL;
+
+    p = str;
+    int i = 0;
+    while(i<point) {
+        if (p == NULL)
+            break;
+        p = strstr(p+1, ",");
+        i++;
+    }
+    position = p - str;
+    str[position] = '\0'; 
+
+    return str;
+}
+
 void file_write_svg(char* item, char* str, int data_lines, double width, FILE* fp_w)
 {
     if ((strcmp(item, "cpu_usr") == 0) && (data_lines == 0)) {
@@ -362,6 +398,24 @@ void file_write_svg(char* item, char* str, int data_lines, double width, FILE* f
         fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"100\" x2=\"1010\" y2=\"100\" stroke=\"gray\"/>");
     } else {
         fprintf(fp_w, "%s\n", str);
+    }
+}
+
+void file_write_date_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w)
+{
+    if ((strcmp(item, "cpu_usr") == 0) && (data_lines == 0)) {
+        fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
+        char str_date[MAX_FILE_NAME_LENGTH];
+        memset(str_date, '\0', sizeof(str_date));
+        char* str_date_first = NULL;
+        if (strcmp(start, "start") == 0)
+            str_date_first = "   <text x=\"15\" y=\"110\">";
+        if (strcmp(start, "end") == 0)
+            str_date_first = "   <text x=\"905\" y=\"110\">";
+        char* str_date_last = "</text>";
+        snprintf(str_date, MAX_FILE_NAME_LENGTH, "%s%s%s\n", str_date_first, str, str_date_last);
+        fprintf(fp_w, "%s\n", str_date);
+        fprintf(fp_w, "%s\n", "</g>");
     }
 }
 
