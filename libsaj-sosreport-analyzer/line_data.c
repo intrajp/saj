@@ -382,6 +382,22 @@ char* get_date_from_string(char* str)
     return p;
 }
 
+char* get_cpus_from_string(char* str)
+{
+    char* p = NULL;
+
+    p = str;
+    int i = 0;
+    while(i<2) {
+        if ((p == NULL) || (p+1 == NULL))
+            return p;
+        p = strstr(p+1, "(");
+        i++;
+    }
+
+    return p;
+}
+
 char* terminate_string(char* str, int point, char* delimiter)
 {
     int position;
@@ -392,11 +408,12 @@ char* terminate_string(char* str, int point, char* delimiter)
     while(i<point) {
         if (p == NULL)
             break;
-        //p = strstr(p+1, ",");
         p = strstr(p+1, delimiter);
         i++;
     }
-    position = p - str;
+    if ((position = p - str) < 0)
+        return "error";
+
     str[position] = '\0'; 
 
     return str;
