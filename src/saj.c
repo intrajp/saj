@@ -614,10 +614,10 @@ void write_linux_line_to_file(node** obj, FILE* fp_w)
     char* str_thisbox_pre;
     char str_thisbox[MAX_LINE_LENGTH];
     memset(str_thisbox, '\0', sizeof(str_thisbox));
-    char* str_linux_first = "   <text x=\"400\" y=\"110\">";
+    char* str_linux_first = "   <text x=\"380\" y=\"110\">";
     char* str_linux_last = "</text>";
     str_thisbox_pre = search_first_string(obj, "Linux");
-    terminate_string(str_thisbox_pre, 2, " ");
+    terminate_string(str_thisbox_pre, 3, " ");
     snprintf(str_thisbox, MAX_LINE_LENGTH, "%s%s%s\n", str_linux_first, str_thisbox_pre, str_linux_last);
     fprintf(fp_w, "%s", str_thisbox);
 }
