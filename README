@@ -22,7 +22,6 @@ saj reads config file in user's home directory,
 You need these packages.
 
 autoconf
-ghostscript
 intltool
 gcc-c++
 libtool
@@ -475,7 +474,7 @@ Binary path: /usr/local/bin/saj
   Show possible thrashing.
   Show network down.
   am-pm style is converted to abs style in the report.
-  Generate graphs as postscript files.
+  Generate graphs as SVG files.
 
   When the file sanity check fails, program stops echoing the reason.
   In that case, move the very file to other than <sosreport-dir>/var/log/sa and run the program again. 
@@ -570,7 +569,7 @@ Execute the command below so that all the files are owned by the user.
       It writes a file to './saj/<sosreport-dir>/<sosreport-dir>_<time>.txt',
       './saj-results/<sosreport-dir>/<sosreport-dir>_analyze_<time>.txt'.
       './saj-results/<sosreport-dir>/<sosreport-dir>_sar_<time>.txt'.
-      and, './saj-results/<sosreport-dir>/graphs/<sosreport-dir>-<item>-<no>.ps'.
+      and, './saj-results/<sosreport-dir>/graphs/<sosreport-dir>-<item>-<no>.svg'.
 
   - mcinfo
 
@@ -579,14 +578,14 @@ Execute the command below so that all the files are owned by the user.
       It writes a file to './saj-results/<mcinfo-dir>/<mcinfo-dir>_<time>.txt',
       './saj-results/<mcinfo-dir>/<mcinfo-dir>_analyze_<time>.txt'.
       './saj-results/<mcinfo-dir>/<mcinfo-dir>_sar_<time>.txt'.
-      and, './saj-results/<mcinfo-dir>/graphs/<mcinfo-dir>-<item>-<no>.ps'.
+      and, './saj-results/<mcinfo-dir>/graphs/<mcinfo-dir>-<item>-<no>.svg'.
 
   - sar-only 
 
     $ saj -S -D <sa-dir-path>
 
       It writes a file to './saj-results/<dir>/<dir>_sar_<time>.txt'.
-      and, './saj-results/<dir>/graphs/<dir>-<item>-<no>.ps'.
+      and, './saj-results/<dir>/graphs/<dir>-<item>-<no>.svg'.
 
   - time-span for sar 
 
