@@ -642,7 +642,7 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
     } else if (strcmp(item, "cpu_iowait") == 0) {
         strncat(str_svg_draw, "  <path stroke=\"red\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
     } else if (strcmp(item, "cpu_idle") == 0) {
-        strncat(str_svg_draw, "  <path stroke=\"yellow\" fill=\"none\" d=\"M 10 10 L " , 200000 - 1);
+        strncat(str_svg_draw, "  <path stroke=\"orange\" fill=\"none\" d=\"M 10 10 L " , 200000 - 1);
     }
     char str_horizontal_notch[256];
     memset(str_horizontal_notch, '\0', sizeof(str_horizontal_notch));
@@ -699,8 +699,9 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
         fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"140\" fill=\"green\">green cpu_usr</text>");
         fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"155\" fill=\"blue\">blue cpu_sys</text>");
         fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"140\" fill=\"red\">red cpu_iowait</text>");
-        fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"155\" fill=\"yellow\">yellow cpu_idle</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"155\" fill=\"orange\">orange cpu_idle</text>");
         write_linux_line_to_file(&line_all_obj, fp_w);
+        fprintf(fp_w, "%s\n", "   <text x=\"900\" y=\"155\">Powered by saj.</text>");
         fprintf(fp_w, "%s\n", "</g>");
         fprintf(fp_w, "%s\n", "</svg>");
     }
