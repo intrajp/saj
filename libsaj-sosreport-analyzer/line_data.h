@@ -48,11 +48,13 @@ void file_write_list_(node** obj, FILE* fp_w);
 int clear_list(node** obj);
 char* get_sar_value_from_string(char* str);
 char* get_date_from_string(char* str);
+char* get_str_from_string(char* str, int count, char* delimiter);
 char* get_cpus_from_string(char* str);
 char* terminate_string(char* str, int point, char* delimiter);
 char* search_first_string(node** obj, char* str);
 void file_write_svg(char* item, char* str, int data_lines, double width, FILE* fp_w);
 void file_write_date_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w);
+void file_write_time_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w);
 int clear_list2(node2** obj);
 
 /*

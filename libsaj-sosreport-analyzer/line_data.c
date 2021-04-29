@@ -355,7 +355,7 @@ char* get_sar_value_from_string(char* str)
     p = str;
     int i = 0;
     while(i<4) {
-        if (p == NULL)
+        if ((p == NULL) || (p+1 == NULL))
             break;
         p = strstr(p+1, ",");
         i++;
@@ -372,9 +372,26 @@ char* get_date_from_string(char* str)
     p = str;
     int i = 0;
     while(i<2) {
-        if (p == NULL)
+        if ((p == NULL) || (p+1 == NULL))
             break;
         p = strstr(p+1, ",");
+        i++;
+    }
+    p = p+1;
+
+    return p;
+}
+
+char* get_str_from_string(char* str, int count, char* delimiter)
+{
+    char* p = NULL;
+
+    p = str;
+    int i = 0;
+    while(i<count) {
+        if ((p == NULL) || (p+1 == NULL))
+            break;
+        p = strstr(p+1, delimiter);
         i++;
     }
     p = p+1;
@@ -390,7 +407,7 @@ char* get_cpus_from_string(char* str)
     int i = 0;
     while(i<2) {
         if ((p == NULL) || (p+1 == NULL))
-            return p;
+            break;
         p = strstr(p+1, "(");
         i++;
     }
@@ -406,13 +423,13 @@ char* terminate_string(char* str, int point, char* delimiter)
     p = str;
     int i = 0;
     while(i<point) {
-        if (p == NULL)
+        if ((p == NULL) || (p+1 == NULL))
             break;
         p = strstr(p+1, delimiter);
         i++;
     }
     if ((position = p - str) < 0)
-        return "error";
+        return str;
 
     str[position] = '\0'; 
 
@@ -422,9 +439,10 @@ char* terminate_string(char* str, int point, char* delimiter)
 void file_write_svg(char* item, char* str, int data_lines, double width, FILE* fp_w)
 {
     if ((strcmp(item, "cpu_usr") == 0) && (data_lines == 0)) {
-        fprintf(fp_w, "%s\n", "<svg width=\"1010\" height=\"150\" xmlns=\"http://www.w3.org/2000/svg\">");
-        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"10\" y2=\"100\" stroke=\"gray\"/>");
-        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"100\" x2=\"1010\" y2=\"100\" stroke=\"gray\"/>");
+        fprintf(fp_w, "%s\n", "<svg width=\"1010\" height=\"160\" xmlns=\"http://www.w3.org/2000/svg\">");
+        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"10\" y2=\"110\" stroke=\"gray\"/>");
+        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"1010\" y2=\"10\" stroke=\"gray\"/>");
+        fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"110\" x2=\"1010\" y2=\"110\" stroke=\"gray\"/>");
     } else {
         fprintf(fp_w, "%s\n", str);
     }
@@ -438,13 +456,29 @@ void file_write_date_svg(char* item, char* str, int data_lines, double width, ch
         memset(str_date, '\0', sizeof(str_date));
         char* str_date_first = NULL;
         if (strcmp(start, "start") == 0)
-            str_date_first = "   <text x=\"15\" y=\"110\">";
+            str_date_first = "   <text x=\"10\" y=\"120\">";
         if (strcmp(start, "end") == 0)
-            str_date_first = "   <text x=\"905\" y=\"110\">";
+            str_date_first = "   <text x=\"955\" y=\"120\">";
         char* str_date_last = "</text>";
         snprintf(str_date, MAX_LINE_LENGTH, "%s%s%s\n", str_date_first, str, str_date_last);
         fprintf(fp_w, "%s", str_date);
         fprintf(fp_w, "%s\n", "</g>");
+    }
+}
+
+void file_write_time_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w)
+{
+    if ((strcmp(item, "cpu_usr") == 0) && (data_lines == 0)) {
+        char str_time[MAX_LINE_LENGTH];
+        memset(str_time, '\0', sizeof(str_time));
+        char* str_time_first = NULL;
+        if (strcmp(start, "start") == 0)
+            str_time_first = "   <text x=\"10\" y=\"130\">";
+        if (strcmp(start, "end") == 0)
+            str_time_first = "   <text x=\"955\" y=\"130\">";
+        char* str_time_last = "</text>";
+        snprintf(str_time, MAX_LINE_LENGTH, "%s%s%s\n", str_time_first, str, str_time_last);
+        fprintf(fp_w, "%s", str_time);
     }
 }
 

@@ -627,7 +627,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                             memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                             memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
                             memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", 100 - t);
+                            snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", 110 - t);
                             if (utility == 0) {
                                 snprintf(str_tmp_echo2, MAX_LINE_LENGTH, "%s,%s,%s,%s,%s", "CPU All", "cpu_usr", this_date_all, time_value, str_tmp_echo);
                                 append_list2(&svg_cpu_usr_obj, str_tmp_echo2, str_tmp_echo);
@@ -726,7 +726,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                             memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                             memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
                             memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", 100 - t);
+                            snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", 110 - t);
                             if (utility == 0) {
                                 snprintf(str_tmp_echo2, MAX_LINE_LENGTH, "%s,%s,%s,%s,%s", "CPU All", "cpu_sys", this_date_all, time_value, str_tmp_echo);
                                 append_list2(&svg_cpu_sys_obj, str_tmp_echo2, str_tmp_echo);
@@ -825,7 +825,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                             memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                             memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
                             memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", 100 - t);
+                            snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", 110 - t);
                             if (utility == 0) {
                                 snprintf(str_tmp_echo2, MAX_LINE_LENGTH, "%s,%s,%s,%s,%s", "CPU All", "cpu_iowait", this_date_all, time_value, str_tmp_echo);
                                 append_list2(&svg_cpu_iowait_obj, str_tmp_echo2, str_tmp_echo);
@@ -924,7 +924,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                             memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                             memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
                             memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", 100 - t);
+                            snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%f", 110 - t);
                             if (utility == 0) {
                                 snprintf(str_tmp_echo2, MAX_LINE_LENGTH, "%s,%s,%s,%s,%s", "CPU All", "cpu_idle", this_date_all, time_value, str_tmp_echo);
                                 append_list2(&svg_cpu_idle_obj, str_tmp_echo2, str_tmp_echo);
