@@ -1,7 +1,7 @@
 diff -ruNp a/common.c b/common.c
---- a/common.c	2021-04-18 15:06:45.063349366 +0900
-+++ b/common.c	2021-04-18 15:07:02.094027434 +0900
-@@ -373,7 +373,7 @@ void read_sar_cpu_as_paragraph(const cha
+--- a/common.c	2021-04-29 22:00:46.905500151 +0900
++++ b/common.c	2021-04-29 22:01:03.170471146 +0900
+@@ -298,7 +298,7 @@ void read_sar_cpu_as_paragraph(const cha
          for (i--; (i > 0) && isspace (line[i -1]) ; i--)
              line[i -1] = '\0';
          /* count cpu all line and set numbers to cpu_as_paragraph */
@@ -10,7 +10,7 @@ diff -ruNp a/common.c b/common.c
              break;
          if ((strstr (*(&line), "all") != 0)) 
              _cpu_as_paragraph++;
-@@ -702,31 +702,31 @@ void sanity_check_file(char * line, cons
+@@ -627,31 +627,31 @@ void sanity_check_file(char * line, cons
      if (strstr(line, "LINUX RESTART") != 0)
          initialize_avg_checked_int ();
  
@@ -49,7 +49,7 @@ diff -ruNp a/common.c b/common.c
          if ((kbhugfree == 1) || (dentunusd == 0)) {
              kbswpfree_avg_checked_int = 1;
              kbswpfree_avg_checked = "Checked";
-@@ -734,39 +734,39 @@ void sanity_check_file(char * line, cons
+@@ -659,39 +659,39 @@ void sanity_check_file(char * line, cons
              kbhugfree_avg_checked = "Checked";
          }
      }
@@ -98,7 +98,7 @@ diff -ruNp a/common.c b/common.c
          if (squeezd == 0) {
              totsck_avg_checked_int = 1;
              totsck_avg_checked = "Checked";
-@@ -774,7 +774,7 @@ void sanity_check_file(char * line, cons
+@@ -699,7 +699,7 @@ void sanity_check_file(char * line, cons
              squeezd_avg_checked = "Checked";
          }
      }
@@ -108,9 +108,9 @@ diff -ruNp a/common.c b/common.c
          squeezd_avg_checked = "Checked";
      }
 diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
---- a/sar_analyzer.c	2021-04-18 15:06:53.228195025 +0900
-+++ b/sar_analyzer.c	2021-04-18 15:07:08.127913375 +0900
-@@ -199,7 +199,7 @@ int set_token_column(int file_number, ch
+--- a/sar_analyzer.c	2021-04-29 22:00:52.322490490 +0900
++++ b/sar_analyzer.c	2021-04-29 22:01:12.619454297 +0900
+@@ -141,7 +141,7 @@ int set_token_column(int file_number, ch
          }
          /* if AM or PM will appear, column number should be decremented, unless, segfault in set_column_item() */
          if (SAR_OPTION != 'Z') {
@@ -119,7 +119,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  i--;
          }
          /* this item name is set by get_word_line() */
-@@ -612,7 +612,7 @@ int set_token_items(int file_number, cha
+@@ -552,7 +552,7 @@ int set_token_items(int file_number, cha
  
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -128,27 +128,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -676,12 +676,13 @@ int set_token_items(int file_number, cha
-                     }
-                     /* code for postscript file utility 0 means, CPU all */
-                     if (utility == 0) {
--                        if ((strstr(time_value, ":00:") != NULL) ||
--                           (strstr(time_value, ":10:") != NULL) ||
--                           (strstr(time_value, ":20:") != NULL) ||
--                           (strstr(time_value, ":30:") != NULL) ||
--                           (strstr(time_value, ":40:") != NULL) ||
--                           (strstr(time_value, ":50:") != NULL)) {
-+                        if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                          (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                          (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                          (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                          (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                          (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                       ) {
-                             horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_cpu_usr[file_number]);
-                             vertical_value = VERTICAL_START_POINT_CPU_ALL +(VERTICAL_NOTCH_PERCENT * t);
-                             /* only when first in element */
-@@ -725,7 +726,7 @@ int set_token_items(int file_number, cha
+@@ -651,7 +651,7 @@ int set_token_items(int file_number, cha
              } else if ((i == get_column_cpu("sys")) &&(strstr(token, "%sys") == 0)) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -157,27 +137,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -789,12 +790,13 @@ int set_token_items(int file_number, cha
-                     }
-                     /* code for postscript file utility 0 means, CPU all */
-                     if (utility == 0) {
--                        if ((strstr(time_value, ":00:") != NULL) ||
--                           (strstr(time_value, ":10:") != NULL) ||
--                           (strstr(time_value, ":20:") != NULL) ||
--                           (strstr(time_value, ":30:") != NULL) ||
--                           (strstr(time_value, ":40:") != NULL) ||
--                           (strstr(time_value, ":50:") != NULL)) {
-+                        if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                          (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                          (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                          (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                          (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                          (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                       ) {
-                             horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_cpu_sys[file_number]);
-                             vertical_value = VERTICAL_START_POINT_CPU_ALL +(VERTICAL_NOTCH_PERCENT * t);
-                             /* only when first in element */
-@@ -824,7 +826,7 @@ int set_token_items(int file_number, cha
+@@ -750,7 +750,7 @@ int set_token_items(int file_number, cha
              } else if ((i == get_column_cpu("iowait")) &&(strstr(token, "%iowait") == 0)) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -186,27 +146,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -888,12 +890,13 @@ int set_token_items(int file_number, cha
-                     }
-                     /* code for postscript file utility 0 means, CPU all */
-                     if (utility == 0) {
--                        if ((strstr(time_value, ":00:") != NULL) ||
--                           (strstr(time_value, ":10:") != NULL) ||
--                           (strstr(time_value, ":20:") != NULL) ||
--                           (strstr(time_value, ":30:") != NULL) ||
--                           (strstr(time_value, ":40:") != NULL) ||
--                           (strstr(time_value, ":50:") != NULL)) {
-+                        if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                          (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                          (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                          (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                          (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                          (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                       ) {
-                             horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_cpu_iowait[file_number]);
-                             vertical_value = VERTICAL_START_POINT_CPU_ALL +(VERTICAL_NOTCH_PERCENT * t);
-                             /* only when first in element */
-@@ -923,7 +926,7 @@ int set_token_items(int file_number, cha
+@@ -849,7 +849,7 @@ int set_token_items(int file_number, cha
              } else if ((i == get_column_cpu("idle")) &&(strstr(token, "%idle") == 0)) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -215,27 +155,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -987,12 +990,13 @@ int set_token_items(int file_number, cha
-                     }
-                     /* code for postscript file utility 0 means, CPU all */
-                     if (utility == 0) {
--                        if ((strstr(time_value, ":00:") != NULL) ||
--                           (strstr(time_value, ":10:") != NULL) ||
--                           (strstr(time_value, ":20:") != NULL) ||
--                           (strstr(time_value, ":30:") != NULL) ||
--                           (strstr(time_value, ":40:") != NULL) ||
--                           (strstr(time_value, ":50:") != NULL)) {
-+                        if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                          (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                          (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                          (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                          (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                          (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                       ) {
-                             horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_cpu_idle[file_number]);
-                             vertical_value = VERTICAL_START_POINT_CPU_ALL +(VERTICAL_NOTCH_PERCENT * t);
-                             /* only when first in element */
-@@ -1050,7 +1054,7 @@ int set_token_items(int file_number, cha
+@@ -976,7 +976,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_tasks("proc")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -244,27 +164,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1112,12 +1116,13 @@ int set_token_items(int file_number, cha
-                         set_tasks_lowest_date(this_date_all, "proc");
-                         set_tasks_lowest_time(time_value, "proc");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_tasks_proc[file_number]);
-                         vertical_value = VERTICAL_START_POINT_TASKS +(t * VERTICAL_NOTCH_TASKS_PROC);
-@@ -1161,7 +1166,7 @@ int set_token_items(int file_number, cha
+@@ -1056,7 +1056,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_tasks("cswch")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -273,27 +173,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1223,12 +1228,13 @@ int set_token_items(int file_number, cha
-                         set_tasks_lowest_date(this_date_all, "cswch");
-                         set_tasks_lowest_time(time_value, "cswch");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_tasks_cswch[file_number]);
-                         vertical_value = VERTICAL_START_POINT_TASKS +(t * VERTICAL_NOTCH_TASKS_CSWCH);
-@@ -1286,7 +1292,7 @@ int set_token_items(int file_number, cha
+@@ -1164,7 +1164,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_pswap("pswpin")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -302,27 +182,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1348,12 +1354,13 @@ int set_token_items(int file_number, cha
-                         set_pswap_lowest_date(this_date_all, "pswpin");
-                         set_pswap_lowest_time(time_value, "pswpin");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_swapping_pswpin[file_number]);
-                         vertical_value = VERTICAL_START_POINT_SWAPPING +(t * VERTICAL_NOTCH_SWAPPING);
-@@ -1398,7 +1405,7 @@ int set_token_items(int file_number, cha
+@@ -1244,7 +1244,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_pswap("pswpout")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -331,27 +191,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1460,12 +1467,13 @@ int set_token_items(int file_number, cha
-                         set_pswap_lowest_date(this_date_all, "pswpout");
-                         set_pswap_lowest_time(time_value, "pswpout");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_swapping_pswpout[file_number]);
-                         vertical_value = VERTICAL_START_POINT_SWAPPING +(t * VERTICAL_NOTCH_SWAPPING);
-@@ -1559,7 +1567,7 @@ int set_token_items(int file_number, cha
+@@ -1388,7 +1388,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_paging("pgpgin")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -360,27 +200,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1621,12 +1629,13 @@ int set_token_items(int file_number, cha
-                         set_paging_lowest_date(this_date_all, "pgpgin");
-                         set_paging_lowest_time(time_value, "pgpgin");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_paging_pgpgin[file_number]);
-                         vertical_value = VERTICAL_START_POINT_PAGING +(t * VERTICAL_NOTCH_PAGING);
-@@ -1670,7 +1679,7 @@ int set_token_items(int file_number, cha
+@@ -1469,7 +1469,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_paging("pgpgout")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -389,27 +209,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1732,12 +1741,13 @@ int set_token_items(int file_number, cha
-                         set_paging_lowest_date(this_date_all, "pgpgout");
-                         set_paging_lowest_time(time_value, "pgpgout");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_paging_pgpgout[file_number]);
-                         vertical_value = VERTICAL_START_POINT_PAGING +(t * VERTICAL_NOTCH_PAGING);
-@@ -1768,7 +1778,7 @@ int set_token_items(int file_number, cha
+@@ -1550,7 +1550,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_paging("fault")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -418,27 +218,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1830,12 +1840,13 @@ int set_token_items(int file_number, cha
-                         set_paging_lowest_date(this_date_all, "fault");
-                         set_paging_lowest_time(time_value, "fault");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_paging_fault[file_number]);
-                         vertical_value = VERTICAL_START_POINT_PAGING +(t * VERTICAL_NOTCH_PAGING_FAULT);
-@@ -1865,7 +1876,7 @@ int set_token_items(int file_number, cha
+@@ -1630,7 +1630,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_paging("majflt")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -447,27 +227,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1927,12 +1938,13 @@ int set_token_items(int file_number, cha
-                         set_paging_lowest_date(this_date_all, "majflt");
-                         set_paging_lowest_time(time_value, "majflt");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_paging_mjflt[file_number]);
-                         vertical_value = VERTICAL_START_POINT_PAGING +(t * VERTICAL_NOTCH_PAGING);
-@@ -1962,7 +1974,7 @@ int set_token_items(int file_number, cha
+@@ -1710,7 +1710,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_paging("vmeff")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -476,27 +236,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2024,12 +2036,13 @@ int set_token_items(int file_number, cha
-                         set_paging_lowest_date(this_date_all, "vmeff");
-                         set_paging_lowest_time(time_value, "vmeff");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_paging_vmeff[file_number]);
-                         vertical_value = VERTICAL_START_POINT_PAGING +(t * VERTICAL_NOTCH_PERCENT);
-@@ -2100,7 +2113,7 @@ int set_token_items(int file_number, cha
+@@ -1831,7 +1831,7 @@ int set_token_items(int file_number, cha
             if (i == get_column_io_transfer_rate("tps")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -505,27 +245,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2162,12 +2175,13 @@ int set_token_items(int file_number, cha
-                         set_io_transfer_rate_lowest_date(this_date_all, "tps");
-                         set_io_transfer_rate_lowest_time(time_value, "tps");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_io_transfer_rate_tps[file_number]);
-                         vertical_value = VERTICAL_START_POINT_IO_TRANSFER_RATE +(VERTICAL_NOTCH_IO_TRANSFER_RATE_TPS * t);
-@@ -2214,7 +2228,7 @@ int set_token_items(int file_number, cha
+@@ -1911,7 +1911,7 @@ int set_token_items(int file_number, cha
             } else if (i == get_column_io_transfer_rate( "bread")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -534,27 +254,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2276,12 +2290,13 @@ int set_token_items(int file_number, cha
-                         set_io_transfer_rate_lowest_date(this_date_all, "bread");
-                         set_io_transfer_rate_lowest_time(time_value, "bread");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_io_transfer_rate_bread[file_number]);
-                         vertical_value = VERTICAL_START_POINT_IO_TRANSFER_RATE +(t * VERTICAL_NOTCH_IO_TRANSFER_RATE_BREAD);
-@@ -2311,7 +2326,7 @@ int set_token_items(int file_number, cha
+@@ -1991,7 +1991,7 @@ int set_token_items(int file_number, cha
             } else if (i == get_column_io_transfer_rate("bwrtn")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -563,27 +263,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2373,12 +2388,13 @@ int set_token_items(int file_number, cha
-                         set_io_transfer_rate_lowest_date(this_date_all, "bwrtn");
-                         set_io_transfer_rate_lowest_time(time_value, "bwrtn");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_io_transfer_rate_bwrtn[file_number]);
-                         vertical_value = VERTICAL_START_POINT_IO_TRANSFER_RATE +(t * VERTICAL_NOTCH_IO_TRANSFER_RATE_BWRTN);
-@@ -2448,7 +2464,7 @@ int set_token_items(int file_number, cha
+@@ -2111,7 +2111,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_memory("memused")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -592,27 +272,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2511,12 +2527,13 @@ int set_token_items(int file_number, cha
-                         set_memory_lowest_date(this_date_all, "memused");
-                         set_memory_lowest_time(time_value, "memused");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_memory_memused[file_number]);
-                         vertical_value = VERTICAL_START_POINT_MEMORY +(VERTICAL_NOTCH_PERCENT * t);
-@@ -2559,7 +2576,7 @@ int set_token_items(int file_number, cha
+@@ -2192,7 +2192,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_memory("kbcommit")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -621,27 +281,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2621,12 +2638,13 @@ int set_token_items(int file_number, cha
-                         set_memory_lowest_date(this_date_all, "kbcommit");
-                         set_memory_lowest_time(time_value, "kbcommit");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_memory_kbcommit[file_number]);
-                         /* note that we calculate t / nothch unlike other ones */
-@@ -2657,7 +2675,7 @@ int set_token_items(int file_number, cha
+@@ -2272,7 +2272,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_memory("commit")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -650,27 +290,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2719,12 +2737,13 @@ int set_token_items(int file_number, cha
-                         set_memory_lowest_date(this_date_all, "commit");
-                         set_memory_lowest_time(time_value, "commit");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_memory_commit[file_number]);
-                         vertical_value = VERTICAL_START_POINT_MEMORY +(t * VERTICAL_NOTCH_PERCENT);
-@@ -2770,7 +2789,7 @@ int set_token_items(int file_number, cha
+@@ -2368,7 +2368,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_swpused()) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -679,7 +299,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2889,7 +2908,7 @@ int set_token_items(int file_number, cha
+@@ -2487,7 +2487,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_kernel_table("dentunusd")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -688,27 +308,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2951,12 +2970,13 @@ int set_token_items(int file_number, cha
-                         set_kernel_table_lowest_date(this_date_all, "dentunusd");
-                         set_kernel_table_lowest_time(time_value, "dentunusd");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_kernel_table_dentunusd[file_number]);
-                         vertical_value = VERTICAL_START_POINT_KERNEL_TABLE +(t * VERTICAL_NOTCH_KERNEL_TABLE_DENTUNUSD);
-@@ -2996,7 +3016,7 @@ int set_token_items(int file_number, cha
+@@ -2567,7 +2567,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_kernel_table("file")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -717,27 +317,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3058,12 +3078,13 @@ int set_token_items(int file_number, cha
-                         set_kernel_table_lowest_date(this_date_all, "file");
-                         set_kernel_table_lowest_time(time_value, "file");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_kernel_table_file[file_number]);
-                         vertical_value = VERTICAL_START_POINT_KERNEL_TABLE +(t * VERTICAL_NOTCH_KERNEL_TABLE_FILE);
-@@ -3093,7 +3114,7 @@ int set_token_items(int file_number, cha
+@@ -2647,7 +2647,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_kernel_table("inode")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -746,27 +326,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3155,12 +3176,13 @@ int set_token_items(int file_number, cha
-                         set_kernel_table_lowest_date(this_date_all, "inode");
-                         set_kernel_table_lowest_time(time_value, "inode");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_kernel_table_inode[file_number]);
-                         vertical_value = VERTICAL_START_POINT_KERNEL_TABLE +(t * VERTICAL_NOTCH_KERNEL_TABLE_INODE);
-@@ -3256,7 +3278,7 @@ int set_token_items(int file_number, cha
+@@ -2793,7 +2793,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_ldavg("runq_sz")) {
                  if (SAR_OPTION == 'Z') {
                      t = atoi(token);
@@ -775,27 +335,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3318,12 +3340,13 @@ int set_token_items(int file_number, cha
-                         set_ldavg_lowest_date(this_date_all, "runq_sz");
-                         set_ldavg_lowest_time(time_value, "runq_sz");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_ldavg_runq[file_number]);
-                         vertical_value = VERTICAL_START_POINT_LDAVG +(VERTICAL_NOTCH_LDAVG * t);
-@@ -3364,7 +3387,7 @@ int set_token_items(int file_number, cha
+@@ -2874,7 +2874,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_ldavg("plist_sz")) {
                  if (SAR_OPTION == 'Z') {
                      t = atoi(token);
@@ -804,27 +344,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3426,12 +3449,13 @@ int set_token_items(int file_number, cha
-                         set_ldavg_lowest_date(this_date_all, "plist_sz");
-                         set_ldavg_lowest_time(time_value, "plist_az");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_ldavg_plist[file_number]);
-                         vertical_value = VERTICAL_START_POINT_LDAVG +(VERTICAL_NOTCH_LDAVG_PLIST * t);
-@@ -3462,7 +3486,7 @@ int set_token_items(int file_number, cha
+@@ -2955,7 +2955,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_ldavg("ldavg_one")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -833,27 +353,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3524,12 +3548,13 @@ int set_token_items(int file_number, cha
-                         set_ldavg_lowest_date(this_date_all, "ldavg_one");
-                         set_ldavg_lowest_time(time_value, "ldavg_one");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_ldavg_ldavg_one[file_number]);
-                         vertical_value = VERTICAL_START_POINT_LDAVG +(VERTICAL_NOTCH_LDAVG * t);
-@@ -3559,7 +3584,7 @@ int set_token_items(int file_number, cha
+@@ -3035,7 +3035,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_ldavg("ldavg_five")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -862,27 +362,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3621,12 +3646,13 @@ int set_token_items(int file_number, cha
-                         set_ldavg_lowest_date( this_date_all, "ldavg_five");
-                         set_ldavg_lowest_time( time_value, "ldavg_five");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_ldavg_ldavg_five[file_number]);
-                         vertical_value = VERTICAL_START_POINT_LDAVG +(VERTICAL_NOTCH_LDAVG * t);
-@@ -3656,7 +3682,7 @@ int set_token_items(int file_number, cha
+@@ -3115,7 +3115,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_ldavg("ldavg_15")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -891,27 +371,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3718,12 +3744,13 @@ int set_token_items(int file_number, cha
-                         set_ldavg_lowest_date(this_date_all, "ldavg_15");
-                         set_ldavg_lowest_time(time_value, "ldavg_15");
-                     }
--                    if ((strstr(time_value, ":00:") != NULL) ||
--                       (strstr(time_value, ":10:") != NULL) ||
--                       (strstr(time_value, ":20:") != NULL) ||
--                       (strstr(time_value, ":30:") != NULL) ||
--                       (strstr(time_value, ":40:") != NULL) ||
--                       (strstr(time_value, ":50:") != NULL)) {
-+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
-+                      (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
-+                      (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
-+                      (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
-+                      (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
-+                      (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)
-+                   ) {
-                         /* code for postscript file */
-                         horizontal_value = HORIZONTAL_START_POINT +(horizontal_notch * horizontal_value_ldavg_ldavg_15[file_number]);
-                         vertical_value = VERTICAL_START_POINT_LDAVG +(VERTICAL_NOTCH_LDAVG * t);
-@@ -3773,7 +3800,7 @@ int set_token_items(int file_number, cha
+@@ -3215,7 +3215,7 @@ int set_token_items(int file_number, cha
             if (i == get_column_block_device("areqsz")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -920,7 +380,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3834,7 +3861,7 @@ int set_token_items(int file_number, cha
+@@ -3276,7 +3276,7 @@ int set_token_items(int file_number, cha
             } else if (i == get_column_block_device("util")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -929,7 +389,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3931,7 +3958,7 @@ int set_token_items(int file_number, cha
+@@ -3373,7 +3373,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_network("rxpck")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -938,7 +398,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3997,7 +4024,7 @@ int set_token_items(int file_number, cha
+@@ -3439,7 +3439,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("txpck")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -947,7 +407,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -4063,7 +4090,7 @@ int set_token_items(int file_number, cha
+@@ -3505,7 +3505,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("rxkb")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -956,7 +416,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -4129,7 +4156,7 @@ int set_token_items(int file_number, cha
+@@ -3571,7 +3571,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("txkb")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -965,7 +425,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -4231,7 +4258,7 @@ int set_token_items(int file_number, cha
+@@ -3673,7 +3673,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_network("rxerr")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -974,7 +434,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -4291,7 +4318,7 @@ int set_token_items(int file_number, cha
+@@ -3733,7 +3733,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("txerr")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -983,7 +443,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -4352,7 +4379,7 @@ int set_token_items(int file_number, cha
+@@ -3794,7 +3794,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("rxdrop")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -992,7 +452,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -4413,7 +4440,7 @@ int set_token_items(int file_number, cha
+@@ -3855,7 +3855,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("txdrop")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -1001,7 +461,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -4957,7 +4984,7 @@ int get_word_line(int file_number, char
+@@ -3924,7 +3924,7 @@ int get_word_line(int file_number, char
      int PM = 0;
      /* for analyzing all data */
      if (SAR_OPTION == 'Z') {
@@ -1010,7 +470,15 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              PM = 1;
          /* testing */
          char *str_tmp = "";
-@@ -4979,7 +5006,7 @@ int get_word_line(int file_number, char
+@@ -3934,7 +3934,6 @@ int get_word_line(int file_number, char
+             /* this clause will be save for future use maybe */
+             if (strstr(*line, "RESTART")) {
+                 set_token_column(file_number, *line, "Linux", 1, SAR_OPTION);
+-                /* for ps file */
+                 linux_restart_count[file_number]++;
+             }
+             else
+@@ -3945,7 +3944,7 @@ int get_word_line(int file_number, char
               */
              initialize_check_int();
          /* first, we are setting column number of interests */
@@ -1019,7 +487,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -5052,7 +5079,7 @@ int get_word_line(int file_number, char
+@@ -4018,7 +4017,7 @@ int get_word_line(int file_number, char
              PM = set_token_column(file_number, *line, "runq", 0, SAR_OPTION);
              /* this means, skip this clause on next loop, it's enough to set set_token_column() one time */
              CHK_Z = _LDAVG;
@@ -1028,7 +496,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -5060,7 +5087,7 @@ int get_word_line(int file_number, char
+@@ -4026,7 +4025,7 @@ int get_word_line(int file_number, char
              PM = set_token_column(file_number, *line, "DEV", 0, SAR_OPTION);
              /* this means, skip this clause on next loop, it's enough to set set_token_column() one time */
              CHK_Z = _BLOCK_DEVICE;
@@ -1037,7 +505,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -5068,7 +5095,7 @@ int get_word_line(int file_number, char
+@@ -4034,7 +4033,7 @@ int get_word_line(int file_number, char
              PM = set_token_column(file_number, *line, "rxpck", 0, SAR_OPTION);
              /* this means, skip this clause on next loop, it's enough to set set_token_column() one time */
              CHK_Z = _NETWORK;
@@ -1046,7 +514,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -5104,7 +5131,7 @@ int get_word_line(int file_number, char
+@@ -4070,7 +4069,7 @@ int get_word_line(int file_number, char
                      CHK_CORES_N = 0;
                  }
                  CHECK_CPU_EACH++;
@@ -1055,7 +523,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 0);  /* this means, skip this clause on next loop */
                  CHK_CORES_N = 0;
                  /* set_token_items(file_number, line, "cpu" , CHK_CORES_N, SAR_OPTION); */
-@@ -5122,7 +5149,7 @@ int get_word_line(int file_number, char
+@@ -4088,7 +4087,7 @@ int get_word_line(int file_number, char
              }
          /* setting utility arguments to meaningless value like -999 */
          } else if (CHK_Z == _TASKS) {
@@ -1064,7 +532,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 1);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5131,7 +5158,7 @@ int get_word_line(int file_number, char
+@@ -4097,7 +4096,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "proc", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _PSWAP) {
@@ -1073,7 +541,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 2);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5140,7 +5167,7 @@ int get_word_line(int file_number, char
+@@ -4106,7 +4105,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "pswpin/s", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _PAGING) {
@@ -1082,7 +550,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 3);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5149,7 +5176,7 @@ int get_word_line(int file_number, char
+@@ -4115,7 +4114,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "fault", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _IO_TRANSFER_RATE) {
@@ -1091,7 +559,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 4);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5158,7 +5185,7 @@ int get_word_line(int file_number, char
+@@ -4124,7 +4123,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "bread/s", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _MEMORY) {
@@ -1100,7 +568,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 5);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5167,7 +5194,7 @@ int get_word_line(int file_number, char
+@@ -4133,7 +4132,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "kbmemfree", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _SWPUSED) {
@@ -1109,7 +577,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 6);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5176,7 +5203,7 @@ int get_word_line(int file_number, char
+@@ -4142,7 +4141,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "kbswpfree", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _KERNEL_TABLE) {
@@ -1118,7 +586,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 7);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5185,7 +5212,7 @@ int get_word_line(int file_number, char
+@@ -4151,7 +4150,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "dentunusd", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _LDAVG) {
@@ -1127,7 +595,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 8);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5198,7 +5225,7 @@ int get_word_line(int file_number, char
+@@ -4164,7 +4163,7 @@ int get_word_line(int file_number, char
           * setting each name to the object for future use 
           */ 
          } else if (CHK_Z == _BLOCK_DEVICE) {
@@ -1136,7 +604,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 9);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5211,7 +5238,7 @@ int get_word_line(int file_number, char
+@@ -4177,7 +4176,7 @@ int get_word_line(int file_number, char
           * setting each name to the object for future use 
           */ 
          } else if (CHK_Z == _NETWORK) {
@@ -1145,7 +613,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 10);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5220,7 +5247,7 @@ int get_word_line(int file_number, char
+@@ -4186,7 +4185,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "rxpck" , -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _NETWORK_ERROR) {
@@ -1154,7 +622,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 11);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -5243,7 +5270,8 @@ int get_word_line(int file_number, char
+@@ -4209,7 +4208,8 @@ int get_word_line(int file_number, char
              && strstr(*line, "rcvin/s") == 0 && strstr(*line, "cswch/s") == 0 
              && strstr(*line, "frmpg/s") == 0 && strstr(*line, "call/s") == 0 
              && strstr(*line, "scall/s") == 0 && strstr(*line, "totsck") == 0 
@@ -1164,7 +632,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              /* no match */
              return 0;
          } else {
-@@ -5543,7 +5571,7 @@ int get_word_line(int file_number, char
+@@ -4509,7 +4509,7 @@ int get_word_line(int file_number, char
               * cpu and sets core number every time. core number is incremented, so, lately, core number could be known (including all line)  
               * stop calling this clause if reached up to MAX_CORE_NUMBERS, anyway, it will no be called very soon   
               */
@@ -1173,7 +641,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  append_list(&line_obj, str_tmp);
                  set_token_items(file_number, line, "cpu" , CHK_CORES_N, SAR_OPTION, time_span, PM); /* setting each cpu values to the object */
                  if (CHK_CORES_N == MAX_CORE_NUMBERS)
-@@ -5554,7 +5582,7 @@ int get_word_line(int file_number, char
+@@ -4520,7 +4520,7 @@ int get_word_line(int file_number, char
               * just because not knowing which block device will appear every time this clause is called,
               * setting each name to the object for future use 
               */ 
@@ -1182,7 +650,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  if (strstr(*line, "dev") != 0) {
                      append_list(&line_obj, str_tmp);
                      set_token_items(file_number, line, "DEV" , -999, SAR_OPTION, time_span, PM);
-@@ -5563,17 +5591,17 @@ int get_word_line(int file_number, char
+@@ -4529,17 +4529,17 @@ int get_word_line(int file_number, char
               * just because not knowing which network device will appear every time this clause is called,
               * setting each name to the object for future use 
               */ 

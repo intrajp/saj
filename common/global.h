@@ -26,8 +26,8 @@
 #include <stddef.h>
 
 #define PROGRAM_VERSION 0
-#define PROGRAM_RELEASE 1
-#define PROGRAM_SUB_RELEASE 16
+#define PROGRAM_RELEASE 2
+#define PROGRAM_SUB_RELEASE 1
 
 /* the maximum line length of file name */
 #define MAX_FULL_PATH_LENGTH  512
