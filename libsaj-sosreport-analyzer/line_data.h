@@ -31,15 +31,31 @@
 #define SOSREPORT_ANALYZER_LINE_DATA_H
 
 int init_list(node** obj);
+int init_list2(node2** obj);
 void set_list(node* obj, char* line, node* obj_next);
+void set_list2(node2* obj, char* line, char* line2, node2* obj_next);
 int append_list(node** obj, char* line);
+int append_list2(node2** obj, char* line, char* line2);
 int bubble_sort_object_by_the_string(char* str_arr[MAX_ANALYZE_FILES_FOR_SOSREPORT_DIR], node** obj);
+int bubble_sort_object_by_the_string2(char* str_arr[20000], node2** obj);
 int print_and_file_write_analyzed_files(node** obj, const char* expression , const char* word, FILE* fp_w);
 void print_list(node** obj);
+void print_list2(node2** obj);
 const char* echo_list(node** obj);
 void file_write_list(node** obj, FILE* fp_w);
+void file_write_list2(node2** obj, FILE* fp_w);
 void file_write_list_(node** obj, FILE* fp_w);
 int clear_list(node** obj);
+char* get_sar_value_from_string(char* str);
+char* get_date_from_string(char* str);
+char* get_str_from_string(char* str, int count, char* delimiter);
+char* get_cpus_from_string(char* str);
+char* terminate_string(char* str, int point, char* delimiter);
+char* search_first_string(node** obj, char* str);
+void file_write_svg(char* item, char* str, int data_lines, double width, FILE* fp_w);
+void file_write_date_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w);
+void file_write_time_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w);
+int clear_list2(node2** obj);
 
 /*
  * Function Name: search_list ()

@@ -225,95 +225,20 @@ void read_write_file(DIR *dir, const char *dname, char *sar_arr[], int files_n,
     initialize_avg_checked_int();
     read_sar_cpu_as_paragraph(sar_full_path_arr[0]);
 
-    /**** here we create postscript file for the future use ****/
-    FILE *fp_ps_w[MAX_ANALYZE_FILES];
-    FILE *fp_ps2_w[MAX_ANALYZE_FILES];
-    FILE *fp_ps3_w[MAX_ANALYZE_FILES];
-    FILE *fp_ps4_w[MAX_ANALYZE_FILES];
+    FILE *fp_svg_w;
 
-    /* open postscript dummy file here just to set data to the each object */
-    for (i = 0; i < MAX_ANALYZE_FILES; i++) {
-        /* -------- ps file -------- */
-        if ((fp_ps_w[i] = fopen("dummy.ps", "a")) == NULL) {
-            fprintf(stderr, "can't open file (%s): %s\n", "dummy.ps", strerror(errno));
-            for (i = 0; i < files_n; i++)
-                sar_arr[i]=NULL;
-            free_sar_analyzer_obj();
-            exit(EXIT_FAILURE);
-        }
-        unlink("dummy.ps");
-
-        /* appending headers to ps obj */
-        append_header_to_ps_objs(&ps_common_cpu_obj[i], fp_ps_w[i]);
-        /* appending rectangulars to ps obj */
-        append_rectangular_to_ps_objs(&ps_common_cpu_obj[i], fp_ps_w[i], "up");
-        append_rectangular_to_ps_objs(&ps_common_cpu_obj[i], fp_ps_w[i], "down");
-        /* appending labels to ps obj */
-        append_labels_to_ps_obj(&ps_common_cpu_obj[i], fp_ps_w[i], "cpu");
-
-        pclose(fp_ps_w[i]);
-
-        /* --------  ps file -------- */
-        if ((fp_ps2_w[i] = fopen ("dummy2.ps", "a")) == NULL) {
-            fprintf(stderr, "can't open file (%s): %s\n", "dummy2.ps", strerror(errno));
-            for (i = 0; i < files_n; i++)
-                sar_arr[i]=NULL;
-            free_sar_analyzer_obj();
-            exit(EXIT_FAILURE);
-        }
-        unlink("dummy2.ps");
-
-        /* appending headers to ps obj */
-        append_header_to_ps_objs(&ps_common_memory_obj[i], fp_ps2_w[i]);
-        /* appending rectangulars to ps obj */
-        append_rectangular_to_ps_objs(&ps_common_memory_obj[i], fp_ps2_w[i], "up");
-        append_rectangular_to_ps_objs(&ps_common_memory_obj[i], fp_ps2_w[i], "down");
-        /* appending labels to ps obj */
-        append_labels_to_ps_obj(&ps_common_memory_obj[i], fp_ps2_w[i], "memory");
-
-        pclose(fp_ps2_w[i]);
-
-        /* --------  ps file -------- */
-        if ((fp_ps3_w[i] = fopen ("dummy3.ps", "a")) == NULL) {
-            fprintf(stderr, "can't open file (%s): %s\n","dummy3.ps",strerror(errno));
-            for (i = 0; i < files_n; i++)
-                sar_arr[i]=NULL;
-            free_sar_analyzer_obj();
-            exit(EXIT_FAILURE);
-        }
-        unlink("dummy3.ps");
-
-        /* appending headers to ps obj */
-        append_header_to_ps_objs(&ps_common_ldavg_obj[i], fp_ps3_w[i]);
-        /* appending rectangulars to ps obj */
-        append_rectangular_to_ps_objs(&ps_common_ldavg_obj[i], fp_ps3_w[i], "up");
-        append_rectangular_to_ps_objs(&ps_common_ldavg_obj[i], fp_ps3_w[i], "down");
-        /* appending labels to ps obj */
-        append_labels_to_ps_obj(&ps_common_ldavg_obj[i], fp_ps3_w[i], "ldavg");
-
-        pclose(fp_ps3_w[i]);
-
-        /* --------  ps file -------- */
-        if ((fp_ps4_w[i] = fopen("dummy4.ps", "a")) == NULL) {
-            fprintf(stderr, "can't open file (%s): %s\n", "dummy4.ps", strerror(errno));
-            for (i = 0; i < files_n; i++)
-                sar_arr[i]=NULL;
-            free_sar_analyzer_obj();
-            exit(EXIT_FAILURE);
-        }
-        unlink("dummy4.ps");
-
-        /* appending headers to ps obj */
-        append_header_to_ps_objs(&ps_common_io_transfer_rate_obj[i], fp_ps4_w[i]);
-        /* appending rectangulars to ps obj */
-        append_rectangular_to_ps_objs(&ps_common_io_transfer_rate_obj[i], fp_ps4_w[i], "up");
-        append_rectangular_to_ps_objs(&ps_common_io_transfer_rate_obj[i], fp_ps4_w[i], "down");
-        /* appending labels to ps obj */
-        append_labels_to_ps_obj(&ps_common_io_transfer_rate_obj[i], fp_ps4_w[i], "io_transfer_rate");
-
-        pclose(fp_ps4_w[i]);
+    /* open svg dummy file here just to set data to the each object */
+    /* -------- svg file -------- */
+    if ((fp_svg_w = fopen("dummy.svg", "a")) == NULL) {
+        fprintf(stderr, "can't open file (%s): %s\n", "dummy.svg", strerror(errno));
+        for (i = 0; i < files_n; i++)
+            sar_arr[i]=NULL;
+        free_sar_analyzer_obj();
+        exit(EXIT_FAILURE);
     }
-    /**** end here we create postscript file for the future use ****/
+    unlink("dummy.svg");
+
+    pclose(fp_svg_w);
 
     /* read sar files */
     for (i = 0; i < files_n; i++) {
@@ -836,23 +761,6 @@ int check_result_dir(const char *dname, int sar_only, int tmp)
     return 0;
 }
 
-void tar_pdf_files (const char *pdf_file_pre)
-{
-    int err;
-    char buff[MAX_FILE_NAME_LENGTH]; 
-    memset (buff, '\0', MAX_FILE_NAME_LENGTH); 
-    snprintf (buff, MAX_FILE_NAME_LENGTH, "tar -zcvf %s.tar.gz %s*.pdf", pdf_file_pre, pdf_file_pre);
-    err = system (buff);
-    if (err)
-    {
-        fprintf(stderr, "command failed: %s (%d)\n", buff, err);
-        free_sar_analyzer_obj();
-        exit(EXIT_FAILURE);
-    }
-    else 
-        printf ("Did %s\n", buff);
-}
-
 void remove_unneeded_files (const char *filename, const char *extension)
 {
     int err;
@@ -868,20 +776,6 @@ void remove_unneeded_files (const char *filename, const char *extension)
     }
     else 
         printf ("Did %s\n", buff);
-}
-
-void postscript_to_pdf(const char *filename)
-{
-    int err = 0;
-    char buff[MAX_FILE_NAME_LENGTH]; 
-    memset(buff, '\0', MAX_FILE_NAME_LENGTH); 
-    snprintf(buff, MAX_FILE_NAME_LENGTH, "gs -sDEVICE=pdfwrite -sOutputFile=%s.pdf -dBATCH -dNOPAUSE -sPAPERSIZE=a4 %s.ps", filename, filename);
-    err = system(buff);
-    /* we just echo string and continue */
-    if (err)
-        fprintf(stderr, "command failed: %s (%d)\n", buff, err);
-    else 
-        printf("Did %s\n", buff);
 }
 
 void sar_analyzer_init(const char *dname, const char *fname, int SAR_OPTION,
@@ -1969,54 +1863,12 @@ int create_sar_analyzer_obj()
     for (v = 0; v < MAX_NETWORK_DEVICE_NUMBERS; v++)
         init_list(&report_network_down_obj[v]);
     init_list(&report_overall_judgement_obj);
-    for (v = 0; v < MAX_ANALYZE_FILES; v++) {
-        /* for each file */
-        init_list(&ps_common_cpu_obj[v]);
-        init_list(&ps_common_memory_obj[v]);
-        init_list(&ps_common_ldavg_obj[v]);
-        init_list(&ps_common_io_transfer_rate_obj[v]);
-        /* for file cpu */
-        init_list(&ps_cpu_label_obj[v]);
-        init_list(&ps_cpu_usr_obj[v]);
-        init_list(&ps_cpu_sys_obj[v]);
-        init_list(&ps_cpu_iowait_obj[v]);
-        init_list(&ps_cpu_idle_obj[v]);
-        init_list(&ps_paging_label_obj[v]);
-        init_list(&ps_paging_pgpgin_obj[v]);
-        init_list(&ps_paging_pgpgout_obj[v]);
-        init_list(&ps_paging_fault_obj[v]);
-        init_list(&ps_paging_mjflt_obj[v]);
-        init_list(&ps_paging_vmeff_obj[v]);
-        /* for file mem */
-        init_list(&ps_memory_label_obj[v]);
-        init_list(&ps_memory_memused_obj[v]);
-        init_list(&ps_memory_kbcommit_obj[v]);
-        init_list(&ps_memory_commit_obj[v]);
-        init_list(&ps_swapping_label_obj[v]);
-        init_list(&ps_swapping_pswpin_obj[v]);
-        init_list(&ps_swapping_pswpout_obj[v]);
-        /* for file ldv */
-        init_list(&ps_ldavg_label_obj[v]);
-        init_list(&ps_ldavg_runq_obj[v]);
-        init_list(&ps_ldavg_plist_obj[v]);
-        init_list(&ps_ldavg_ldavg_one_obj[v]);
-        init_list(&ps_ldavg_ldavg_five_obj[v]);
-        init_list(&ps_ldavg_ldavg_15_obj[v]);
-        init_list(&ps_tasks_label_obj[v]);
-        init_list(&ps_tasks_proc_obj[v]);
-        init_list(&ps_tasks_cswch_obj[v]);
-        /* for file ior */
-        init_list(&ps_io_transfer_rate_label_obj[v]);
-        init_list(&ps_io_transfer_rate_tps_obj[v]);
-        init_list(&ps_io_transfer_rate_bread_obj[v]);
-        init_list(&ps_io_transfer_rate_bwrtn_obj[v]);
-        init_list(&ps_kernel_table_label_obj[v]);
-        init_list(&ps_kernel_table_dentunusd_obj[v]);
-        init_list(&ps_kernel_table_file_obj[v]);
-        init_list(&ps_kernel_table_inode_obj[v]);
-        /* for linux restart string */
-        init_list(&ps_restart_obj[v]);
-    }
+    init_list(&svg_common_cpu_obj);
+    init_list2(&svg_cpu_usr_obj);
+    init_list2(&svg_cpu_sys_obj);
+    init_list2(&svg_cpu_iowait_obj);
+    init_list2(&svg_cpu_idle_obj);
+
     return 0;
 }
 
@@ -2089,54 +1941,12 @@ int free_sar_analyzer_obj()
     for (v = 0; v < MAX_NETWORK_DEVICE_NUMBERS; v++)
         clear_list(&report_network_down_obj[v]);
     clear_list(&report_overall_judgement_obj);
-    for (v = 0; v < MAX_ANALYZE_FILES; v++) {
-        /* for each file */
-        clear_list(&ps_common_cpu_obj[v]);
-        clear_list(&ps_common_memory_obj[v]);
-        clear_list(&ps_common_ldavg_obj[v]);
-        clear_list(&ps_common_io_transfer_rate_obj[v]);
-        /* for file cpu */
-        clear_list(&ps_cpu_label_obj[v]);
-        clear_list(&ps_cpu_usr_obj[v]);
-        clear_list(&ps_cpu_sys_obj[v]);
-        clear_list(&ps_cpu_iowait_obj[v]);
-        clear_list(&ps_cpu_idle_obj[v]);
-        clear_list(&ps_paging_label_obj[v]);
-        clear_list(&ps_paging_pgpgin_obj[v]);
-        clear_list(&ps_paging_pgpgout_obj[v]);
-        clear_list(&ps_paging_fault_obj[v]);
-        clear_list(&ps_paging_mjflt_obj[v]);
-        clear_list(&ps_paging_vmeff_obj[v]);
-        /* for file mem */
-        clear_list(&ps_memory_label_obj[v]);
-        clear_list(&ps_memory_memused_obj[v]);
-        clear_list(&ps_memory_kbcommit_obj[v]);
-        clear_list(&ps_memory_commit_obj[v]);
-        clear_list(&ps_swapping_label_obj[v]);
-        clear_list(&ps_swapping_pswpin_obj[v]);
-        clear_list(&ps_swapping_pswpout_obj[v]);
-        /* for file ldv */
-        clear_list(&ps_ldavg_label_obj[v]);
-        clear_list(&ps_ldavg_runq_obj[v]);
-        clear_list(&ps_ldavg_plist_obj[v]);
-        clear_list(&ps_ldavg_ldavg_one_obj[v]);
-        clear_list(&ps_ldavg_ldavg_five_obj[v]);
-        clear_list(&ps_ldavg_ldavg_15_obj[v]);
-        clear_list(&ps_tasks_label_obj[v]);
-        clear_list(&ps_tasks_proc_obj[v]);
-        clear_list(&ps_tasks_cswch_obj[v]);
-        /* for file ior */
-        clear_list(&ps_io_transfer_rate_label_obj[v]);
-        clear_list(&ps_io_transfer_rate_tps_obj[v]);
-        clear_list(&ps_io_transfer_rate_bread_obj[v]);
-        clear_list(&ps_io_transfer_rate_bwrtn_obj[v]);
-        clear_list(&ps_kernel_table_label_obj[v]);
-        clear_list(&ps_kernel_table_dentunusd_obj[v]);
-        clear_list(&ps_kernel_table_file_obj[v]);
-        clear_list(&ps_kernel_table_inode_obj[v]);
-        /* for linux restart string */
-        clear_list(&ps_restart_obj[v]);
-    }
+    clear_list(&svg_common_cpu_obj);
+    clear_list2(&svg_cpu_usr_obj);
+    clear_list2(&svg_cpu_sys_obj);
+    clear_list2(&svg_cpu_iowait_obj);
+    clear_list2(&svg_cpu_idle_obj);
+
     return 0;
 }
 

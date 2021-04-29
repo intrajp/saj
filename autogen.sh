@@ -16,14 +16,6 @@ else
     echo "autoconf is installed. I proceed."
 fi
 
-GS=`which gs`
-if test -z $GS; then
-        echo "*** No gs found, please install the ghostscript package. ***"
-        exit 1
-else
-    echo "gs is installed. I proceed."
-fi
-
 INTLTOOLIZE=`which intltoolize`
 if test -z $INTLTOOLIZE; then
         echo "*** No intltoolize found, please install the intltool package. ***"

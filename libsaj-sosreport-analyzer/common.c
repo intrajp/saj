@@ -1476,9 +1476,9 @@ const char* get_sar_file_name_to_be_written(void)
     return sos_dir_file_obj->dir_file_names.sar_file_name_to_be_written;
 }
 
-const char* get_ps_file_name_to_be_written(void)
+const char* get_svg_file_name_to_be_written(void)
 {
-    return sos_dir_file_obj->dir_file_names.ps_file_name_to_be_written;
+    return sos_dir_file_obj->dir_file_names.svg_file_name_to_be_written;
 }
 
 const char* get_log_file_name_to_be_written(void)
@@ -1628,8 +1628,8 @@ void sos_file_to_write(int sar_only)
     memset(buff_analyze, '\0', sizeof(buff_analyze));
     char buff_sar[MAX_FILE_NAME_LENGTH]; 
     memset(buff_sar, '\0', sizeof(buff_sar));
-    char buff_ps[MAX_FILE_NAME_LENGTH]; 
-    memset(buff_ps, '\0', sizeof(buff_ps));
+    char buff_svg[MAX_FILE_NAME_LENGTH]; 
+    memset(buff_svg, '\0', sizeof(buff_svg));
     char buff_log[MAX_FILE_NAME_LENGTH]; 
     memset(buff_log, '\0', sizeof(buff_log)); 
 
@@ -1678,19 +1678,19 @@ void sos_file_to_write(int sar_only)
     strcat(buff_sos, buff_dir_analyzed);
     strcat(buff_analyze, buff_dir_analyzed);
     strcat(buff_sar, buff_dir_analyzed);
-    strcat(buff_ps, buff_dir_analyzed_graph);
+    strcat(buff_svg, buff_dir_analyzed_graph);
     strcat(buff_log, buff_dir_analyzed);
 
     strcat(buff_sos, "/");
     strcat(buff_analyze, "/");
     strcat(buff_sar, "/");
-    strcat(buff_ps, "/");
+    strcat(buff_svg, "/");
     strcat(buff_log, "/");
 
     strcat(buff_sos, buff_dir_analyzed);
     strcat(buff_analyze, buff_dir_analyzed);
     strcat(buff_sar, buff_dir_analyzed);
-    strcat(buff_ps, buff_dir_analyzed);
+    strcat(buff_svg, buff_dir_analyzed);
     strcat(buff_log, buff_dir_analyzed);
 
     /* each analyed file should have unique name */
@@ -1720,22 +1720,19 @@ void sos_file_to_write(int sar_only)
     strncat(buff_sar, "_sar", MAX_FILE_NAME_LENGTH - 1);
     strncat(buff_sar, f_t, MAX_FILE_NAME_LENGTH - 1);
     strncat(buff_sar, ".txt", MAX_FILE_NAME_LENGTH - 1);
-    /* Here we use strcpy. No worry, buff is surely under MAX_FILE_NAME_LENGTH */;
     strncpy(sos_dir_file_obj->dir_file_names.sar_file_name_to_be_written, buff_sar,
         MAX_FILE_NAME_LENGTH);
 
-    /* for ps file */
-    strncat(buff_ps, "_ps", MAX_FILE_NAME_LENGTH - 1);
-    strncat(buff_ps, f_t, MAX_FILE_NAME_LENGTH - 1);
-    /* Here we use strcpy. No worry, buff is surely under MAX_FILE_NAME_LENGTH */;
-    strncpy(sos_dir_file_obj->dir_file_names.ps_file_name_to_be_written, buff_ps,
+    /* for svg file */
+    strncat(buff_svg, "_svg", MAX_FILE_NAME_LENGTH - 1);
+    strncat(buff_svg, f_t, MAX_FILE_NAME_LENGTH - 1);
+    strncpy(sos_dir_file_obj->dir_file_names.svg_file_name_to_be_written, buff_svg,
         MAX_FILE_NAME_LENGTH);
 
     /* for our log file */
     strncat(buff_log, "_log", MAX_FILE_NAME_LENGTH - 1);
     strncat(buff_log, f_t, MAX_FILE_NAME_LENGTH - 1);
     strncat(buff_log, ".log", MAX_FILE_NAME_LENGTH - 1);
-    /* Here we use strcpy. No worry, buff is surely under MAX_FILE_NAME_LENGTH */;
     strncpy(sos_dir_file_obj->dir_file_names.log_file_name_to_be_written, buff_log,
         MAX_FILE_NAME_LENGTH);
 }

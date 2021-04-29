@@ -2264,51 +2264,12 @@ extern struct line_data *report_network_error_explanation_obj;
 extern struct line_data *report_thrashing_obj;
 extern struct line_data *report_network_down_obj[MAX_NETWORK_DEVICE_NUMBERS];
 extern struct line_data *report_overall_judgement_obj;
-/* ps obj should go here */
-extern struct line_data *ps_common_cpu_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_common_memory_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_common_ldavg_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_common_io_transfer_rate_obj[MAX_ANALYZE_FILES];
-/* for file cpu */
-extern struct line_data *ps_cpu_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_cpu_usr_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_cpu_sys_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_cpu_iowait_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_cpu_idle_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_pgpgin_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_pgpgout_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_fault_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_mjflt_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_paging_vmeff_obj[MAX_ANALYZE_FILES];
-/* for file memory */
-extern struct line_data *ps_memory_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_memory_memused_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_memory_kbcommit_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_memory_commit_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_swapping_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_swapping_pswpin_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_swapping_pswpout_obj[MAX_ANALYZE_FILES];
-/* for file ldavg */
-extern struct line_data *ps_ldavg_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_ldavg_runq_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_ldavg_plist_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_ldavg_ldavg_one_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_ldavg_ldavg_five_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_ldavg_ldavg_15_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_restart_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_tasks_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_tasks_proc_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_tasks_cswch_obj[MAX_ANALYZE_FILES];
-/* for file io_transfer_rate */
-extern struct line_data *ps_io_transfer_rate_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_io_transfer_rate_tps_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_io_transfer_rate_bread_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_io_transfer_rate_bwrtn_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_kernel_table_label_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_kernel_table_dentunusd_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_kernel_table_file_obj[MAX_ANALYZE_FILES];
-extern struct line_data *ps_kernel_table_inode_obj[MAX_ANALYZE_FILES];
+/* svg obj should go here */
+extern struct line_data *svg_common_cpu_obj;
+extern struct line_data2 *svg_cpu_usr_obj;
+extern struct line_data2 *svg_cpu_sys_obj;
+extern struct line_data2 *svg_cpu_iowait_obj;
+extern struct line_data2 *svg_cpu_idle_obj;
 
 /*
  * Function Name: initialize_avg_checked_int()
@@ -2737,18 +2698,6 @@ void set_this_date(const char *date_string);
 void set_this_date_all(const char *date_string);
 
 /*
- * Function Name: tar_pdf_files()
- *
- * This function tar pdf files  
- *
- *  Caller : main()
- *
- *  Calls : system() system call
- *
- */
-void tar_pdf_files(const char *pdf_file_pre);
-
-/*
  * Function Name: remove_unneeded_files()
  *
  * This function removes unneeded files  
@@ -2759,57 +2708,6 @@ void tar_pdf_files(const char *pdf_file_pre);
  *
  */
 void remove_unneeded_files(const char *filename, const char *extension);
-
-/*
- * Function Name: postscript_to_pdf()
- *
- * This function convert postscript file to pdf file
- *
- *  Caller : main()
- *
- *  Calls : system() system call
- *
- */
-void postscript_to_pdf(const char *filename);
-
-/*
- * Function Name: write_subtitle_to_ps()
- *
- * This function writes subtitle to ps
- *
- *  Caller : set_token_items()
- *
- *  Calls : none 
- *
- */
-void write_subtitle_to_ps(const char *item, int file_number, int horizontal_subtitle, 
-                          int vertical_subtitle, const char *this_date_all);
-
-/*
- * Function Name: write_time_value_to_ps()
- *
- * This function writes time_value to ps
- *
- *  Caller : set_token_items()
- *
- *  Calls : none 
- *
- */
-void write_time_value_to_ps(const char *item, int file_number, int horizontal_first_time_point, 
-                            int vertical_first_time_point, int notch, int count, const char *time_value);
-
-/*
- * Function Name: draw_graph_to_ps()
- *
- * This function draws graph to ps
- *
- *  Caller : set_token_items()
- *
- *  Calls : none 
- *
- */
-void draw_graph_to_ps(const char *item, const char *element, int file_number, double horizontal_value, 
-                      double vertical_value, const char *start);
 
 /*
  * Function Name: check_time_value()
@@ -2833,7 +2731,5 @@ double check_time_value(double initial_val, double horizontal_notch, int count, 
  *  Calls : none 
  */
 int check_time_value_is_in_time_span(const char *time_span_str, const char *time_value);
-
-void write_restart_str_to_ps(int file_number, char *line);
 
 #endif /* SAJ_COMMON_H */

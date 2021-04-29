@@ -38,6 +38,7 @@
 volatile extern node_m* member_obj;
 
 extern struct line_data* tmp_obj;
+extern struct line_data2* tmp2_obj;
 extern struct dir_file_name* sos_dir_file_obj;
 extern struct line_data* hostname_sos_obj;
 extern struct line_data* sos_version_obj;
@@ -174,7 +175,7 @@ const char* get_sos_analyze_file_time(void);
 /*
  * Function Name: get_sos_analyze_file_name_to_be_written()
  *
- * This function returns sos_file_name_to_be_written for analyzed result
+ * This function returns sos_analyze_file_name_to_be_written for analyzed result
  * 
  * Caller : main()
  *
@@ -196,16 +197,16 @@ const char* get_sos_analyze_file_name_to_be_written(void);
 const char* get_sar_file_name_to_be_written(void);
 
 /*
- * Function Name: get_ps_file_name_to_be_written()
+ * Function Name: get_svg_file_name_to_be_written()
  *
- * This function returns ps_file_name_to_be_written for analyzed result
+ * This function returns svg_file_name_to_be_written for analyzed result
  * 
  * Caller : main()
  *
  * Calls : none
  *
  */
-const char* get_ps_file_name_to_be_written(void);
+const char* get_svg_file_name_to_be_written(void);
 
 /*
  * Function Name: get_log_file_name_to_be_written()

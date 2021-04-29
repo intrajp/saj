@@ -58,107 +58,6 @@ int set_column_ldavg ( int var, const char *element );
 int set_column_block_device ( int var, const char *element );
 int set_column_network ( int var, const char *element );
 
-/*for postscript graph */
-
-/* for file cpu */
-# define HORIZONTAL_CPU_ALL_SUBTITLE 250
-# define VERTICAL_CPU_ALL_SUBTITLE 1930
-# define HORIZONTAL_PAGING_SUBTITLE 250
-# define VERTICAL_PAGING_SUBTITLE 860
-/* for file mem */
-# define HORIZONTAL_MEMORY_SUBTITLE 250
-# define VERTICAL_MEMORY_SUBTITLE 1930
-# define HORIZONTAL_SWAPPING_SUBTITLE 250
-# define VERTICAL_SWAPPING_SUBTITLE 860
-/* for file ldv */
-# define HORIZONTAL_LDAVG_SUBTITLE 250
-# define VERTICAL_LDAVG_SUBTITLE 1930
-# define HORIZONTAL_TASKS_SUBTITLE 250
-# define VERTICAL_TASKS_SUBTITLE 860
-/* for file ior */
-# define HORIZONTAL_IO_TRANSFER_RATE_SUBTITLE 250
-# define VERTICAL_IO_TRANSFER_RATE_SUBTITLE 1930
-# define HORIZONTAL_KERNEL_TABLE_SUBTITLE 250
-# define VERTICAL_KERNEL_TABLE_SUBTITLE 860
-
-/* value of left most point of graph rectangle */
-# define HORIZONTAL_START_POINT 100.0
-/* value of left most point of graph rectangle for CPU all */
-# define HORIZONTAL_MIDDLE_TIME_POINT 1400
-/* for file cpu */
-/* value of bottom most point of first graph rectangle for CPU all */
-# define VERTICAL_START_POINT_CPU_ALL 1200
-/* value of bottom most point of first graph rectangle */
-# define VERTICAL_FIRST_TIME_POINT_CPU_ALL 1170
-/* value of bottom most point of first graph rectangle for paging */
-# define VERTICAL_START_POINT_PAGING 130
-/* value of bottom most point of second graph rectangle for paging */
-# define VERTICAL_FIRST_TIME_POINT_PAGING 100
-/* for file mem */
-/* value of bottom most point of first graph rectangle for paging */
-# define VERTICAL_START_POINT_MEMORY 1200
-/* value of bottom most point of first graph rectangle for paging */
-# define VERTICAL_FIRST_TIME_POINT_MEMORY 1170
-/* value of bottom most point of first graph rectangle for swapping */
-# define VERTICAL_START_POINT_SWAPPING 130
-/* value of bottom most point of second graph rectangle */
-# define VERTICAL_FIRST_TIME_POINT_SWAPPING 100
-/* for file ldv */
-/* value of bottom most point of first graph rectangle for ldavg */
-# define VERTICAL_START_POINT_LDAVG 1200
-/* value of bottom most point of first graph rectangle */
-# define VERTICAL_FIRST_TIME_POINT_LDAVG 1170
-/* value of bottom most point of first graph rectangle for swapping */
-# define VERTICAL_START_POINT_TASKS 130
-/* value of bottom most point of second graph rectangle */
-# define VERTICAL_FIRST_TIME_POINT_TASKS 100
-/* for file ior */
-/* value of bottom most point of first graph rectangle for io_transfer_rate */
-# define VERTICAL_START_POINT_IO_TRANSFER_RATE 1200
-/* value of bottom most point of first graph rectangle */
-# define VERTICAL_FIRST_TIME_POINT_IO_TRANSFER_RATE 1170
-/* value of bottom most point of first graph rectangle for swapping */
-# define VERTICAL_START_POINT_KERNEL_TABLE 130
-/* value of bottom most point of second graph rectangle */
-# define VERTICAL_FIRST_TIME_POINT_KERNEL_TABLE 100
-
-/* as 700 is the vertical size, setting max to 100 and devide 700 by 100 */
-# define VERTICAL_NOTCH_PERCENT 7.0
-/* for file cpu */
-/* as 700 is the vertical size, setting max to 10000 and devide 700 by 10000 */
-# define VERTICAL_NOTCH_PAGING 0.07
-/* as 700 is the vertical size, setting max to 200000 and devide 700 by 200000 */
-# define VERTICAL_NOTCH_PAGING_FAULT 0.0035
-/* for file mem */
-/* as 700 is the vertical size, setting max to 40000000 and devide 40000000 by 700 (should be used / ) */
-# define VERTICAL_NOTCH_MEMORY_KBCOMMIT 57142.8571429
-/* as 700 is the vertical size, setting max to 2 and devide 700 by 2 */
-# define VERTICAL_NOTCH_SWAPPING 350.0
-/* for file ldv */
-/* as 700 is the vertical size, setting max to 50 and devide 700 by 50 */
-# define VERTICAL_NOTCH_LDAVG 14.0
-/* as 700 is the vertical size, setting max to 3000 and devide 700 by 3000 */
-# define VERTICAL_NOTCH_LDAVG_PLIST 0.233333333333
-/* as 700 is the vertical size, setting max to 500 and devide 700 by 500 */
-# define VERTICAL_NOTCH_TASKS_PROC 1.4
-/* as 700 is the vertical size, setting max to 100000 and devide 700 by 100000 */
-# define VERTICAL_NOTCH_TASKS_CSWCH 0.007
-/* for file iro */
-/* as 700 is the vertical size, setting max to 1000 and devide 700 by 1000 */
-# define VERTICAL_NOTCH_IO_TRANSFER_RATE_TPS 0.7
-/* as 700 is the vertical size, setting max to 10000 and devide 700 by 10000 */
-# define VERTICAL_NOTCH_IO_TRANSFER_RATE_BREAD 0.07
-/* as 700 is the vertical size, setting max to 30000 and devide 700 by 30000 */
-# define VERTICAL_NOTCH_IO_TRANSFER_RATE_BWRTN 0.0233333333333
-/* as 700 is the vertical size, setting max to 2000000 and devide 700 by 2000000 */
-# define VERTICAL_NOTCH_KERNEL_TABLE_DENTUNUSD 0.00035
-/* as 700 is the vertical size, setting max to 100000 and devide 700 by 100000 */
-# define VERTICAL_NOTCH_KERNEL_TABLE_FILE 0.007
-/* as 700 is the vertical size, setting max to 2000000 and devide 700 by 2000000 */
-# define VERTICAL_NOTCH_KERNEL_TABLE_INODE 0.00035
-
-/* end for postscript graph */
-
 /* 
  * 
  *  Initialize the stuct and make it living.
@@ -1117,282 +1016,41 @@ struct line_data report_overall_judgement_obj_raw =
         NULL /* next pointer */
     };
 
-/* ps_common_cpu_obj */
-struct line_data ps_common_cpu_obj_raw =
+/* svg_common_cpu_obj */
+struct line_data svg_common_cpu_obj_raw =
     {
         "", /* each line */
         NULL /* next pointer */
     };
 
-/* ps_common_memory_obj */
-struct line_data ps_common_memory_obj_raw =
+/* svg_cpu_usr_obj */
+struct line_data2 svg_cpu_usr_obj_raw =
     {
+        "", /* each line */
         "", /* each line */
         NULL /* next pointer */
     };
 
-/* ps_common_ldavg_obj */
-struct line_data ps_common_ldavg_obj_raw =
+/* svg_cpu_sys_obj */
+struct line_data2 svg_cpu_sys_obj_raw =
     {
+        "", /* each line */
         "", /* each line */
         NULL /* next pointer */
     };
 
-/* ps_common_io_transfer_rate_obj */
-struct line_data ps_common_io_transfer_rate_obj_raw =
+/* svg_cpu_iowait_obj */
+struct line_data2 svg_cpu_iowait_obj_raw =
     {
+        "", /* each line */
         "", /* each line */
         NULL /* next pointer */
     };
 
-/* ps_cpu_label_obj */
-struct line_data ps_cpu_label_obj_raw =
+/* svg_cpu_idle_obj */
+struct line_data2 svg_cpu_idle_obj_raw =
     {
         "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_cpu_usr_obj */
-struct line_data ps_cpu_usr_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_cpu_sys_obj */
-struct line_data ps_cpu_sys_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_cpu_iowait_obj */
-struct line_data ps_cpu_iowait_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_cpu_idle_obj */
-struct line_data ps_cpu_idle_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_paging_label_obj */
-struct line_data ps_paging_label_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_paging_pgpgin_obj */
-struct line_data ps_paging_pgpgin_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_paging_pgpgout_obj */
-struct line_data ps_paging_pgpgout_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_paging_fault_obj */
-struct line_data ps_paging_fault_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_paging_mjflt_obj */
-struct line_data ps_paging_mjflt_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_paging_vmeff_obj */
-struct line_data ps_paging_vmeff_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_memory_label_obj */
-struct line_data ps_memory_label_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_memory_memused_obj */
-struct line_data ps_memory_memused_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_memory_kbcommit_obj */
-struct line_data ps_memory_kbcommit_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_memory_commit_obj */
-struct line_data ps_memory_commit_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_swapping_label_obj */
-struct line_data ps_swapping_label_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_swapping_pswpin_obj */
-struct line_data ps_swapping_pswpin_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_swapping_pswpout_obj */
-struct line_data ps_swapping_pswpout_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_ldavg_label_obj */
-struct line_data ps_ldavg_label_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_ldavg_runq_obj */
-struct line_data ps_ldavg_runq_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_ldavg_plist_obj */
-struct line_data ps_ldavg_plist_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_ldavg_ldavg_one_obj */
-struct line_data ps_ldavg_ldavg_one_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_ldavg_ldavg_five_obj */
-struct line_data ps_ldavg_ldavg_five_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_ldavg_ldavg_15_obj */
-struct line_data ps_ldavg_ldavg_15_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_tasks_label_obj */
-struct line_data ps_tasks_label_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_tasks_proc_obj */
-struct line_data ps_tasks_proc_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_tasks_cswch_obj */
-struct line_data ps_tasks_cswch_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_restart_obj */
-struct line_data ps_restart_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_io_transfer_rate_label_obj */
-struct line_data ps_io_transfer_rate_label_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_io_transfer_rate_tps_obj */
-struct line_data ps_io_transfer_rate_tps_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_io_transfer_rate_bread_obj */
-struct line_data ps_io_transfer_rate_bread_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_io_transfer_rate_bwrtn_obj */
-struct line_data ps_io_transfer_rate_bwrtn_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_kernel_table_label_obj */
-struct line_data ps_kernel_table_label_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_kernel_table_dentunusd_obj */
-struct line_data ps_kernel_table_dentunusd_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_kernel_table_file_obj */
-struct line_data ps_kernel_table_file_obj_raw =
-    {
-        "", /* each line */
-        NULL /* next pointer */
-    };
-
-/* ps_kernel_table_inode_obj */
-struct line_data ps_kernel_table_inode_obj_raw =
-    {
         "", /* each line */
         NULL /* next pointer */
     };
@@ -1460,51 +1118,12 @@ struct line_data *report_thrashing_obj = &report_thrashing_obj_raw;
 struct line_data *report_network_down_obj [ MAX_NETWORK_DEVICE_NUMBERS ] = { &report_network_down_obj_raw };
 struct line_data *report_overall_judgement_obj = &report_overall_judgement_obj_raw;
 /* for each file */
-struct line_data *ps_common_cpu_obj [ MAX_ANALYZE_FILES ]= { &ps_common_cpu_obj_raw };
-struct line_data *ps_common_memory_obj [ MAX_ANALYZE_FILES ]= { &ps_common_memory_obj_raw };
-struct line_data *ps_common_ldavg_obj [ MAX_ANALYZE_FILES ]= { &ps_common_ldavg_obj_raw };
-struct line_data *ps_common_io_transfer_rate_obj [ MAX_ANALYZE_FILES ]= { &ps_common_io_transfer_rate_obj_raw };
+struct line_data *svg_common_cpu_obj = &svg_common_cpu_obj_raw;
 /* for file cpu */
-struct line_data *ps_cpu_label_obj [ MAX_ANALYZE_FILES ] = { &ps_cpu_label_obj_raw };
-struct line_data *ps_cpu_usr_obj [ MAX_ANALYZE_FILES ] = { &ps_cpu_usr_obj_raw };
-struct line_data *ps_cpu_sys_obj [ MAX_ANALYZE_FILES ] = { &ps_cpu_sys_obj_raw };
-struct line_data *ps_cpu_iowait_obj [ MAX_ANALYZE_FILES ] = { &ps_cpu_iowait_obj_raw };
-struct line_data *ps_cpu_idle_obj [ MAX_ANALYZE_FILES ] = { &ps_cpu_idle_obj_raw };
-struct line_data *ps_paging_label_obj [ MAX_ANALYZE_FILES ] = { &ps_cpu_label_obj_raw };
-struct line_data *ps_paging_pgpgin_obj [ MAX_ANALYZE_FILES ] = { &ps_paging_pgpgin_obj_raw };
-struct line_data *ps_paging_pgpgout_obj [ MAX_ANALYZE_FILES ] = { &ps_paging_pgpgout_obj_raw };
-struct line_data *ps_paging_fault_obj [ MAX_ANALYZE_FILES ] = { &ps_paging_fault_obj_raw };
-struct line_data *ps_paging_mjflt_obj [ MAX_ANALYZE_FILES ] = { &ps_paging_mjflt_obj_raw };
-struct line_data *ps_paging_vmeff_obj [ MAX_ANALYZE_FILES ] = { &ps_paging_vmeff_obj_raw };
-/* for file mem */
-struct line_data *ps_memory_label_obj [ MAX_ANALYZE_FILES ] = { &ps_cpu_label_obj_raw };
-struct line_data *ps_memory_memused_obj [ MAX_ANALYZE_FILES ] = { &ps_memory_memused_obj_raw };
-struct line_data *ps_memory_kbcommit_obj [ MAX_ANALYZE_FILES ] = { &ps_memory_kbcommit_obj_raw };
-struct line_data *ps_memory_commit_obj [ MAX_ANALYZE_FILES ] = { &ps_memory_commit_obj_raw };
-struct line_data *ps_swapping_label_obj [ MAX_ANALYZE_FILES ] = { &ps_swapping_label_obj_raw };
-struct line_data *ps_swapping_pswpin_obj [ MAX_ANALYZE_FILES ] = { &ps_swapping_pswpin_obj_raw };
-struct line_data *ps_swapping_pswpout_obj [ MAX_ANALYZE_FILES ] = { &ps_swapping_pswpout_obj_raw };
-/* for file ldv */
-struct line_data *ps_ldavg_label_obj [ MAX_ANALYZE_FILES ] = { &ps_ldavg_label_obj_raw };
-struct line_data *ps_ldavg_runq_obj [ MAX_ANALYZE_FILES ] = { &ps_ldavg_runq_obj_raw };
-struct line_data *ps_ldavg_plist_obj [ MAX_ANALYZE_FILES ] = { &ps_ldavg_plist_obj_raw };
-struct line_data *ps_ldavg_ldavg_one_obj [ MAX_ANALYZE_FILES ] = { &ps_ldavg_ldavg_one_obj_raw };
-struct line_data *ps_ldavg_ldavg_five_obj [ MAX_ANALYZE_FILES ] = { &ps_ldavg_ldavg_five_obj_raw };
-struct line_data *ps_ldavg_ldavg_15_obj [ MAX_ANALYZE_FILES ] = { &ps_ldavg_ldavg_15_obj_raw };
-struct line_data *ps_tasks_label_obj [ MAX_ANALYZE_FILES ] = { &ps_tasks_label_obj_raw };
-struct line_data *ps_tasks_proc_obj [ MAX_ANALYZE_FILES ] = { &ps_tasks_proc_obj_raw };
-struct line_data *ps_tasks_cswch_obj [ MAX_ANALYZE_FILES ] = { &ps_tasks_cswch_obj_raw };
-/* for file ior */
-struct line_data *ps_io_transfer_rate_label_obj [ MAX_ANALYZE_FILES ] = { &ps_io_transfer_rate_label_obj_raw };
-struct line_data *ps_io_transfer_rate_tps_obj [ MAX_ANALYZE_FILES ] = { &ps_io_transfer_rate_tps_obj_raw };
-struct line_data *ps_io_transfer_rate_bread_obj [ MAX_ANALYZE_FILES ] = { &ps_io_transfer_rate_bread_obj_raw };
-struct line_data *ps_io_transfer_rate_bwrtn_obj [ MAX_ANALYZE_FILES ] = { &ps_io_transfer_rate_bwrtn_obj_raw };
-struct line_data *ps_kernel_table_label_obj [ MAX_ANALYZE_FILES ] = { &ps_kernel_table_label_obj_raw };
-struct line_data *ps_kernel_table_dentunusd_obj [ MAX_ANALYZE_FILES ] = { &ps_kernel_table_dentunusd_obj_raw };
-struct line_data *ps_kernel_table_file_obj [ MAX_ANALYZE_FILES ] = { &ps_kernel_table_file_obj_raw };
-struct line_data *ps_kernel_table_inode_obj [ MAX_ANALYZE_FILES ] = { &ps_kernel_table_inode_obj_raw };
-/* for linux restart string */
-struct line_data *ps_restart_obj [ MAX_ANALYZE_FILES ] = { &ps_memory_commit_obj_raw };
+struct line_data2* svg_cpu_usr_obj = &svg_cpu_usr_obj_raw;
+struct line_data2* svg_cpu_sys_obj = &svg_cpu_sys_obj_raw;
+struct line_data2* svg_cpu_iowait_obj = &svg_cpu_iowait_obj_raw;
+struct line_data2* svg_cpu_idle_obj = &svg_cpu_idle_obj_raw;
 
 /*
  *  This function initialzes check int

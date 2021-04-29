@@ -238,7 +238,6 @@ int main(int argc, char* argv[])
     int mcinfo = 0;
     int sar_only = 0;
     int v = 0;
-    int x = 0;
     size_t time_span_str_len = 0;
     const char* time_span = NULL;
 
@@ -477,16 +476,12 @@ int main(int argc, char* argv[])
     file_to_write(SAR_OPTION);
 
     const char* sar_file_write = "";
-    char* file_ps_write = "";
+    char* file_svg_write = "";
     /* --------  for file write --------*/
     sar_file_write = get_sar_file_name_to_be_written();
-    file_ps_write = (char *)get_ps_file_name_to_be_written();
+    file_svg_write = (char *)get_svg_file_name_to_be_written();
     FILE* fp_sar_w = NULL;
-
-    FILE* fp_ps_w[MAX_ANALYZE_FILES];
-    FILE* fp_ps2_w[MAX_ANALYZE_FILES];
-    FILE* fp_ps3_w[MAX_ANALYZE_FILES];
-    FILE* fp_ps4_w[MAX_ANALYZE_FILES];
+    FILE* fp_svg_w = NULL;
 
     /* open result file */
     fp_sar_w = file_open_check(fp_sar_w, sar_file_write,"a", sar_only);
@@ -582,152 +577,25 @@ int main(int argc, char* argv[])
     /* close the file pointer */
     fclose(fp_sar_w);
 
-    for (v = 0, x = 1; v < MAX_ANALYZE_FILES; v++, x++) {
-        char str_tmp[MAX_LINE_LENGTH] = {'\0'};
-        memset(str_tmp, '\0', sizeof(str_tmp));
-        snprintf(str_tmp,MAX_LINE_LENGTH, "%s%s%d%s", file_ps_write, "-cpu-", x, ".ps");
-        fp_ps_w[v] = file_open_check(fp_ps_w[v], str_tmp,"a", sar_only);
-        snprintf(str_tmp, MAX_LINE_LENGTH, "%s%s%d%s", file_ps_write, "-mem-", x, ".ps");
-        fp_ps2_w[v] = file_open_check(fp_ps2_w[v], str_tmp,"a", sar_only);
-        snprintf(str_tmp, MAX_LINE_LENGTH, "%s%s%d%s", file_ps_write, "-ldv-", x, ".ps");
-        fp_ps3_w[v] = file_open_check(fp_ps3_w[v], str_tmp,"a", sar_only);
-        snprintf(str_tmp, MAX_LINE_LENGTH, "%s%s%d%s", file_ps_write, "-ior-", x, ".ps");
-        fp_ps4_w[v] = file_open_check(fp_ps4_w[v], str_tmp,"a", sar_only);
-    }
-    /* appending needed lines to ps obj -- this is needed we don't know the last line of each
-     * graph when drawing
-     */
-    for (v = 0; v < MAX_ANALYZE_FILES; v++) {
-        /* for file cpu */
-        append_list(&ps_cpu_usr_obj[v], "stroke");
-        append_list(&ps_cpu_sys_obj[v] , "stroke");
-        append_list(&ps_cpu_iowait_obj[v], "stroke");
-        append_list(&ps_cpu_idle_obj[v], "stroke");
-        append_list(&ps_paging_pgpgin_obj[v], "stroke");
-        append_list(&ps_paging_pgpgout_obj[v], "stroke");
-        append_list(&ps_paging_fault_obj[v], "stroke");
-        append_list(&ps_paging_mjflt_obj[v], "stroke");
-        append_list(&ps_paging_vmeff_obj[v], "stroke");
-        /* for file mem */
-        append_list(&ps_memory_memused_obj[v], "stroke");
-        append_list(&ps_memory_kbcommit_obj[v], "stroke");
-        append_list(&ps_memory_commit_obj[v], "stroke");
-        append_list(&ps_swapping_pswpin_obj[v], "stroke");
-        append_list(&ps_swapping_pswpout_obj[v], "stroke");
-        /* for file ldv */
-        append_list(&ps_ldavg_runq_obj[v], "stroke");
-        append_list(&ps_ldavg_plist_obj[v], "stroke");
-        append_list(&ps_ldavg_ldavg_one_obj[v], "stroke");
-        append_list(&ps_ldavg_ldavg_five_obj[v], "stroke");
-        append_list(&ps_ldavg_ldavg_15_obj[v], "stroke");
-        append_list(&ps_tasks_proc_obj[v], "stroke");
-        append_list(&ps_tasks_cswch_obj[v], "stroke");
-        /* for file ior */
-        append_list(&ps_io_transfer_rate_bread_obj[v], "stroke");
-        append_list(&ps_io_transfer_rate_bwrtn_obj[v], "stroke");
-        append_list(&ps_kernel_table_dentunusd_obj[v], "stroke");
-        append_list(&ps_kernel_table_file_obj[v], "stroke");
-        append_list(&ps_kernel_table_inode_obj[v], "stroke");
-        /* for linux restart string */
-        append_list(&ps_restart_obj[v], "stroke");
-        append_list(&ps_restart_obj[v], "%");
-    }
-    /* appending needed lines to ps obj -- adding % to the very last of each ps file */
-    for (v = 0; v < MAX_ANALYZE_FILES; v++) {
-        /* for file cpu */
-        append_list(&ps_paging_vmeff_obj[v], "%");
-        /* for file mem */
-        append_list(&ps_swapping_pswpout_obj[v], "%");
-        /* for file ldv */
-        append_list(&ps_ldavg_ldavg_15_obj[v], "%");
-        /* for file ior */
-        append_list(&ps_kernel_table_inode_obj[v], "%");
-    }
-    /* appending needed lines to ps obj -- adding % to the very last of each box */
-    for (v = 0; v < MAX_ANALYZE_FILES; v++) {
-        /* for file cpu */
-        append_list(&ps_cpu_label_obj[v], "stroke");
-        append_list(&ps_cpu_label_obj[v], "%");
-        append_list(&ps_paging_label_obj[v], "stroke");
-        append_list(&ps_paging_label_obj[v], "%");
-        /* for file mem */
-        append_list(&ps_memory_label_obj[v], "stroke");
-        append_list(&ps_memory_label_obj[v], "%");
-        append_list(&ps_swapping_label_obj[v], "stroke");
-        append_list(&ps_swapping_label_obj[v], "%");
-        /* for file ldv */
-        append_list(&ps_ldavg_label_obj[v], "stroke");
-        append_list(&ps_ldavg_label_obj[v], "%");
-        append_list(&ps_tasks_label_obj[v], "stroke");
-        append_list(&ps_tasks_label_obj[v], "%");
-        /* for file ior */
-        append_list(&ps_io_transfer_rate_label_obj[v], "stroke");
-        append_list(&ps_io_transfer_rate_label_obj[v], "%");
-        append_list(&ps_kernel_table_label_obj[v], "stroke");
-        append_list(&ps_kernel_table_label_obj[v], "%");
-    }
-    /* now we write obj to postscript (.ps) file */
-    for (v = 0; v < MAX_ANALYZE_FILES; v++) {
-        /* for file cpu */
-        file_write_list(&ps_common_cpu_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_cpu_label_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_cpu_usr_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_cpu_sys_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_cpu_iowait_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_cpu_idle_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_paging_label_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_paging_pgpgin_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_paging_pgpgout_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_paging_fault_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_paging_mjflt_obj[v], fp_ps_w[v]);
-        file_write_list(&ps_paging_vmeff_obj[v], fp_ps_w[v]);
-        /* for file mem */
-        file_write_list(&ps_common_memory_obj[v], fp_ps2_w[v]);
-        file_write_list(&ps_memory_label_obj[v], fp_ps2_w[v]);
-        file_write_list(&ps_memory_memused_obj[v], fp_ps2_w[v]);
-        file_write_list(&ps_memory_kbcommit_obj[v], fp_ps2_w[v]);
-        file_write_list(&ps_memory_commit_obj[v], fp_ps2_w[v]);
-        file_write_list(&ps_swapping_label_obj[v], fp_ps2_w[v]);
-        file_write_list(&ps_swapping_pswpin_obj[v], fp_ps2_w[v]);
-        file_write_list(&ps_swapping_pswpout_obj[v], fp_ps2_w[v]);
-        /* for file ldv */
-        file_write_list(&ps_common_ldavg_obj[v], fp_ps3_w[v]);
-        file_write_list(&ps_ldavg_label_obj[v], fp_ps3_w[v]);
-        file_write_list(&ps_ldavg_runq_obj[v], fp_ps3_w[v]);
-        file_write_list(&ps_ldavg_plist_obj[v], fp_ps3_w[v]);
-        file_write_list(&ps_ldavg_ldavg_one_obj[v], fp_ps3_w[v]);
-        file_write_list(&ps_ldavg_ldavg_five_obj[v], fp_ps3_w[v]);
-        file_write_list(&ps_ldavg_ldavg_15_obj[v], fp_ps3_w[v]);
-        file_write_list(&ps_tasks_label_obj[v], fp_ps3_w[v]);
-        file_write_list(&ps_tasks_proc_obj[v], fp_ps3_w[v]);
-        file_write_list(&ps_tasks_cswch_obj[v], fp_ps3_w[v]);
-        /* for file ior */
-        file_write_list(&ps_common_io_transfer_rate_obj[v], fp_ps4_w[v]);
-        file_write_list(&ps_io_transfer_rate_label_obj[v], fp_ps4_w[v]);
-        file_write_list(&ps_io_transfer_rate_tps_obj[v], fp_ps4_w[v]);
-        file_write_list(&ps_io_transfer_rate_bread_obj[v], fp_ps4_w[v]);
-        file_write_list(&ps_io_transfer_rate_bwrtn_obj[v], fp_ps4_w[v]);
-        file_write_list(&ps_kernel_table_label_obj[v], fp_ps4_w[v]);
-        file_write_list(&ps_kernel_table_dentunusd_obj[v], fp_ps4_w[v]);
-        file_write_list(&ps_kernel_table_file_obj[v], fp_ps4_w[v]);
-        file_write_list (&ps_kernel_table_inode_obj[v], fp_ps4_w[v]);
-        /* for linux restart string */
-        file_write_list (&ps_restart_obj[v], fp_ps_w[v]);
-        file_write_list (&ps_restart_obj[v], fp_ps2_w[v]);
-        file_write_list (&ps_restart_obj[v], fp_ps3_w[v]);
-        file_write_list (&ps_restart_obj[v], fp_ps4_w[v]);
-    }
+    char str_tmp_svg[MAX_LINE_LENGTH] = {'\0'};
+    memset(str_tmp_svg, '\0', sizeof(str_tmp_svg));
+    snprintf(str_tmp_svg,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-cpu-.svg");
+    fp_svg_w = file_open_check(fp_svg_w, str_tmp_svg,"a", sar_only);
+
+    /* create svg files */
+    void create_svg_file(node2** obj, char* item, FILE* fp_w);
+    create_svg_file(&svg_cpu_usr_obj, "cpu_usr", fp_svg_w);
+    create_svg_file(&svg_cpu_sys_obj, "cpu_sys", fp_svg_w);
+    create_svg_file(&svg_cpu_iowait_obj, "cpu_iowait", fp_svg_w);
+    create_svg_file(&svg_cpu_idle_obj, "cpu_idle", fp_svg_w);
+    /* end create svg files */
+
     char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
-    snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%s%s", file_ps_write, "-<item>-<no>.ps");
-    printf("Please check graphs in the ps file: %s\n\n", str_tmp_echo);
+    snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%s%s", file_svg_write, "-<item>.svg");
+    printf("Please check graphs in the svg file: %s\n\n", str_tmp_echo);
     /* close the file pointers */
-    for (v = 0; v < MAX_ANALYZE_FILES; v++) {
-        fclose(fp_ps_w[v]);
-        fclose(fp_ps2_w[v]);
-        fclose(fp_ps3_w[v]);
-        fclose(fp_ps4_w[v]);
-    }
+    fclose(fp_svg_w);
 
     /* freeing sar-analyzer objects */
     free_sar_analyzer_obj();
@@ -740,6 +608,104 @@ int main(int argc, char* argv[])
 
     exit(EXIT_SUCCESS);
 }
+
+void write_linux_line_to_file(node** obj, FILE* fp_w)
+{
+    char* str_thisbox_pre;
+    char str_thisbox[MAX_LINE_LENGTH];
+    memset(str_thisbox, '\0', sizeof(str_thisbox));
+    char* str_linux_first = "   <text x=\"320\" y=\"130\">";
+    char* str_linux_last = "</text>";
+    str_thisbox_pre = search_first_string(obj, "Linux");
+    char* cpus = get_cpus_from_string(str_thisbox_pre);
+    terminate_string(str_thisbox_pre, 3, " ");
+    snprintf(str_thisbox, MAX_LINE_LENGTH, "%s%s %s%s%s\n", str_linux_first, str_thisbox_pre,
+        cpus, " CPU All ", str_linux_last);
+    fprintf(fp_w, "%s", str_thisbox);
+}
+
+void create_svg_file(node2** obj, char* item, FILE* fp_w)
+{
+    /* bubble sort svg obj */
+    char* str_svg[20000] = { NULL };
+    memset(str_svg, '\0', sizeof(str_svg));
+    double size = bubble_sort_object_by_the_string2(str_svg, obj);
+    /* end bubble sort svg obj */
+    double horizontal_notch = 1000/size;
+    double width = 10.0;
+    char str_svg_draw[200000];
+    memset(str_svg_draw, '\0', sizeof(str_svg_draw));
+    if (strcmp(item, "cpu_usr") == 0) {
+        strncat(str_svg_draw, "  <path stroke=\"green\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
+    } else if (strcmp(item, "cpu_sys") == 0) {
+        strncat(str_svg_draw, "  <path stroke=\"blue\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
+    } else if (strcmp(item, "cpu_iowait") == 0) {
+        strncat(str_svg_draw, "  <path stroke=\"red\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
+    } else if (strcmp(item, "cpu_idle") == 0) {
+        strncat(str_svg_draw, "  <path stroke=\"yellow\" fill=\"none\" d=\"M 10 10 L " , 200000 - 1);
+    }
+    char str_horizontal_notch[256];
+    memset(str_horizontal_notch, '\0', sizeof(str_horizontal_notch));
+    char str_hundred[4];
+    char str_fifty[3];
+    char str_zero[2];
+    char str_hight[256];
+    char str_date[256];
+    char str_date_only[256];
+    char str_date_only_pre[256];
+    char str_time_only[512];
+    memset(str_hundred, '\0', sizeof(str_hundred));
+    memset(str_fifty, '\0', sizeof(str_fifty));
+    memset(str_zero, '\0', sizeof(str_zero));
+    memset(str_hight, '\0', sizeof(str_hight));
+    memset(str_date, '\0', sizeof(str_date));
+    memset(str_date_only, '\0', sizeof(str_date_only));
+    memset(str_date_only_pre, '\0', sizeof(str_date_only_pre));
+    memset(str_time_only, '\0', sizeof(str_time_only));
+    double j = 0.0;
+    for(int i=0; i<size; i++) {
+        if (strstr(str_svg[i], "CPU All")) {
+            width = width + horizontal_notch;
+            snprintf(str_horizontal_notch, MAX_FILE_NAME_LENGTH, "%f ", width);
+            strncat(str_svg_draw, str_horizontal_notch, 200000 - 1);
+            snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
+            snprintf(str_date, MAX_FILE_NAME_LENGTH, "%s ", get_date_from_string(str_svg[i]));
+            snprintf(str_date_only_pre, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 2, ","));
+            snprintf(str_date_only, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 1, ","));
+            snprintf(str_time_only, MAX_FILE_NAME_LENGTH, "%s ", get_str_from_string(str_date_only_pre, 1, ","));
+            strncat(str_svg_draw, str_hight, 200000 - 1);
+            if (strcmp(item, "cpu_usr") == 0) {
+                if (j == 0.0) {
+                    file_write_svg(item, str_svg_draw, 0, width, fp_w); 
+                    // start date and time
+                    file_write_date_svg(item, str_date_only, 0, width, "start", fp_w); 
+                    file_write_time_svg(item, str_time_only, 0, width, "start", fp_w); 
+                    // percentage string 
+                    fprintf(fp_w, "%s\n", "   <text x=\"0\" y=\"10\">100</text>");
+                    fprintf(fp_w, "%s\n", "   <text x=\"00\" y=\"60\">50</text>");
+                    fprintf(fp_w, "%s\n", "   <text x=\"0\" y=\"110\">0</text>");
+                }
+            }
+            j = j + 1.0;
+        }           
+    }
+    // end date and time
+    file_write_date_svg(item, str_date_only, 0, width, "end", fp_w); 
+    file_write_time_svg(item, str_time_only, 0, width, "end", fp_w); 
+    strncat(str_svg_draw, "\"/>", 200000 - 1);
+    fprintf(fp_w, "%s\n", str_svg_draw);
+    if (strcmp(item, "cpu_idle") == 0) {
+        fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
+        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"140\" fill=\"green\">green cpu_usr</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"155\" fill=\"blue\">blue cpu_sys</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"140\" fill=\"red\">red cpu_iowait</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"155\" fill=\"yellow\">yellow cpu_idle</text>");
+        fprintf(fp_w, "%s\n", "</g>");
+        write_linux_line_to_file(&line_all_obj, fp_w);
+        fprintf(fp_w, "%s\n", "</svg>");
+    }
+}
+
 
 int delete_files(void)
 {

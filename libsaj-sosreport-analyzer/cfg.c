@@ -210,7 +210,7 @@ int cfg_read(const char* file_name, int mcinfo, int sar_only)
     /* Here, we allow user's config file to be opend in the proper directory */
     const char* homedir;
     if ((homedir = getenv("HOME")) == NULL) {
-        homedir = getpwuid(getuid())->pw_dir;
+        homedir = getpwuid(getuid())->pw_dir;  
     }
     char config_dir_name_in_home[MAX_FILE_NAME_LENGTH];
     char config_file_name_in_home[MAX_FILE_NAME_LENGTH];
