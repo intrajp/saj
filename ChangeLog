@@ -36,3 +36,5 @@ Fix report.
 Fix minor coding problems.
 0.2.01
 Change graph featrure from postscript to SVG.
+0.2.2
+Fix SVG font size.
