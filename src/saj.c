@@ -679,11 +679,11 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
                     file_write_svg(item, str_svg_draw, 0, width, fp_w); 
                     // start date and time
                     file_write_date_svg(item, str_date_only, 0, width, "start", fp_w); 
-                    file_write_time_svg(item, str_time_only, 0, width, "start", fp_w); 
                     // percentage string 
                     fprintf(fp_w, "%s\n", "   <text x=\"0\" y=\"10\">100</text>");
                     fprintf(fp_w, "%s\n", "   <text x=\"00\" y=\"60\">50</text>");
                     fprintf(fp_w, "%s\n", "   <text x=\"0\" y=\"110\">0</text>");
+                    file_write_time_svg(item, str_time_only, 0, width, "start", fp_w); 
                 }
             }
             j = j + 1.0;
@@ -700,8 +700,8 @@ void create_svg_file(node2** obj, char* item, FILE* fp_w)
         fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"155\" fill=\"blue\">blue cpu_sys</text>");
         fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"140\" fill=\"red\">red cpu_iowait</text>");
         fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"155\" fill=\"yellow\">yellow cpu_idle</text>");
-        fprintf(fp_w, "%s\n", "</g>");
         write_linux_line_to_file(&line_all_obj, fp_w);
+        fprintf(fp_w, "%s\n", "</g>");
         fprintf(fp_w, "%s\n", "</svg>");
     }
 }

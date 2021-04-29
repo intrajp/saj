@@ -462,7 +462,6 @@ void file_write_date_svg(char* item, char* str, int data_lines, double width, ch
         char* str_date_last = "</text>";
         snprintf(str_date, MAX_LINE_LENGTH, "%s%s%s\n", str_date_first, str, str_date_last);
         fprintf(fp_w, "%s", str_date);
-        fprintf(fp_w, "%s\n", "</g>");
     }
 }
 
@@ -479,6 +478,7 @@ void file_write_time_svg(char* item, char* str, int data_lines, double width, ch
         char* str_time_last = "</text>";
         snprintf(str_time, MAX_LINE_LENGTH, "%s%s%s\n", str_time_first, str, str_time_last);
         fprintf(fp_w, "%s", str_time);
+        fprintf(fp_w, "%s\n", "</g>");
     }
 }
 
