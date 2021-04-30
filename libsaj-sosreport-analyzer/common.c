@@ -1075,14 +1075,14 @@ static int __read_file_from_analyze_dir(node** obj, const volatile char* member,
             (strcmp((const char*)member, "var/log/anaconda/") == 0)) {
             clear_list(&sos_line_obj);
             init_list(&sos_line_obj);
-            char result_tmp_pre[MAX_LINE_LENGTH - 100]; 
-            memset(result_tmp_pre, '\0', MAX_LINE_LENGTH - 100); 
+            char result_tmp_pre[MAX_LINE_LENGTH]; 
+            memset(result_tmp_pre, '\0', sizeof(result_tmp_pre)); 
             char result_tmp[MAX_LINE_LENGTH - 100]; 
-            memset(result_tmp, '\0', MAX_LINE_LENGTH - 100); 
+            memset(result_tmp, '\0', sizeof(result_tmp)); 
             char* hairline1 = "########";
             char* hairline2 = "<<<<";
             search_list(&sos_header_obj, member, result_tmp_pre);
-            snprintf(result_tmp, MAX_LINE_LENGTH - 1, "(config setting is %s)", result_tmp_pre);
+            snprintf(result_tmp, MAX_LINE_LENGTH + 20, "(config setting is %s)", result_tmp_pre);
             if (files==0) {
                 append_list(&sos_line_obj, "");
                 append_list(&sos_line_obj, hairline1);
@@ -1236,10 +1236,10 @@ int read_file_pre(const volatile char* member, const char* dir_name, int mcinfo,
     memset(str_tmp, '\0', sizeof(str_tmp)); 
     char str_tmp2[MAX_LINE_LENGTH];
     memset(str_tmp2, '\0', sizeof(str_tmp2));
-    char result_tmp_pre[MAX_LINE_LENGTH - 100]; 
+    char result_tmp_pre[MAX_LINE_LENGTH]; 
     memset(result_tmp_pre, '\0', sizeof(result_tmp_pre)); 
 
-    char result_tmp[MAX_LINE_LENGTH - 100]; 
+    char result_tmp[MAX_LINE_LENGTH + 20]; 
     memset(result_tmp, '\0', sizeof(result_tmp)); 
     char str_tmp3[MAX_LINE_LENGTH - 100]; 
     memset(str_tmp3, '\0', sizeof(str_tmp3)); 
@@ -1248,7 +1248,7 @@ int read_file_pre(const volatile char* member, const char* dir_name, int mcinfo,
     char *hairline2 = "<<<<";
 
     search_list(&sos_header_obj, member, result_tmp_pre);
-    snprintf(result_tmp, MAX_LINE_LENGTH - 1, "(config setting is %s)", result_tmp_pre);
+    snprintf(result_tmp, sizeof(result_tmp), "(config setting is %s)", result_tmp_pre);
     snprintf(str_tmp, MAX_LINE_LENGTH - 1, "%s/%s", get_dirname(str_tmp3), member);
     snprintf(str_tmp2, MAX_LINE_LENGTH - 1, "file:%s", str_tmp);
 
@@ -1450,9 +1450,9 @@ int check_time_span_str(const char* time_span_str)
     return 1;
 }
 
-const char* get_dirname(char str_tmp[MAX_LINE_LENGTH])
+const char* get_dirname(char str_tmp[MAX_FILE_NAME_LENGTH])
 {
-    strncpy(str_tmp, sos_dir_file_obj->dir_file_names.dirname, MAX_LINE_LENGTH);
+    strncpy(str_tmp, sos_dir_file_obj->dir_file_names.dirname, MAX_FILE_NAME_LENGTH);
     return str_tmp;
 }
 
@@ -1704,7 +1704,7 @@ void sos_file_to_write(int sar_only)
     /* for sos file */
     strncat(buff_sos, f_t, MAX_FILE_NAME_LENGTH - 1);
     strncat(buff_sos, ".txt", MAX_FILE_NAME_LENGTH - 1);
-    /* Here we use strcpy. No worry, buff is surely under MAX_FILE_NAME_LENGTH */;
+    /* Be sure that buff is surely under MAX_FILE_NAME_LENGTH */;
     strncpy(sos_dir_file_obj->dir_file_names.sos_file_name_to_be_written, buff_sos,
         MAX_FILE_NAME_LENGTH);
 
@@ -1712,7 +1712,7 @@ void sos_file_to_write(int sar_only)
     strncat(buff_analyze, "_analyze", MAX_FILE_NAME_LENGTH - 1);
     strncat(buff_analyze, f_t, MAX_FILE_NAME_LENGTH - 1);
     strncat(buff_analyze, ".txt", MAX_FILE_NAME_LENGTH - 1);
-    /* Here we use strcpy. No worry, buff is surely under MAX_FILE_NAME_LENGTH */;
+    /* Be sure buff is surely under MAX_FILE_NAME_LENGTH */;
     strncpy(sos_dir_file_obj->dir_file_names.sos_analyze_file_name_to_be_written,
         buff_analyze, MAX_FILE_NAME_LENGTH);
 

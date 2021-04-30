@@ -146,7 +146,7 @@ int check_time_span_str(const char* time_span_str);
  * Calls : none
  *
  */
-const char* get_dirname(char[MAX_LINE_LENGTH]);
+const char* get_dirname(char[MAX_FILE_NAME_LENGTH]);
 
 /*
  * Function Name: get_sos_file_name_to_be_written()
