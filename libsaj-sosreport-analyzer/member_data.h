@@ -54,7 +54,7 @@ int append_member(volatile node_m **obj, char *member, int mcinfo, bool read_dir
  *  Calls : none
  *
  */
-char *search_member(node_m **obj, const char *member, char result[MAX_LINE_LENGTH]);
+char *search_member(node_m **obj, const char *member, char result[MAX_MEMBER_LENGTH]);
 
 int delete_obj_m(node_m **obj);
 int clear_member(volatile node_m **obj);

@@ -142,16 +142,16 @@ int bubble_sort_object_m_by_the_string(node_m** obj,
     return obj_size;
 }
 
-char* search_member(node_m** obj, const char* member, char result[MAX_LINE_LENGTH])
+char* search_member(node_m** obj, const char* member, char result[MAX_MEMBER_LENGTH])
 {
     node_m* ptr_tmp = *obj;
-    char str_cmp_member[MAX_LINE_LENGTH];
-    memset(str_cmp_member, '\0', MAX_LINE_LENGTH); 
-    char str_cmp__member[MAX_LINE_LENGTH];
-    memset(str_cmp__member, '\0', MAX_LINE_LENGTH); 
+    char str_cmp_member[MAX_MEMBER_LENGTH];
+    memset(str_cmp_member, '\0', MAX_MEMBER_LENGTH); 
+    char str_cmp__member[MAX_MEMBER_LENGTH];
+    memset(str_cmp__member, '\0', MAX_MEMBER_LENGTH); 
     strcpy(str_cmp_member, member);
-    memset(result, '\0', MAX_LINE_LENGTH); 
-    char* result_p = & (result[MAX_LINE_LENGTH]);
+    memset(result, '\0', MAX_MEMBER_LENGTH); 
+    char* result_p = & (result[MAX_MEMBER_LENGTH]);
 
     const char s[8] = "="; /* this is the delimiter */
 
