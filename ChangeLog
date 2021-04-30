@@ -42,3 +42,5 @@ Fix SVG font size.
 Fix SVG font color.
 0.2.4
 Fix machine title position in SVG file.
+0.2.5
+Fix char array in directory read and others.
