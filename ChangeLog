@@ -38,3 +38,7 @@ Fix minor coding problems.
 Change graph featrure from postscript to SVG.
 0.2.2
 Fix SVG font size.
+0.2.3
+Fix SVG font color.
+0.2.4
+Fix machine title position in SVG file.
