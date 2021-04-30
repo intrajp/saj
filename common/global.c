@@ -58,7 +58,7 @@ int remove_the_last_slash_from_dir_name(const char* dir_name)
         printf("dir_name_copied:%s\n",dir_name);
         printf("set_dirname:%d\n", set_dirname);
         strncpy(sos_dir_file_obj->dir_file_names.dirname, dir_name,
-            MAX_FILE_NAME_LENGTH);
+            MAX_FILE_NAME_LENGTH - 1);
         set_dirname = 1;
     }
     return 0;
