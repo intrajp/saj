@@ -592,7 +592,7 @@ int main(int argc, char* argv[])
 
     char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
-    snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%s%s", file_svg_write, "-<item>.svg");
+    snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%s%s", file_svg_write, "-<item>-.svg");
     printf("Please check graphs in the svg file: %s\n\n", str_tmp_echo);
     /* close the file pointers */
     fclose(fp_svg_w);
@@ -607,21 +607,6 @@ int main(int argc, char* argv[])
          (double)(tv2.tv_sec - tv1.tv_sec));
 
     exit(EXIT_SUCCESS);
-}
-
-void write_linux_line_to_file(node** obj, FILE* fp_w)
-{
-    char* str_thisbox_pre;
-    char str_thisbox[MAX_LINE_LENGTH];
-    memset(str_thisbox, '\0', sizeof(str_thisbox));
-    char* str_linux_first = "   <text x=\"320\" y=\"130\">";
-    char* str_linux_last = "</text>";
-    str_thisbox_pre = search_first_string(obj, "Linux");
-    char* cpus = get_cpus_from_string(str_thisbox_pre);
-    terminate_string(str_thisbox_pre, 3, " ");
-    snprintf(str_thisbox, MAX_LINE_LENGTH, "%s%s %s%s%s\n", str_linux_first, str_thisbox_pre,
-        cpus, " CPU All ", str_linux_last);
-    fprintf(fp_w, "%s", str_thisbox);
 }
 
 void create_svg_file(node2** obj, char* item, FILE* fp_w)
