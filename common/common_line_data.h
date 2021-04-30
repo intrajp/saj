@@ -64,7 +64,7 @@ typedef struct line_data2
 typedef struct
 {
     /* file name to be written */
-    char dirname[MAX_LINE_LENGTH];
+    char dirname[MAX_FILE_NAME_LENGTH];
     /* sos file name to be written */
     char sos_file_name_to_be_written[MAX_LINE_LENGTH];
     /* sos analyze file name to be written */
