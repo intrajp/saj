@@ -1868,6 +1868,8 @@ int create_sar_analyzer_obj()
     init_list2(&svg_cpu_sys_obj);
     init_list2(&svg_cpu_iowait_obj);
     init_list2(&svg_cpu_idle_obj);
+    init_list2(&svg_memory_memused_obj);
+    init_list2(&svg_memory_swpused_obj);
 
     return 0;
 }
@@ -1946,6 +1948,8 @@ int free_sar_analyzer_obj()
     clear_list2(&svg_cpu_sys_obj);
     clear_list2(&svg_cpu_iowait_obj);
     clear_list2(&svg_cpu_idle_obj);
+    clear_list2(&svg_memory_memused_obj);
+    clear_list2(&svg_memory_swpused_obj);
 
     return 0;
 }
