@@ -438,7 +438,7 @@ char* terminate_string(char* str, int point, char* delimiter)
 
 void file_write_svg(char* item, char* str, int data_lines, double width, FILE* fp_w)
 {
-    if ((strcmp(item, "cpu_usr") == 0) && (data_lines == 0)) {
+    if (((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused") == 0)) && (data_lines == 0)) {
         fprintf(fp_w, "%s\n", "<svg width=\"1010\" height=\"160\" xmlns=\"http://www.w3.org/2000/svg\">");
         fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"10\" y2=\"110\" stroke=\"gray\"/>");
         fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"1010\" y2=\"10\" stroke=\"gray\"/>");
@@ -450,7 +450,7 @@ void file_write_svg(char* item, char* str, int data_lines, double width, FILE* f
 
 void file_write_date_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w)
 {
-    if ((strcmp(item, "cpu_usr") == 0) && (data_lines == 0)) {
+    if (((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused")) == 0) && (data_lines == 0)) {
         fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
         char str_date[MAX_LINE_LENGTH];
         memset(str_date, '\0', sizeof(str_date));
@@ -467,7 +467,7 @@ void file_write_date_svg(char* item, char* str, int data_lines, double width, ch
 
 void file_write_time_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w)
 {
-    if ((strcmp(item, "cpu_usr") == 0) && (data_lines == 0)) {
+    if (((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused")) == 0) && (data_lines == 0)) {
         char str_time[MAX_LINE_LENGTH];
         memset(str_time, '\0', sizeof(str_time));
         char* str_time_first = NULL;
@@ -482,7 +482,7 @@ void file_write_time_svg(char* item, char* str, int data_lines, double width, ch
     }
 }
 
-void write_linux_line_to_file(node** obj, FILE* fp_w)
+void write_linux_line_to_file(node** obj, char* item, FILE* fp_w)
 {
     char* str_thisbox_pre;
     char str_thisbox[MAX_LINE_LENGTH];
@@ -492,9 +492,105 @@ void write_linux_line_to_file(node** obj, FILE* fp_w)
     str_thisbox_pre = search_first_string(obj, "Linux");
     char* cpus = get_cpus_from_string(str_thisbox_pre);
     terminate_string(str_thisbox_pre, 3, " ");
-    snprintf(str_thisbox, MAX_LINE_LENGTH, "%s%s %s%s%s\n", str_linux_first, str_thisbox_pre,
-        cpus, " CPU All ", str_linux_last);
+    if (strcmp(item, " CPU All ") == 0)
+        snprintf(str_thisbox, MAX_LINE_LENGTH, "%s%s %s%s%s\n", str_linux_first, str_thisbox_pre,
+            cpus, item, str_linux_last);
+    else
+        snprintf(str_thisbox, MAX_LINE_LENGTH, "%s%s %s%s\n", str_linux_first, str_thisbox_pre,
+            item, str_linux_last);
     fprintf(fp_w, "%s", str_thisbox);
+}
+
+void create_svg_file(node2** obj, char* item, FILE* fp_w)
+{
+    /* bubble sort svg obj */
+    char* str_svg[20000] = { NULL };
+    memset(str_svg, '\0', sizeof(str_svg));
+    double size = bubble_sort_object_by_the_string2(str_svg, obj);
+    /* end bubble sort svg obj */
+    double horizontal_notch = 1000/size;
+    double width = 10.0;
+    char str_svg_draw[200000];
+    memset(str_svg_draw, '\0', sizeof(str_svg_draw));
+    if ((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused") == 0)){
+        strncat(str_svg_draw, "  <path stroke=\"green\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
+    } else if (strcmp(item, "cpu_sys") == 0) {
+        strncat(str_svg_draw, "  <path stroke=\"blue\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
+    } else if ((strcmp(item, "cpu_iowait") == 0) || (strcmp(item, "memory_swpused") == 0)){
+        strncat(str_svg_draw, "  <path stroke=\"red\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
+    } else if (strcmp(item, "cpu_idle") == 0) {
+        strncat(str_svg_draw, "  <path stroke=\"orange\" fill=\"none\" d=\"M 10 10 L " , 200000 - 1);
+    }
+    char str_horizontal_notch[256];
+    memset(str_horizontal_notch, '\0', sizeof(str_horizontal_notch));
+    char str_hundred[4];
+    char str_fifty[3];
+    char str_zero[2];
+    char str_hight[256];
+    char str_date[256];
+    char str_date_only[256];
+    char str_date_only_pre[256];
+    char str_time_only[512];
+    memset(str_hundred, '\0', sizeof(str_hundred));
+    memset(str_fifty, '\0', sizeof(str_fifty));
+    memset(str_zero, '\0', sizeof(str_zero));
+    memset(str_hight, '\0', sizeof(str_hight));
+    memset(str_date, '\0', sizeof(str_date));
+    memset(str_date_only, '\0', sizeof(str_date_only));
+    memset(str_date_only_pre, '\0', sizeof(str_date_only_pre));
+    memset(str_time_only, '\0', sizeof(str_time_only));
+    double j = 0.0;
+    for(int i=0; i<size; i++) {
+        if ((strstr(str_svg[i], "CPU All"))||(strstr(str_svg[i], "used"))) {
+            width = width + horizontal_notch;
+            snprintf(str_horizontal_notch, MAX_FILE_NAME_LENGTH, "%f ", width);
+            strncat(str_svg_draw, str_horizontal_notch, 200000 - 1);
+            snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
+            snprintf(str_date, MAX_FILE_NAME_LENGTH, "%s ", get_date_from_string(str_svg[i]));
+            snprintf(str_date_only_pre, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 2, ","));
+            snprintf(str_date_only, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 1, ","));
+            snprintf(str_time_only, MAX_FILE_NAME_LENGTH, "%s ", get_str_from_string(str_date_only_pre, 1, ","));
+            strncat(str_svg_draw, str_hight, 200000 - 1);
+            if ((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused")) == 0){
+                if (j == 0.0) {
+                    file_write_svg(item, str_svg_draw, 0, width, fp_w); 
+                    // start date and time
+                    file_write_date_svg(item, str_date_only, 0, width, "start", fp_w); 
+                    // percentage string 
+                    fprintf(fp_w, "%s\n", "   <text x=\"0\" y=\"10\">100</text>");
+                    fprintf(fp_w, "%s\n", "   <text x=\"00\" y=\"60\">50</text>");
+                    fprintf(fp_w, "%s\n", "   <text x=\"0\" y=\"110\">0</text>");
+                    file_write_time_svg(item, str_time_only, 0, width, "start", fp_w); 
+                }
+            }
+            j = j + 1.0;
+        }           
+    }
+    // end date and time
+    file_write_date_svg(item, str_date_only, 0, width, "end", fp_w); 
+    file_write_time_svg(item, str_time_only, 0, width, "end", fp_w); 
+    strncat(str_svg_draw, "\"/>", 200000 - 1);
+    fprintf(fp_w, "%s\n", str_svg_draw);
+    if (strcmp(item, "cpu_idle") == 0) {
+        fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
+        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"140\" fill=\"green\">green cpu_usr</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"155\" fill=\"blue\">blue cpu_sys</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"140\" fill=\"red\">red cpu_iowait</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"90\" y=\"155\" fill=\"orange\">orange cpu_idle</text>");
+        write_linux_line_to_file(&line_all_obj, " CPU All ", fp_w);
+        fprintf(fp_w, "%s\n", "   <text x=\"900\" y=\"155\">Powered by saj.</text>");
+        fprintf(fp_w, "%s\n", "</g>");
+        fprintf(fp_w, "%s\n", "</svg>");
+    }
+    if (strcmp(item, "memory_swpused") == 0) {
+        fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
+        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"140\" fill=\"green\">green memory_memused</text>");
+        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"155\" fill=\"red\">red memory_swpused</text>");
+        write_linux_line_to_file(&line_all_obj, " Memory ", fp_w);
+        fprintf(fp_w, "%s\n", "   <text x=\"900\" y=\"155\">Powered by saj.</text>");
+        fprintf(fp_w, "%s\n", "</g>");
+        fprintf(fp_w, "%s\n", "</svg>");
+    }
 }
 
 int clear_list(node** obj)
