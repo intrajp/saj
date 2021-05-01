@@ -443,6 +443,7 @@ void file_write_svg(char* item, char* str, int data_lines, double width, FILE* f
         fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"10\" y2=\"110\" stroke=\"gray\"/>");
         fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"1010\" y2=\"10\" stroke=\"gray\"/>");
         fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"110\" x2=\"1010\" y2=\"110\" stroke=\"gray\"/>");
+        fprintf(fp_w, "%s\n", "  <line x1=\"1010\" y1=\"10\" x2=\"1010\" y2=\"110\" stroke=\"gray\"/>");
     } else {
         fprintf(fp_w, "%s\n", str);
     }

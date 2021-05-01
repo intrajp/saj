@@ -479,7 +479,7 @@ Binary path: /usr/local/bin/saj
   When the file sanity check fails, program stops echoing the reason.
   In that case, move the very file to other than <sosreport-dir>/var/log/sa and run the program again. 
   Or you may reading file including Japanese although machine locale is not JP.
-  In that case, edit libsar-analyzer/Makefile.am to use common_jp.c and sar_analyzer_jp.c.
+  In that case, edit libsaj-sar-analyzer/Makefile.am to use common_jp.c and sar_analyzer_jp.c.
 
 ## Getting "sar file"
 
