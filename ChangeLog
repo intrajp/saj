@@ -56,3 +56,5 @@ Add block device util (only 2 devices) to SVG file.
 Fix block device util (4 device names) to SVG file.
 0.2.11
 Fix font size in SVG file.
+0.2.12
+Fix SVG file.
