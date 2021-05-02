@@ -599,7 +599,7 @@ int main(int argc, char* argv[])
     create_svg_file(&svg_cpu_idle_obj, "cpu_idle", fp_svg_w, 0);
     create_svg_file(&svg_memory_memused_obj, "memory_memused", fp_svg2_w, 0);
     create_svg_file(&svg_memory_swpused_obj, "memory_swpused", fp_svg2_w, 0);
-    for (v = 1; v <= get_block_device_numbers(); v++) {
+    for (v = 1; v < get_block_device_numbers(); v++) {
         create_svg_file(&svg_block_device_util_obj[v], "block_device_util", fp_svg3_w, v);
     }
     /* end create svg files */
