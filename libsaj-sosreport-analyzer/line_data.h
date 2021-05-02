@@ -56,7 +56,7 @@ void file_write_svg(char* item, char* str, int data_lines, double width, FILE* f
 void file_write_date_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w);
 void file_write_time_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w);
 void write_linux_line_to_file(node** obj, char* item, FILE* fp_w);
-void create_svg_file(node2** obj, char* item, FILE* fp_w);
+int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility);
 int clear_list2(node2** obj);
 
 /*
