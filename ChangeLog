@@ -52,3 +52,5 @@ Add memory usage to SVG file.
 Fix SVG graph.
 0.2.9
 Add block device util (only 2 devices) to SVG file.
+0.2.10
+Fix block device util (4 device names) to SVG file.
