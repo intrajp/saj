@@ -458,9 +458,9 @@ void file_write_date_svg(char* item, char* str, int data_lines, double width, ch
         memset(str_date, '\0', sizeof(str_date));
         char* str_date_first = NULL;
         if (strcmp(start, "start") == 0)
-            str_date_first = "   <text x=\"10\" y=\"120\">";
+            str_date_first = "  <text x=\"10\" y=\"120\">";
         if (strcmp(start, "end") == 0)
-            str_date_first = "   <text x=\"955\" y=\"120\">";
+            str_date_first = "  <text x=\"955\" y=\"120\">";
         char* str_date_last = "</text>";
         snprintf(str_date, MAX_LINE_LENGTH, "%s%s%s\n", str_date_first, str, str_date_last);
         fprintf(fp_w, "%s", str_date);
@@ -475,9 +475,9 @@ void file_write_time_svg(char* item, char* str, int data_lines, double width, ch
         memset(str_time, '\0', sizeof(str_time));
         char* str_time_first = NULL;
         if (strcmp(start, "start") == 0)
-            str_time_first = "   <text x=\"10\" y=\"130\">";
+            str_time_first = "  <text x=\"10\" y=\"130\">";
         if (strcmp(start, "end") == 0)
-            str_time_first = "   <text x=\"955\" y=\"130\">";
+            str_time_first = "  <text x=\"955\" y=\"130\">";
         char* str_time_last = "</text>";
         snprintf(str_time, MAX_LINE_LENGTH, "%s%s%s\n", str_time_first, str, str_time_last);
         fprintf(fp_w, "%s", str_time);
@@ -490,7 +490,7 @@ void write_linux_line_to_file(node** obj, char* item, FILE* fp_w)
     char* str_thisbox_pre;
     char str_thisbox[MAX_LINE_LENGTH];
     memset(str_thisbox, '\0', sizeof(str_thisbox));
-    char* str_linux_first = "   <text x=\"50\" y=\"8\">";
+    char* str_linux_first = "  <text x=\"50\" y=\"8\">";
     char* str_linux_last = "</text>";
     str_thisbox_pre = search_first_string(obj, "Linux");
     char* cpus = get_cpus_from_string(str_thisbox_pre);
@@ -580,9 +580,9 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
                     // start date and time
                     file_write_date_svg(item, str_date_only, 0, width, "start", fp_w); 
                     // percentage string 
-                    fprintf(fp_w, "%s\n", "   <text x=\"0\" y=\"10\">100</text>");
-                    fprintf(fp_w, "%s\n", "   <text x=\"00\" y=\"60\">50</text>");
-                    fprintf(fp_w, "%s\n", "   <text x=\"0\" y=\"110\">0</text>");
+                    fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">100</text>");
+                    fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">50</text>");
+                    fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
                     file_write_time_svg(item, str_time_only, 0, width, "start", fp_w); 
                 }
             }
@@ -602,34 +602,33 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
     fprintf(fp_w, "%s\n", str_svg_draw);
     if (strcmp(item, "cpu_idle") == 0) {
         fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
-        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"145\" fill=\"green\">cpu_usr</text>");
-        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"155\" fill=\"blue\">cpu_sys</text>");
-        fprintf(fp_w, "%s\n", "   <text x=\"60\" y=\"145\" fill=\"red\">cpu_iowait</text>");
-        fprintf(fp_w, "%s\n", "   <text x=\"60\" y=\"155\" fill=\"orange\">cpu_idle</text>");
+        fprintf(fp_w, "%s\n", "  <text x=\"10\" y=\"145\" fill=\"green\">cpu_usr</text>");
+        fprintf(fp_w, "%s\n", "  <text x=\"10\" y=\"155\" fill=\"blue\">cpu_sys</text>");
+        fprintf(fp_w, "%s\n", "  <text x=\"60\" y=\"145\" fill=\"red\">cpu_iowait</text>");
+        fprintf(fp_w, "%s\n", "  <text x=\"60\" y=\"155\" fill=\"orange\">cpu_idle</text>");
         write_linux_line_to_file(&line_all_obj, " CPU All (%)", fp_w);
-        fprintf(fp_w, "%s\n", "   <text x=\"900\" y=\"155\">Powered by saj.</text>");
+        fprintf(fp_w, "%s\n", "  <text x=\"900\" y=\"155\">Powered by saj.</text>");
         fprintf(fp_w, "%s\n", "</g>");
         fprintf(fp_w, "%s\n", "</svg>");
-    }
-    if (strcmp(item, "memory_swpused") == 0) {
+    } else if (strcmp(item, "memory_swpused") == 0) {
         fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
-        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"145\" fill=\"green\">memory_memused</text>");
-        fprintf(fp_w, "%s\n", "   <text x=\"10\" y=\"155\" fill=\"red\">memory_swpused</text>");
+        fprintf(fp_w, "%s\n", "  <text x=\"10\" y=\"145\" fill=\"green\">memory_memused</text>");
+        fprintf(fp_w, "%s\n", "  <text x=\"10\" y=\"155\" fill=\"red\">memory_swpused</text>");
         write_linux_line_to_file(&line_all_obj, " Memory (%)", fp_w);
-        fprintf(fp_w, "%s\n", "   <text x=\"900\" y=\"155\">Powered by saj.</text>");
+        fprintf(fp_w, "%s\n", "  <text x=\"900\" y=\"155\">Powered by saj.</text>");
         fprintf(fp_w, "%s\n", "</g>");
         fprintf(fp_w, "%s\n", "</svg>");
-    }
-    if (strcmp(item, "block_device_util") == 0) {
+    } else if (strcmp(item, "block_device_util") == 0) {
         if (utility == 1) {
-            strncpy(str_device_name, "   <text x=\"10\" y=\"145\" fill=\"green\">", 43);
+            fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
+            strncpy(str_device_name, "  <text x=\"10\" y=\"145\" fill=\"green\">", 43);
         } else if (utility == 2) {
-            strncpy(str_device_name, "   <text x=\"10\" y=\"155\" fill=\"blue\">", 43);
+            strncpy(str_device_name, "  <text x=\"10\" y=\"155\" fill=\"blue\">", 43);
         } else if (utility == 3) {
-            strncpy(str_device_name, "   <text x=\"70\" y=\"145\" fill=\"orange\">", 43);
+            strncpy(str_device_name, "  <text x=\"70\" y=\"145\" fill=\"orange\">", 43);
         // Here we set only 4 devices in this version.
         } else if (utility == 4) {
-            strncpy(str_device_name, "   <text x=\"70\" y=\"155\" fill=\"yellow\">", 43);
+            strncpy(str_device_name, "  <text x=\"70\" y=\"155\" fill=\"yellow\">", 43);
         }
         snprintf(str_device_name_this, 100, "%s ", get_block_device_names(utility));
         strncat(str_device_name, str_device_name_this, 100);
@@ -639,9 +638,8 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
         // We deduce 1 because last device name is 'ignore'.
         if ((block_devices -1 == utility) || (utility == 4)){
             write_linux_line_to_file(&line_all_obj, " Disk util up to 4 device names (%)", fp_w);
-            fprintf(fp_w, "%s\n", "   <text x=\"900\" y=\"155\">Powered by saj.</text>");
-            if (strcmp(item, "block_device_util") != 0)
-                fprintf(fp_w, "%s\n", "</g>");
+            fprintf(fp_w, "%s\n", "  <text x=\"900\" y=\"155\">Powered by saj.</text>");
+            fprintf(fp_w, "%s\n", "</g>");
             fprintf(fp_w, "%s\n", "</svg>");
         }
     }
