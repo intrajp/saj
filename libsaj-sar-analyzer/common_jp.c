@@ -1870,6 +1870,9 @@ int create_sar_analyzer_obj()
     init_list2(&svg_cpu_idle_obj);
     init_list2(&svg_memory_memused_obj);
     init_list2(&svg_memory_swpused_obj);
+    for (v = 0; v < MAX_BLOCK_DEVICE_NUMBERS; v++) {
+        init_list2(&svg_block_device_util_obj[v]);
+    }
 
     return 0;
 }
@@ -1950,6 +1953,9 @@ int free_sar_analyzer_obj()
     clear_list2(&svg_cpu_idle_obj);
     clear_list2(&svg_memory_memused_obj);
     clear_list2(&svg_memory_swpused_obj);
+    for (v = 0; v < MAX_BLOCK_DEVICE_NUMBERS; v++) {
+        clear_list2(&svg_block_device_util_obj[v]);
+    }
 
     return 0;
 }

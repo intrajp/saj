@@ -483,6 +483,7 @@ int main(int argc, char* argv[])
     FILE* fp_sar_w = NULL;
     FILE* fp_svg_w = NULL;
     FILE* fp_svg2_w = NULL;
+    FILE* fp_svg3_w = NULL;
 
     /* open result file */
     fp_sar_w = file_open_check(fp_sar_w, sar_file_write,"a", sar_only);
@@ -580,20 +581,27 @@ int main(int argc, char* argv[])
 
     char str_tmp_svg[MAX_LINE_LENGTH] = {'\0'};
     char str_tmp_svg2[MAX_LINE_LENGTH] = {'\0'};
+    char str_tmp_svg3[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp_svg, '\0', sizeof(str_tmp_svg));
     memset(str_tmp_svg2, '\0', sizeof(str_tmp_svg2));
+    memset(str_tmp_svg3, '\0', sizeof(str_tmp_svg3));
     snprintf(str_tmp_svg,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-cpu-.svg");
     snprintf(str_tmp_svg2,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-memory-.svg");
+    snprintf(str_tmp_svg3,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-disk-.svg");
     fp_svg_w = file_open_check(fp_svg_w, str_tmp_svg,"a", sar_only);
     fp_svg2_w = file_open_check(fp_svg2_w, str_tmp_svg2,"a", sar_only);
+    fp_svg3_w = file_open_check(fp_svg3_w, str_tmp_svg3,"a", sar_only);
 
     /* create svg files */
-    create_svg_file(&svg_cpu_usr_obj, "cpu_usr", fp_svg_w);
-    create_svg_file(&svg_cpu_sys_obj, "cpu_sys", fp_svg_w);
-    create_svg_file(&svg_cpu_iowait_obj, "cpu_iowait", fp_svg_w);
-    create_svg_file(&svg_cpu_idle_obj, "cpu_idle", fp_svg_w);
-    create_svg_file(&svg_memory_memused_obj, "memory_memused", fp_svg2_w);
-    create_svg_file(&svg_memory_swpused_obj, "memory_swpused", fp_svg2_w);
+    create_svg_file(&svg_cpu_usr_obj, "cpu_usr", fp_svg_w, 0);
+    create_svg_file(&svg_cpu_sys_obj, "cpu_sys", fp_svg_w, 0);
+    create_svg_file(&svg_cpu_iowait_obj, "cpu_iowait", fp_svg_w, 0);
+    create_svg_file(&svg_cpu_idle_obj, "cpu_idle", fp_svg_w, 0);
+    create_svg_file(&svg_memory_memused_obj, "memory_memused", fp_svg2_w, 0);
+    create_svg_file(&svg_memory_swpused_obj, "memory_swpused", fp_svg2_w, 0);
+    for (v = 1; v <= get_block_device_numbers(); v++) {
+        create_svg_file(&svg_block_device_util_obj[v], "block_device_util", fp_svg3_w, v);
+    }
     /* end create svg files */
 
     char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
@@ -603,6 +611,7 @@ int main(int argc, char* argv[])
     /* close the file pointers */
     fclose(fp_svg_w);
     fclose(fp_svg2_w);
+    fclose(fp_svg3_w);
 
     /* freeing sar-analyzer objects */
     free_sar_analyzer_obj();
