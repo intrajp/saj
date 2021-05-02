@@ -48,3 +48,7 @@ Fix char array in directory read and others.
 Fix char array size in directory name.
 0.2.7
 Add memory usage to SVG file.
+0.2.8
+Fix SVG graph.
+0.2.9
+Add block device util (only 2 devices) to SVG file.
