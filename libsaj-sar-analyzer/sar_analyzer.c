@@ -621,16 +621,16 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||
                         (strstr(time_value, ":50:") != NULL)) {
-                            char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-                            memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
-                            memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                            memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
-                            if (utility == 0) {
-                                snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_usr", this_date_all, time_value, str_tmp_echo);
-                                append_list2(&svg_cpu_usr_obj, str_tmp_echo2, str_tmp_echo);
+                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                        memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        if (utility == 0) {
+                            snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_usr", this_date_all, time_value, str_tmp_echo);
+                            append_list2(&svg_cpu_usr_obj, str_tmp_echo2, str_tmp_echo);
                         }
                     }
                     /* end code for graph */
@@ -720,16 +720,16 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||
                         (strstr(time_value, ":50:") != NULL)) {
-                            char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-                            memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
-                            memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                            memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
-                            if (utility == 0) {
-                                snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_sys", this_date_all, time_value, str_tmp_echo);
-                                append_list2(&svg_cpu_sys_obj, str_tmp_echo2, str_tmp_echo);
+                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                        memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        if (utility == 0) {
+                            snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_sys", this_date_all, time_value, str_tmp_echo);
+                            append_list2(&svg_cpu_sys_obj, str_tmp_echo2, str_tmp_echo);
                         }
                     }
                     /* end code for graph */
@@ -819,16 +819,16 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||
                         (strstr(time_value, ":50:") != NULL)) {
-                            char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-                            memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
-                            memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                            memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
-                            if (utility == 0) {
-                                snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_iowait", this_date_all, time_value, str_tmp_echo);
-                                append_list2(&svg_cpu_iowait_obj, str_tmp_echo2, str_tmp_echo);
+                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                        memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        if (utility == 0) {
+                            snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_iowait", this_date_all, time_value, str_tmp_echo);
+                            append_list2(&svg_cpu_iowait_obj, str_tmp_echo2, str_tmp_echo);
                         }
                     }
                     /* end code for graph */
@@ -918,16 +918,16 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||
                         (strstr(time_value, ":50:") != NULL)) {
-                            char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-                            memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
-                            memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                            memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
-                            if (utility == 0) {
-                                snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_idle", this_date_all, time_value, str_tmp_echo);
-                                append_list2(&svg_cpu_idle_obj, str_tmp_echo2, str_tmp_echo);
+                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                        memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        if (utility == 0) {
+                            snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_idle", this_date_all, time_value, str_tmp_echo);
+                            append_list2(&svg_cpu_idle_obj, str_tmp_echo2, str_tmp_echo);
                         }
                     }
                     /* end code for graph */
@@ -2181,15 +2181,15 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||
                         (strstr(time_value, ":50:") != NULL)) {
-                            char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-                            memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
-                            memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                            memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
-                            snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "memused", "memused", this_date_all, time_value, str_tmp_echo);
-                            append_list2(&svg_memory_memused_obj, str_tmp_echo2, str_tmp_echo);
+                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                        memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "memused", "memused", this_date_all, time_value, str_tmp_echo);
+                        append_list2(&svg_memory_memused_obj, str_tmp_echo2, str_tmp_echo);
                     }
                     /* end code for graph */
                 } else {
@@ -2454,15 +2454,15 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||
                         (strstr(time_value, ":50:") != NULL)) {
-                            char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-                            memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
-                            memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                            memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
-                            snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "swpused", "swpused", this_date_all, time_value, str_tmp_echo);
-                            append_list2(&svg_memory_swpused_obj, str_tmp_echo2, str_tmp_echo);
+                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                        memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "swpused", "swpused", this_date_all, time_value, str_tmp_echo);
+                        append_list2(&svg_memory_swpused_obj, str_tmp_echo2, str_tmp_echo);
                     }
                 } else {
                     h = get_swpused_avg_highest_val();
@@ -3361,18 +3361,18 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||
                         (strstr(time_value, ":50:") != NULL)) {
-                            char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                            char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-                            memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
-                            memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                            memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                            snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
-                            // block device utility starts from value 1
-                            if (utility >= 1) {
-                                snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", get_block_device_names(utility),
-                                    "block_device_util", this_date_all, time_value, str_tmp_echo);
-                                append_list2(&svg_block_device_util_obj[utility], str_tmp_echo2, str_tmp_echo);
+                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                        memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        // block device utility starts from value 1
+                        if (utility >= 1) {
+                            snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", get_block_device_names(utility),
+                                "block_device_util", this_date_all, time_value, str_tmp_echo);
+                            append_list2(&svg_block_device_util_obj[utility], str_tmp_echo2, str_tmp_echo);
                         }
                     }
                     /* end code for graph */
