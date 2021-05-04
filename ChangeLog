@@ -58,3 +58,5 @@ Fix block device util (4 device names) to SVG file.
 Fix font size in SVG file.
 0.2.12
 Fix SVG file.
+0.2.13
+Fix Japanese file.
