@@ -621,7 +621,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
-                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                         char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
@@ -720,7 +720,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
-                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                         char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
@@ -819,7 +819,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
-                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                         char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
@@ -918,7 +918,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
-                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                         char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
@@ -2181,7 +2181,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
-                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                         char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
@@ -2454,7 +2454,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
-                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                         char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
@@ -3361,7 +3361,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
                         (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
-                        char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                         char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
