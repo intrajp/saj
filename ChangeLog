@@ -62,3 +62,5 @@ Fix SVG file.
 Fix Japanese file.
 0.2.14
 Fix README.
+0.2.15
+Fix char array size.
