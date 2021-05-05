@@ -64,3 +64,5 @@ Fix Japanese file.
 Fix README.
 0.2.15
 Fix char array size.
+0.2.16
+Add block device names which should be analyzed .
