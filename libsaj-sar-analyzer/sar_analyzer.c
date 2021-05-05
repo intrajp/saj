@@ -474,7 +474,8 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
          *
          */
         /* setting block device names and setting utility the proper array element number */
-        if (!strcmp(item_name, "DEV") && (strstr(token, "dev"))) {
+        if (!strcmp(item_name, "DEV") && ((strstr(token, "dev")) || (strstr(token, "sd")) ||
+            (strstr(token, "sr")) || (strstr(token, "ram")) || (strstr(token, "dm")))) {
             set_block_device_names(token);
             utility = search_block_device_name(token);
         /* setting network device names and setting utility the proper array element number */
