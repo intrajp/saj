@@ -32,6 +32,14 @@ else
     echo "libtoolize is installed. I proceed."
 fi
 
+MAKE=`which make`
+if test -z $MAKE; then
+    echo "*** No make found, please install make package. ***"
+        exit 1
+else
+    echo "make is installed. I proceed."
+fi
+
 
 AUTOPOINT='intltoolize --automake --copy' autoreconf --force --install --verbose
 
