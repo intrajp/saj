@@ -585,17 +585,20 @@ int main(int argc, char* argv[])
     char str_tmp_svg2[MAX_LINE_LENGTH] = {'\0'};
     char str_tmp_svg3[MAX_LINE_LENGTH] = {'\0'};
     char str_tmp_svg4[MAX_LINE_LENGTH] = {'\0'};
+    char str_tmp_html_pre[MAX_LINE_LENGTH] = {'\0'};
     char str_tmp_html[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp_svg, '\0', sizeof(str_tmp_svg));
     memset(str_tmp_svg2, '\0', sizeof(str_tmp_svg2));
     memset(str_tmp_svg3, '\0', sizeof(str_tmp_svg3));
     memset(str_tmp_svg4, '\0', sizeof(str_tmp_svg4));
-    memset(str_tmp_html, '\0', sizeof(str_tmp_svg4));
+    memset(str_tmp_html_pre, '\0', sizeof(str_tmp_html_pre));
+    memset(str_tmp_html, '\0', sizeof(str_tmp_html));
     snprintf(str_tmp_svg,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-cpu-.svg");
     snprintf(str_tmp_svg2,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-memory-.svg");
     snprintf(str_tmp_svg3,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-disk-.svg");
     snprintf(str_tmp_svg4,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-ldavg-.svg");
-    snprintf(str_tmp_html,MAX_LINE_LENGTH, "%s", file_svg_write);
+    snprintf(str_tmp_html_pre,MAX_LINE_LENGTH, "%s", file_svg_write);
+    snprintf(str_tmp_html,MAX_LINE_LENGTH, "%s%s", file_svg_write, ".html");
     fp_svg_w = file_open_check(fp_svg_w, str_tmp_svg,"a", sar_only);
     fp_svg2_w = file_open_check(fp_svg2_w, str_tmp_svg2,"a", sar_only);
     fp_svg3_w = file_open_check(fp_svg3_w, str_tmp_svg3,"a", sar_only);
@@ -617,7 +620,7 @@ int main(int argc, char* argv[])
     create_svg_file(&svg_ldavg_15_obj, "ldavg_15", fp_svg4_w, 0);
     /* end create svg files */
     /* create html file */
-    create_html_file(str_tmp_html, fp_html_w);
+    create_html_file(str_tmp_html_pre, fp_html_w);
 
     char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
