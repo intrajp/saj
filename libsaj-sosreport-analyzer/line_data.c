@@ -653,6 +653,7 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
         }           
         // absolute string 
         if ((strcmp(item, "ldavg_15") == 0) && (i == 0)) {
+            fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
             if (c_ldavg == 800.0) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">0.125</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">0.0625</text>");
@@ -681,23 +682,24 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">10</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">5</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
-             } else if (c_ldavg == 5.0) {
+            } else if (c_ldavg == 5.0) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">20</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">10</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
-             } else if (c_ldavg == 2.5) {
+            } else if (c_ldavg == 2.5) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">40</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">20</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
-             } else if (c_ldavg == 1.25) {
+            } else if (c_ldavg == 1.25) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">80</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">40</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
-             } else {
+            } else {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">100</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">50</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
-             }
+            }
+            fprintf(fp_w, "%s\n", "</g>");
         }
         // end date and time
         // We deduce 2 because last device name is 'ignore'.
@@ -764,6 +766,34 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
         }
     }
 
+    return 0;
+}
+
+int create_html_file(char* file_name, FILE* fp_w)
+{
+    char* file_name_base;
+    file_name_base = get_str_from_string(file_name, 3, "/");
+    char str_file_name_cpu[MAX_FILE_NAME_LENGTH];
+    char str_file_name_memory[MAX_FILE_NAME_LENGTH];
+    char str_file_name_disk[MAX_FILE_NAME_LENGTH];
+    char str_file_name_ldavg[MAX_FILE_NAME_LENGTH];
+    memset(str_file_name_cpu, '\0', sizeof(str_file_name_cpu));
+    memset(str_file_name_memory, '\0', sizeof(str_file_name_memory));
+    memset(str_file_name_disk, '\0', sizeof(str_file_name_disk));
+    memset(str_file_name_ldavg, '\0', sizeof(str_file_name_ldavg));
+    snprintf(str_file_name_cpu, MAX_FILE_NAME_LENGTH, "%s%s%s", "<img src=", file_name_base, "-cpu-.svg />");
+    snprintf(str_file_name_memory, MAX_FILE_NAME_LENGTH, "%s%s%s", "<img src=", file_name_base, "-memory-.svg />");
+    snprintf(str_file_name_disk, MAX_FILE_NAME_LENGTH, "%s%s%s", "<img src=", file_name_base, "-disk-.svg />");
+    snprintf(str_file_name_ldavg, MAX_FILE_NAME_LENGTH, "%s%s%s", "<img src=", file_name_base, "-ldavg-.svg />");
+    fprintf(fp_w, "%s\n", "<html>");
+    fprintf(fp_w, "%s\n", "<body>");
+    fprintf(fp_w, "%s\n", str_file_name_cpu);
+    fprintf(fp_w, "%s\n", str_file_name_memory);
+    fprintf(fp_w, "%s\n", str_file_name_disk);
+    fprintf(fp_w, "%s\n", str_file_name_ldavg);
+    fprintf(fp_w, "%s\n", "<br />");
+    fprintf(fp_w, "%s\n", "</body>");
+    fprintf(fp_w, "%s\n", "</html>");
     return 0;
 }
 

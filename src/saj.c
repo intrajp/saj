@@ -485,6 +485,7 @@ int main(int argc, char* argv[])
     FILE* fp_svg2_w = NULL;
     FILE* fp_svg3_w = NULL;
     FILE* fp_svg4_w = NULL;
+    FILE* fp_html_w = NULL;
 
     /* open result file */
     fp_sar_w = file_open_check(fp_sar_w, sar_file_write,"a", sar_only);
@@ -562,14 +563,14 @@ int main(int argc, char* argv[])
     puts("------------------------");
 
     if (sar_only == 1) {
-        printf("Please check sar result file ./%s\n", sar_file_write);
+        printf("Please check sar result file: ./%s\n", sar_file_write);
         free_sosreport_analyzer_obj(sar_only);
     }
     if (sar_only == 0) {
-        printf("Please check result file ./%s\n", sos_file_all_write);
-        printf("And check result file ./%s\n", get_sos_analyze_file_name_to_be_written());
-        printf("Also check sar result file ./%s\n\n", sar_file_write);
-        printf("Program log is written in ./%s\n\n", log_file_write);
+        printf("Please check result file: ./%s\n", sos_file_all_write);
+        printf("And check result file: ./%s\n", get_sos_analyze_file_name_to_be_written());
+        printf("Also check sar result file: ./%s\n\n", sar_file_write);
+        printf("Program log is written in: ./%s\n\n", log_file_write);
         puts("You can try reading all files which is set 'skip' by setting 'all' in conf file.");
         puts("Note that when you done that, it'll take many minutes to be finished depending\
  on cpu power.\n");
@@ -584,18 +585,22 @@ int main(int argc, char* argv[])
     char str_tmp_svg2[MAX_LINE_LENGTH] = {'\0'};
     char str_tmp_svg3[MAX_LINE_LENGTH] = {'\0'};
     char str_tmp_svg4[MAX_LINE_LENGTH] = {'\0'};
+    char str_tmp_html[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp_svg, '\0', sizeof(str_tmp_svg));
     memset(str_tmp_svg2, '\0', sizeof(str_tmp_svg2));
     memset(str_tmp_svg3, '\0', sizeof(str_tmp_svg3));
     memset(str_tmp_svg4, '\0', sizeof(str_tmp_svg4));
+    memset(str_tmp_html, '\0', sizeof(str_tmp_svg4));
     snprintf(str_tmp_svg,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-cpu-.svg");
     snprintf(str_tmp_svg2,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-memory-.svg");
     snprintf(str_tmp_svg3,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-disk-.svg");
     snprintf(str_tmp_svg4,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-ldavg-.svg");
+    snprintf(str_tmp_html,MAX_LINE_LENGTH, "%s", file_svg_write);
     fp_svg_w = file_open_check(fp_svg_w, str_tmp_svg,"a", sar_only);
     fp_svg2_w = file_open_check(fp_svg2_w, str_tmp_svg2,"a", sar_only);
     fp_svg3_w = file_open_check(fp_svg3_w, str_tmp_svg3,"a", sar_only);
     fp_svg4_w = file_open_check(fp_svg4_w, str_tmp_svg4,"a", sar_only);
+    fp_html_w = file_open_check(fp_html_w, str_tmp_html,"a", sar_only);
 
     /* create svg files */
     create_svg_file(&svg_cpu_usr_obj, "cpu_usr", fp_svg_w, 0);
@@ -611,22 +616,26 @@ int main(int argc, char* argv[])
     create_svg_file(&svg_ldavg_five_obj, "ldavg_five", fp_svg4_w, 0);
     create_svg_file(&svg_ldavg_15_obj, "ldavg_15", fp_svg4_w, 0);
     /* end create svg files */
+    /* create html file */
+    create_html_file(str_tmp_html, fp_html_w);
 
     char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
     snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%s%s", file_svg_write, "-<item>-.svg");
-    printf("Please check graphs in the svg file: %s\n\n", str_tmp_echo);
+    printf("Please check graphs in the svg file: ./%s\n", str_tmp_echo);
+    snprintf(str_tmp_echo, MAX_LINE_LENGTH, "%s%s", file_svg_write, ".html");
+    printf("Please check html file: ./%s\n\n", str_tmp_echo);
     /* close the file pointers */
     fclose(fp_svg_w);
     fclose(fp_svg2_w);
     fclose(fp_svg3_w);
     fclose(fp_svg4_w);
+    fclose(fp_html_w);
 
     /* freeing sar-analyzer objects */
     free_sar_analyzer_obj();
 
     gettimeofday(&tv2, NULL);
-
     printf("Total time = %f seconds\n",
          (double)(tv2.tv_usec - tv1.tv_usec) / 1000000 +
          (double)(tv2.tv_sec - tv1.tv_sec));
