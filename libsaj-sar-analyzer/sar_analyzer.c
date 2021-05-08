@@ -3053,6 +3053,23 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_ldavg_lowest_time(time_value, "ldavg_one");
                     }
                     /* code for graph */
+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
+                        (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
+                        (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
+                        (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
+                        (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
+                        (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
+                        char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
+                        char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                        memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "ldavg_one", "ldavg_one", this_date_all, time_value, str_tmp_echo);
+                        append_list2(&svg_ldavg_one_obj, str_tmp_echo2, str_tmp_echo);
+                    }
+                    /* end code for graph */
                 } else {
                     h = get_ldavg_avg_highest_val("ldavg_one");
                     l = get_ldavg_avg_lowest_val("ldavg_one");
@@ -3133,6 +3150,23 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_ldavg_lowest_time( time_value, "ldavg_five");
                     }
                     /* code for graph */
+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
+                        (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
+                        (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
+                        (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
+                        (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
+                        (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
+                        char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
+                        char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                        memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "ldavg_five", "ldavg_five", this_date_all, time_value, str_tmp_echo);
+                        append_list2(&svg_ldavg_five_obj, str_tmp_echo2, str_tmp_echo);
+                    }
+                    /* end code for graph */
                 } else {
                     h = get_ldavg_avg_highest_val("ldavg_five");
                     l = get_ldavg_avg_lowest_val("ldavg_five");
@@ -3213,6 +3247,23 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         set_ldavg_lowest_time(time_value, "ldavg_15");
                     }
                     /* code for graph */
+                    if ((strstr(time_value, ":00:") != NULL) ||(strstr(time_value, "00分") != NULL) ||
+                        (strstr(time_value, ":10:") != NULL) ||(strstr(time_value, "10分") != NULL) ||
+                        (strstr(time_value, ":20:") != NULL) ||(strstr(time_value, "20分") != NULL) ||
+                        (strstr(time_value, ":30:") != NULL) ||(strstr(time_value, "30分") != NULL) ||
+                        (strstr(time_value, ":40:") != NULL) ||(strstr(time_value, "40分") != NULL) ||
+                        (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
+                        char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
+                        char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
+                        memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
+                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "ldavg_15", "ldavg_15", this_date_all, time_value, str_tmp_echo);
+                        append_list2(&svg_ldavg_15_obj, str_tmp_echo2, str_tmp_echo);
+                    }
+                    /* end code for graph */
                 } else {
                     h = get_ldavg_avg_highest_val("ldavg_15");
                     l = get_ldavg_avg_lowest_val("ldavg_15");

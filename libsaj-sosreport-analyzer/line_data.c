@@ -439,7 +439,7 @@ char* terminate_string(char* str, int point, char* delimiter)
 void file_write_svg(char* item, char* str, int data_lines, double width, FILE* fp_w)
 {
     if (((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused") == 0) ||
-        ((strcmp(item, "block_device_util") == 0) )) && (data_lines == 0)) {
+        (strcmp(item, "block_device_util") == 0) || (strcmp(item, "ldavg_one") == 0)) && (data_lines == 0)) {
         fprintf(fp_w, "%s\n", "<svg width=\"1010\" height=\"160\" xmlns=\"http://www.w3.org/2000/svg\">");
         fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"10\" y2=\"110\" stroke=\"gray\"/>");
         fprintf(fp_w, "%s\n", "  <line x1=\"10\" y1=\"10\" x2=\"1010\" y2=\"10\" stroke=\"gray\"/>");
@@ -453,7 +453,7 @@ void file_write_svg(char* item, char* str, int data_lines, double width, FILE* f
 void file_write_date_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w)
 {
     if (((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused") == 0) ||
-        ((strcmp(item, "block_device_util") == 0) )) && (data_lines == 0)) {
+        (strcmp(item, "block_device_util") == 0) || (strcmp(item, "ldavg_one") == 0)) && (data_lines == 0)) {
         fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
         char str_date[MAX_LINE_LENGTH];
         memset(str_date, '\0', sizeof(str_date));
@@ -471,7 +471,7 @@ void file_write_date_svg(char* item, char* str, int data_lines, double width, ch
 void file_write_time_svg(char* item, char* str, int data_lines, double width, char* start, FILE* fp_w)
 {
     if (((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused") == 0) ||
-        ((strcmp(item, "block_device_util") == 0) )) && (data_lines == 0)) {
+        (strcmp(item, "block_device_util") == 0) || (strcmp(item, "ldavg_one") == 0)) && (data_lines == 0)) {
         char str_time[MAX_LINE_LENGTH];
         memset(str_time, '\0', sizeof(str_time));
         char* str_time_first = NULL;
@@ -523,12 +523,16 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
     if ((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused") == 0) ||
         ((strcmp(item, "block_device_util") == 0) && (utility == 1))) {
         strncat(str_svg_draw, "  <path stroke=\"green\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
-    } else if (strcmp(item, "cpu_sys") == 0) {
+    } else if ((strcmp(item, "cpu_sys") == 0) || (strcmp(item, "ldavg_one") == 0)) {
         strncat(str_svg_draw, "  <path stroke=\"blue\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
-    } else if ((strcmp(item, "cpu_iowait") == 0) || (strcmp(item, "memory_swpused") == 0)){
+    } else if ((strcmp(item, "cpu_iowait") == 0) || (strcmp(item, "memory_swpused") == 0) ||
+        (strcmp(item, "ldavg_15") == 0)) {
         strncat(str_svg_draw, "  <path stroke=\"red\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
+    // cpu_idle should start from upper position,so...
     } else if (strcmp(item, "cpu_idle") == 0) {
         strncat(str_svg_draw, "  <path stroke=\"orange\" fill=\"none\" d=\"M 10 10 L " , 200000 - 1);
+    } else if (strcmp(item, "ldavg_five") == 0) {
+        strncat(str_svg_draw, "  <path stroke=\"orange\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
     } else if ((strcmp(item, "block_device_util") == 0) && (utility == 2)) {
         strncat(str_svg_draw, "  <path stroke=\"blue\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
     } else if ((strcmp(item, "block_device_util") == 0) && (utility == 3)) {
@@ -560,35 +564,141 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
     memset(str_device_name_this, '\0', sizeof(str_device_name_this));
     memset(str_device_name, '\0', sizeof(str_device_name));
     double j = 0.0;
+
+    double highest_ldavg_one_val = 0.0;
+    double highest_ldavg_five_val = 0.0;
+    double highest_ldavg_15_val = 0.0;
+    double val_sar = 0.0;
+
+    // we should get highest value here for ldavg or others 
+    if (strstr(item, "ldavg")) {
+        for(int i=0; i<size; i++) {
+            snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
+            if (strstr(str_svg[i], "ldavg_one")) {
+                if (highest_ldavg_one_val < atof(str_hight))
+                    highest_ldavg_one_val = atof(str_hight);
+            }
+            if (strstr(str_svg[i], "ldavg_five")) {
+                if (highest_ldavg_five_val < atof(str_hight))
+                    highest_ldavg_five_val = atof(str_hight);
+            }
+            if (strstr(str_svg[i], "ldavg_15")) {
+                if (highest_ldavg_15_val < atof(str_hight))
+                    highest_ldavg_15_val = atof(str_hight);
+            }
+        }
+    }
+
+    double c_ldavg = 1.0;
+
+    if (strcmp(item, "ldavg_15") == 0) {
+        if ((highest_ldavg_one_val <= 0.125) && (highest_ldavg_five_val <= 0.125) && (highest_ldavg_15_val <= 0.125))
+            c_ldavg = 800.0;
+        else if ((highest_ldavg_one_val <= 0.25) && (highest_ldavg_five_val <= 0.25) && (highest_ldavg_15_val <= 0.25))
+            c_ldavg = 400.0;
+        else if ((highest_ldavg_one_val <= 0.5) && (highest_ldavg_five_val <= 0.5) && (highest_ldavg_15_val <= 0.5))
+            c_ldavg = 200.0;
+        else if ((highest_ldavg_one_val <= 1.0) && (highest_ldavg_five_val <= 1.0) && (highest_ldavg_15_val <= 1.0))
+            c_ldavg = 100.0;
+        else if ((highest_ldavg_one_val <= 2.0) && (highest_ldavg_five_val <= 2.0) && (highest_ldavg_15_val <= 2.0))
+            c_ldavg = 50.0;
+        else if ((highest_ldavg_one_val <= 5.0) && (highest_ldavg_five_val <= 5.0) && (highest_ldavg_15_val <= 5.0))
+            c_ldavg = 20.0;
+        else if ((highest_ldavg_one_val <= 10.0) && (highest_ldavg_five_val <= 10.0) && (highest_ldavg_15_val <= 10.0))
+            c_ldavg = 10.0;
+        else if ((highest_ldavg_one_val <= 20.0) && (highest_ldavg_five_val <= 20.0) && (highest_ldavg_15_val <= 20.0))
+            c_ldavg = 5.0;
+        else if ((highest_ldavg_one_val <= 40.0) && (highest_ldavg_five_val <= 40.0) && (highest_ldavg_15_val <= 40.0))
+            c_ldavg = 2.5;
+        else if ((highest_ldavg_one_val <= 80.0) && (highest_ldavg_five_val <= 80.0) && (highest_ldavg_15_val <= 80.0))
+            c_ldavg = 1.25;
+    }
+
     for(int i=0; i<size; i++) {
         // Here we set only 4 devices in this version.
-        if ((strstr(str_svg[i], "CPU All")) || (strstr(str_svg[i], "used")) ||
+        if ((strstr(str_svg[i], "CPU All")) || (strstr(str_svg[i], "used")) || (strstr(str_svg[i], "ldavg")) ||
             ((strstr(str_svg[i], "util")) && (utility <= 4))) {
             width = width + horizontal_notch;
             snprintf(str_horizontal_notch, MAX_FILE_NAME_LENGTH, "%f ", width);
             strncat(str_svg_draw, str_horizontal_notch, 200000 - 1);
-            snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
+            if (strstr(item, "ldavg")) {
+                val_sar = atof(get_sar_value_from_string(str_svg[i]));
+                val_sar = 110 - (val_sar * c_ldavg);
+                snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%f ", val_sar);
+            } else {
+                snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
+            }
             snprintf(str_date, MAX_FILE_NAME_LENGTH, "%s ", get_date_from_string(str_svg[i]));
             snprintf(str_date_only_pre, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 2, ","));
             snprintf(str_date_only, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 1, ","));
             snprintf(str_time_only, MAX_FILE_NAME_LENGTH, "%s ", get_str_from_string(str_date_only_pre, 1, ","));
             strncat(str_svg_draw, str_hight, 200000 - 1);
             // block device utility starts from value 1
-            if ((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused") == 0 )||
+            if ((strcmp(item, "cpu_usr") == 0) || (strcmp(item, "memory_memused") == 0) || (strcmp(item, "ldavg_one") == 0) ||
                 ((strcmp(item, "block_device_util") == 0) && (utility == 1))) {
                 if (j == 0.0) {
                     file_write_svg(item, str_svg_draw, 0, width, fp_w); 
                     // start date and time
                     file_write_date_svg(item, str_date_only, 0, width, "start", fp_w); 
                     // percentage string 
-                    fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">100</text>");
-                    fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">50</text>");
-                    fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+                    if (strcmp(item, "ldavg_one") != 0) {
+                        fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">100</text>");
+                        fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">50</text>");
+                        fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+                    }
                     file_write_time_svg(item, str_time_only, 0, width, "start", fp_w); 
                 }
             }
             j = j + 1.0;
         }           
+        // absolute string 
+        if ((strcmp(item, "ldavg_15") == 0) && (i == 0)) {
+            if (c_ldavg == 800.0) {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">0.125</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">0.0625</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+            } else if (c_ldavg == 400.0) {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">0.25</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">0.125</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+            } else if (c_ldavg == 200.0) {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">0.5</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">0.25</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+            } else if (c_ldavg == 100.0) {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">1</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">0.5</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+            } else if (c_ldavg == 50.0) {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">2</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">1</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+            } else if (c_ldavg == 20.0) {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">5</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">2.5</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+            } else if (c_ldavg == 10.0) {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">10</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">5</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+             } else if (c_ldavg == 5.0) {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">20</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">10</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+             } else if (c_ldavg == 2.5) {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">40</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">20</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+             } else if (c_ldavg == 1.25) {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">80</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">40</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+             } else {
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">100</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">50</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
+             }
+        }
         // end date and time
         // We deduce 2 because last device name is 'ignore'.
         if (i == size - 2) {
@@ -616,6 +726,15 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
         fprintf(fp_w, "%s\n", "  <text x=\"10\" y=\"145\" fill=\"green\">memory_memused</text>");
         fprintf(fp_w, "%s\n", "  <text x=\"10\" y=\"155\" fill=\"red\">memory_swpused</text>");
         write_linux_line_to_file(&line_all_obj, " Memory (%)", fp_w);
+        fprintf(fp_w, "%s\n", "  <text x=\"900\" y=\"155\">Powered by saj.</text>");
+        fprintf(fp_w, "%s\n", "</g>");
+        fprintf(fp_w, "%s\n", "</svg>");
+    } else if (strcmp(item, "ldavg_15") == 0) {
+        fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
+        fprintf(fp_w, "%s\n", "  <text x=\"10\" y=\"145\" fill=\"blue\">ldavg_one</text>");
+        fprintf(fp_w, "%s\n", "  <text x=\"10\" y=\"155\" fill=\"orange\">ldavg_five</text>");
+        fprintf(fp_w, "%s\n", "  <text x=\"60\" y=\"145\" fill=\"red\">ldavg_15</text>");
+        write_linux_line_to_file(&line_all_obj, " Load Average", fp_w);
         fprintf(fp_w, "%s\n", "  <text x=\"900\" y=\"155\">Powered by saj.</text>");
         fprintf(fp_w, "%s\n", "</g>");
         fprintf(fp_w, "%s\n", "</svg>");

@@ -484,6 +484,7 @@ int main(int argc, char* argv[])
     FILE* fp_svg_w = NULL;
     FILE* fp_svg2_w = NULL;
     FILE* fp_svg3_w = NULL;
+    FILE* fp_svg4_w = NULL;
 
     /* open result file */
     fp_sar_w = file_open_check(fp_sar_w, sar_file_write,"a", sar_only);
@@ -582,15 +583,19 @@ int main(int argc, char* argv[])
     char str_tmp_svg[MAX_LINE_LENGTH] = {'\0'};
     char str_tmp_svg2[MAX_LINE_LENGTH] = {'\0'};
     char str_tmp_svg3[MAX_LINE_LENGTH] = {'\0'};
+    char str_tmp_svg4[MAX_LINE_LENGTH] = {'\0'};
     memset(str_tmp_svg, '\0', sizeof(str_tmp_svg));
     memset(str_tmp_svg2, '\0', sizeof(str_tmp_svg2));
     memset(str_tmp_svg3, '\0', sizeof(str_tmp_svg3));
+    memset(str_tmp_svg4, '\0', sizeof(str_tmp_svg4));
     snprintf(str_tmp_svg,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-cpu-.svg");
     snprintf(str_tmp_svg2,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-memory-.svg");
     snprintf(str_tmp_svg3,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-disk-.svg");
+    snprintf(str_tmp_svg4,MAX_LINE_LENGTH, "%s%s", file_svg_write, "-ldavg-.svg");
     fp_svg_w = file_open_check(fp_svg_w, str_tmp_svg,"a", sar_only);
     fp_svg2_w = file_open_check(fp_svg2_w, str_tmp_svg2,"a", sar_only);
     fp_svg3_w = file_open_check(fp_svg3_w, str_tmp_svg3,"a", sar_only);
+    fp_svg4_w = file_open_check(fp_svg4_w, str_tmp_svg4,"a", sar_only);
 
     /* create svg files */
     create_svg_file(&svg_cpu_usr_obj, "cpu_usr", fp_svg_w, 0);
@@ -602,6 +607,9 @@ int main(int argc, char* argv[])
     for (v = 1; v < get_block_device_numbers(); v++) {
         create_svg_file(&svg_block_device_util_obj[v], "block_device_util", fp_svg3_w, v);
     }
+    create_svg_file(&svg_ldavg_one_obj, "ldavg_one", fp_svg4_w, 0);
+    create_svg_file(&svg_ldavg_five_obj, "ldavg_five", fp_svg4_w, 0);
+    create_svg_file(&svg_ldavg_15_obj, "ldavg_15", fp_svg4_w, 0);
     /* end create svg files */
 
     char str_tmp_echo[MAX_LINE_LENGTH] = {'\0'};
@@ -612,6 +620,7 @@ int main(int argc, char* argv[])
     fclose(fp_svg_w);
     fclose(fp_svg2_w);
     fclose(fp_svg3_w);
+    fclose(fp_svg4_w);
 
     /* freeing sar-analyzer objects */
     free_sar_analyzer_obj();
