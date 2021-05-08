@@ -2273,6 +2273,9 @@ extern struct line_data2 *svg_cpu_idle_obj;
 extern struct line_data2 *svg_memory_memused_obj;
 extern struct line_data2 *svg_memory_swpused_obj;
 extern struct line_data2 *svg_block_device_util_obj[MAX_BLOCK_DEVICE_NUMBERS];
+extern struct line_data2 *svg_ldavg_one_obj;
+extern struct line_data2 *svg_ldavg_five_obj;
+extern struct line_data2 *svg_ldavg_15_obj;
 
 /*
  * Function Name: initialize_avg_checked_int()

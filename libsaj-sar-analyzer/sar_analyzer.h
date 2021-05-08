@@ -1079,6 +1079,30 @@ struct line_data2 svg_block_device_util_obj_raw =
         NULL /* next pointer */
     };
 
+/* svg_ldavg_one_obj */
+struct line_data2 svg_ldavg_one_obj_raw =
+    {
+        "", /* each line */
+        "", /* each line */
+        NULL /* next pointer */
+    };
+
+/* svg_ldavg_five_obj */
+struct line_data2 svg_ldavg_five_obj_raw =
+    {
+        "", /* each line */
+        "", /* each line */
+        NULL /* next pointer */
+    };
+
+/* svg_ldavg_15_obj */
+struct line_data2 svg_ldavg_15_obj_raw =
+    {
+        "", /* each line */
+        "", /* each line */
+        NULL /* next pointer */
+    };
+
 /* declaring pointers */
 struct sar_analyzer_data *sar_analyzer_obj = &sar_analyzer_obj_raw;
 struct sar_analyzer_data_all *sar_analyzer_all_obj = &sar_analyzer_all_obj_raw;
@@ -1153,6 +1177,10 @@ struct line_data2* svg_memory_memused_obj = &svg_memory_memused_obj_raw;
 struct line_data2* svg_memory_swpused_obj = &svg_memory_swpused_obj_raw;
 /* for file block device */
 struct line_data2* svg_block_device_util_obj [ MAX_BLOCK_DEVICE_NUMBERS ] = { &svg_block_device_util_obj_raw };
+/* for file load average */
+struct line_data2* svg_ldavg_one_obj = &svg_ldavg_one_obj_raw;
+struct line_data2* svg_ldavg_five_obj = &svg_ldavg_five_obj_raw;
+struct line_data2* svg_ldavg_15_obj = &svg_ldavg_15_obj_raw;
 
 /*
  *  This function initialzes check int
