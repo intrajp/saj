@@ -68,3 +68,5 @@ Fix char array size.
 Add block device names which should be analyzed.
 0.2.17
 Fix autogen.sh.
+0.2.18
+Add Load Average graph.
