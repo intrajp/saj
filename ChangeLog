@@ -70,3 +70,5 @@ Add block device names which should be analyzed.
 Fix autogen.sh.
 0.2.18
 Add Load Average graph.
+0.2.19
+Add html file.
