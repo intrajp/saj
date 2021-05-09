@@ -539,7 +539,7 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
         strncat(str_svg_draw, "  <path stroke=\"orange\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
     // Here we set only 4 devices in this version.
     } else if ((strcmp(item, "block_device_util") == 0) && (utility == 4)) {
-        strncat(str_svg_draw, "  <path stroke=\"yellow\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
+        strncat(str_svg_draw, "  <path stroke=\"mediumvioletred\" fill=\"none\" d=\"M 10 110 L " , 200000 - 1);
     }
     char str_horizontal_notch[256];
     memset(str_horizontal_notch, '\0', sizeof(str_horizontal_notch));
@@ -750,7 +750,7 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
             strncpy(str_device_name, "  <text x=\"70\" y=\"145\" fill=\"orange\">", 43);
         // Here we set only 4 devices in this version.
         } else if (utility == 4) {
-            strncpy(str_device_name, "  <text x=\"70\" y=\"155\" fill=\"yellow\">", 43);
+            strncpy(str_device_name, "  <text x=\"70\" y=\"155\" fill=\"mediumvioletred\">", 52);
         }
         snprintf(str_device_name_this, 100, "%s ", get_block_device_names(utility));
         strncat(str_device_name, str_device_name_this, 100);
