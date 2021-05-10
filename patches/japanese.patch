@@ -1,6 +1,6 @@
 diff -ruNp a/common.c b/common.c
---- a/common.c	2021-05-10 19:53:03.525213067 +0900
-+++ b/common.c	2021-05-10 19:53:11.212063399 +0900
+--- a/common.c	2021-05-11 05:25:24.358266866 +0900
++++ b/common.c	2021-05-11 05:23:20.183744705 +0900
 @@ -298,7 +298,7 @@ void read_sar_cpu_as_paragraph(const cha
          for (i--; (i > 0) && isspace (line[i -1]) ; i--)
              line[i -1] = '\0';
@@ -108,8 +108,8 @@ diff -ruNp a/common.c b/common.c
          squeezd_avg_checked = "Checked";
      }
 diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
---- a/sar_analyzer.c	2021-05-10 19:53:16.975951169 +0900
-+++ b/sar_analyzer.c	2021-05-10 19:53:28.595724916 +0900
+--- a/sar_analyzer.c	2021-05-11 05:26:31.356929949 +0900
++++ b/sar_analyzer.c	2021-05-11 05:23:34.904450957 +0900
 @@ -152,7 +152,7 @@ int set_token_column(int file_number, ch
          }
          /* if AM or PM will appear, column number should be decremented, unless, segfault in set_column_item() */
@@ -119,7 +119,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  i--;
          }
          /* this item name is set by get_word_line() */
-@@ -564,7 +564,7 @@ int set_token_items(int file_number, cha
+@@ -578,7 +578,7 @@ int set_token_items(int file_number, cha
  
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -128,7 +128,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -627,12 +627,12 @@ int set_token_items(int file_number, cha
+@@ -641,12 +641,12 @@ int set_token_items(int file_number, cha
                          set_cpu_lowest_time(time_value, utility, "usr");
                      }
                      /* code for graph */
@@ -147,7 +147,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                          char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                          char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-@@ -663,7 +663,7 @@ int set_token_items(int file_number, cha
+@@ -677,7 +677,7 @@ int set_token_items(int file_number, cha
              } else if ((i == get_column_cpu("sys")) &&(strstr(token, "%sys") == 0)) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -156,7 +156,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -726,12 +726,12 @@ int set_token_items(int file_number, cha
+@@ -740,12 +740,12 @@ int set_token_items(int file_number, cha
                          set_cpu_lowest_time(time_value, utility, "sys");
                      }
                      /* code for graph */
@@ -175,7 +175,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                          char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                          char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-@@ -762,7 +762,7 @@ int set_token_items(int file_number, cha
+@@ -776,7 +776,7 @@ int set_token_items(int file_number, cha
              } else if ((i == get_column_cpu("iowait")) &&(strstr(token, "%iowait") == 0)) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -184,7 +184,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -825,12 +825,12 @@ int set_token_items(int file_number, cha
+@@ -839,12 +839,12 @@ int set_token_items(int file_number, cha
                          set_cpu_lowest_time(time_value, utility, "iowait");
                      }
                      /* code for graph */
@@ -203,7 +203,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                          char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                          char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-@@ -861,7 +861,7 @@ int set_token_items(int file_number, cha
+@@ -875,7 +875,7 @@ int set_token_items(int file_number, cha
              } else if ((i == get_column_cpu("idle")) &&(strstr(token, "%idle") == 0)) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -212,7 +212,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -924,12 +924,12 @@ int set_token_items(int file_number, cha
+@@ -938,12 +938,12 @@ int set_token_items(int file_number, cha
                          set_cpu_lowest_time(time_value, utility, "idle");
                      }
                      /* code for graph */
@@ -231,7 +231,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                          char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                          char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-@@ -988,7 +988,7 @@ int set_token_items(int file_number, cha
+@@ -1002,7 +1002,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_tasks("proc")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -240,7 +240,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1068,7 +1068,7 @@ int set_token_items(int file_number, cha
+@@ -1082,7 +1082,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_tasks("cswch")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -249,7 +249,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1176,7 +1176,7 @@ int set_token_items(int file_number, cha
+@@ -1190,7 +1190,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_pswap("pswpin")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -258,7 +258,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1256,7 +1256,7 @@ int set_token_items(int file_number, cha
+@@ -1270,7 +1270,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_pswap("pswpout")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -267,7 +267,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1400,7 +1400,7 @@ int set_token_items(int file_number, cha
+@@ -1414,7 +1414,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_paging("pgpgin")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -276,7 +276,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1481,7 +1481,7 @@ int set_token_items(int file_number, cha
+@@ -1495,7 +1495,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_paging("pgpgout")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -285,7 +285,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1562,7 +1562,7 @@ int set_token_items(int file_number, cha
+@@ -1576,7 +1576,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_paging("fault")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -294,7 +294,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1642,7 +1642,7 @@ int set_token_items(int file_number, cha
+@@ -1656,7 +1656,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_paging("majflt")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -303,7 +303,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1722,7 +1722,7 @@ int set_token_items(int file_number, cha
+@@ -1736,7 +1736,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_paging("vmeff")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -312,7 +312,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1843,7 +1843,7 @@ int set_token_items(int file_number, cha
+@@ -1857,7 +1857,7 @@ int set_token_items(int file_number, cha
             if (i == get_column_io_transfer_rate("tps")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -321,7 +321,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -1923,7 +1923,7 @@ int set_token_items(int file_number, cha
+@@ -1937,7 +1937,7 @@ int set_token_items(int file_number, cha
             } else if (i == get_column_io_transfer_rate( "bread")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -330,7 +330,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2003,7 +2003,7 @@ int set_token_items(int file_number, cha
+@@ -2017,7 +2017,7 @@ int set_token_items(int file_number, cha
             } else if (i == get_column_io_transfer_rate("bwrtn")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -339,7 +339,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2123,7 +2123,7 @@ int set_token_items(int file_number, cha
+@@ -2137,7 +2137,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_memory("memused")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -348,7 +348,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2187,12 +2187,12 @@ int set_token_items(int file_number, cha
+@@ -2201,12 +2201,12 @@ int set_token_items(int file_number, cha
                          set_memory_lowest_time(time_value, "memused");
                      }
                      /* code for graph */
@@ -367,7 +367,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                          char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                          char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-@@ -2221,7 +2221,7 @@ int set_token_items(int file_number, cha
+@@ -2235,7 +2235,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_memory("kbcommit")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -376,7 +376,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2301,7 +2301,7 @@ int set_token_items(int file_number, cha
+@@ -2315,7 +2315,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_memory("commit")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -385,7 +385,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2397,7 +2397,7 @@ int set_token_items(int file_number, cha
+@@ -2411,7 +2411,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_swpused()) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -394,7 +394,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2460,12 +2460,12 @@ int set_token_items(int file_number, cha
+@@ -2474,12 +2474,12 @@ int set_token_items(int file_number, cha
                          set_swpused_lowest_time(time_value);
                      }
                      /* code for graph */
@@ -413,7 +413,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                          char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                          char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-@@ -2533,7 +2533,7 @@ int set_token_items(int file_number, cha
+@@ -2547,7 +2547,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_kernel_table("dentunusd")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -422,7 +422,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2613,7 +2613,7 @@ int set_token_items(int file_number, cha
+@@ -2627,7 +2627,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_kernel_table("file")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -431,7 +431,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2693,7 +2693,7 @@ int set_token_items(int file_number, cha
+@@ -2707,7 +2707,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_kernel_table("inode")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -440,7 +440,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2839,7 +2839,7 @@ int set_token_items(int file_number, cha
+@@ -2853,7 +2853,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_ldavg("runq_sz")) {
                  if (SAR_OPTION == 'Z') {
                      t = atoi(token);
@@ -449,7 +449,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -2920,7 +2920,7 @@ int set_token_items(int file_number, cha
+@@ -2934,7 +2934,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_ldavg("plist_sz")) {
                  if (SAR_OPTION == 'Z') {
                      t = atoi(token);
@@ -458,7 +458,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3001,7 +3001,7 @@ int set_token_items(int file_number, cha
+@@ -3015,7 +3015,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_ldavg("ldavg_one")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -467,7 +467,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3098,7 +3098,7 @@ int set_token_items(int file_number, cha
+@@ -3112,7 +3112,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_ldavg("ldavg_five")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -476,7 +476,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3195,7 +3195,7 @@ int set_token_items(int file_number, cha
+@@ -3209,7 +3209,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_ldavg("ldavg_15")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -485,7 +485,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3312,7 +3312,7 @@ int set_token_items(int file_number, cha
+@@ -3326,7 +3326,7 @@ int set_token_items(int file_number, cha
             if (i == get_column_block_device("areqsz")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -494,7 +494,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3373,7 +3373,7 @@ int set_token_items(int file_number, cha
+@@ -3387,7 +3387,7 @@ int set_token_items(int file_number, cha
             } else if (i == get_column_block_device("util")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -503,7 +503,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3418,12 +3418,12 @@ int set_token_items(int file_number, cha
+@@ -3432,12 +3432,12 @@ int set_token_items(int file_number, cha
                          set_block_device_lowest_time(time_value, utility, "util");
                      }
                      /* code for graph */
@@ -522,7 +522,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                          char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
                          char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
-@@ -3492,7 +3492,7 @@ int set_token_items(int file_number, cha
+@@ -3506,7 +3506,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_network("rxpck")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -531,7 +531,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3558,7 +3558,7 @@ int set_token_items(int file_number, cha
+@@ -3572,7 +3572,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("txpck")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -540,7 +540,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3624,7 +3624,7 @@ int set_token_items(int file_number, cha
+@@ -3638,7 +3638,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("rxkb")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -549,7 +549,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3690,7 +3690,7 @@ int set_token_items(int file_number, cha
+@@ -3704,7 +3704,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("txkb")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -558,7 +558,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3792,7 +3792,7 @@ int set_token_items(int file_number, cha
+@@ -3806,7 +3806,7 @@ int set_token_items(int file_number, cha
              if (i == get_column_network("rxerr")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -567,7 +567,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3852,7 +3852,7 @@ int set_token_items(int file_number, cha
+@@ -3866,7 +3866,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("txerr")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -576,7 +576,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3913,7 +3913,7 @@ int set_token_items(int file_number, cha
+@@ -3927,7 +3927,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("rxdrop")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -585,7 +585,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -3974,7 +3974,7 @@ int set_token_items(int file_number, cha
+@@ -3988,7 +3988,7 @@ int set_token_items(int file_number, cha
              } else if (i == get_column_network("txdrop")) {
                  if (SAR_OPTION == 'Z') {
                      t = strtod(token, &endp);
@@ -594,7 +594,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                          return 0;
                      set_tmp_val(t);
                      t = get_tmp_val();
-@@ -4043,7 +4043,7 @@ int get_word_line(int file_number, char
+@@ -4057,7 +4057,7 @@ int get_word_line(int file_number, char
      int PM = 0;
      /* for analyzing all data */
      if (SAR_OPTION == 'Z') {
@@ -603,7 +603,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              PM = 1;
          /* testing */
          char *str_tmp = "";
-@@ -4053,7 +4053,6 @@ int get_word_line(int file_number, char
+@@ -4067,7 +4067,6 @@ int get_word_line(int file_number, char
              /* this clause will be save for future use maybe */
              if (strstr(*line, "RESTART")) {
                  set_token_column(file_number, *line, "Linux", 1, SAR_OPTION);
@@ -611,7 +611,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  linux_restart_count[file_number]++;
              }
              else
-@@ -4064,7 +4063,7 @@ int get_word_line(int file_number, char
+@@ -4078,7 +4077,7 @@ int get_word_line(int file_number, char
               */
              initialize_check_int();
          /* first, we are setting column number of interests */
@@ -620,7 +620,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -4137,7 +4136,7 @@ int get_word_line(int file_number, char
+@@ -4151,7 +4150,7 @@ int get_word_line(int file_number, char
              PM = set_token_column(file_number, *line, "runq", 0, SAR_OPTION);
              /* this means, skip this clause on next loop, it's enough to set set_token_column() one time */
              CHK_Z = _LDAVG;
@@ -629,7 +629,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -4145,7 +4144,7 @@ int get_word_line(int file_number, char
+@@ -4159,7 +4158,7 @@ int get_word_line(int file_number, char
              PM = set_token_column(file_number, *line, "DEV", 0, SAR_OPTION);
              /* this means, skip this clause on next loop, it's enough to set set_token_column() one time */
              CHK_Z = _BLOCK_DEVICE;
@@ -638,7 +638,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -4153,7 +4152,7 @@ int get_word_line(int file_number, char
+@@ -4167,7 +4166,7 @@ int get_word_line(int file_number, char
              PM = set_token_column(file_number, *line, "rxpck", 0, SAR_OPTION);
              /* this means, skip this clause on next loop, it's enough to set set_token_column() one time */
              CHK_Z = _NETWORK;
@@ -647,7 +647,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -4189,7 +4188,7 @@ int get_word_line(int file_number, char
+@@ -4203,7 +4202,7 @@ int get_word_line(int file_number, char
                      CHK_CORES_N = 0;
                  }
                  CHECK_CPU_EACH++;
@@ -656,7 +656,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 0);  /* this means, skip this clause on next loop */
                  CHK_CORES_N = 0;
                  /* set_token_items(file_number, line, "cpu" , CHK_CORES_N, SAR_OPTION); */
-@@ -4207,7 +4206,7 @@ int get_word_line(int file_number, char
+@@ -4221,7 +4220,7 @@ int get_word_line(int file_number, char
              }
          /* setting utility arguments to meaningless value like -999 */
          } else if (CHK_Z == _TASKS) {
@@ -665,7 +665,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 1);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4216,7 +4215,7 @@ int get_word_line(int file_number, char
+@@ -4230,7 +4229,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "proc", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _PSWAP) {
@@ -674,7 +674,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 2);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4225,7 +4224,7 @@ int get_word_line(int file_number, char
+@@ -4239,7 +4238,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "pswpin/s", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _PAGING) {
@@ -683,7 +683,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 3);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4234,7 +4233,7 @@ int get_word_line(int file_number, char
+@@ -4248,7 +4247,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "fault", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _IO_TRANSFER_RATE) {
@@ -692,7 +692,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 4);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4243,7 +4242,7 @@ int get_word_line(int file_number, char
+@@ -4257,7 +4256,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "bread/s", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _MEMORY) {
@@ -701,7 +701,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 5);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4252,7 +4251,7 @@ int get_word_line(int file_number, char
+@@ -4266,7 +4265,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "kbmemfree", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _SWPUSED) {
@@ -710,7 +710,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 6);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4261,7 +4260,7 @@ int get_word_line(int file_number, char
+@@ -4275,7 +4274,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "kbswpfree", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _KERNEL_TABLE) {
@@ -719,7 +719,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 7);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4270,7 +4269,7 @@ int get_word_line(int file_number, char
+@@ -4284,7 +4283,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "dentunusd", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _LDAVG) {
@@ -728,7 +728,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 8);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4283,7 +4282,7 @@ int get_word_line(int file_number, char
+@@ -4297,7 +4296,7 @@ int get_word_line(int file_number, char
           * setting each name to the object for future use 
           */ 
          } else if (CHK_Z == _BLOCK_DEVICE) {
@@ -737,7 +737,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 9);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4296,7 +4295,7 @@ int get_word_line(int file_number, char
+@@ -4310,7 +4309,7 @@ int get_word_line(int file_number, char
           * setting each name to the object for future use 
           */ 
          } else if (CHK_Z == _NETWORK) {
@@ -746,7 +746,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 10);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4305,7 +4304,7 @@ int get_word_line(int file_number, char
+@@ -4319,7 +4318,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "rxpck" , -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _NETWORK_ERROR) {
@@ -755,7 +755,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 11);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4328,7 +4327,8 @@ int get_word_line(int file_number, char
+@@ -4342,7 +4341,8 @@ int get_word_line(int file_number, char
              && strstr(*line, "rcvin/s") == 0 && strstr(*line, "cswch/s") == 0 
              && strstr(*line, "frmpg/s") == 0 && strstr(*line, "call/s") == 0 
              && strstr(*line, "scall/s") == 0 && strstr(*line, "totsck") == 0 
@@ -765,7 +765,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              /* no match */
              return 0;
          } else {
-@@ -4628,7 +4628,7 @@ int get_word_line(int file_number, char
+@@ -4642,7 +4642,7 @@ int get_word_line(int file_number, char
               * cpu and sets core number every time. core number is incremented, so, lately, core number could be known (including all line)  
               * stop calling this clause if reached up to MAX_CORE_NUMBERS, anyway, it will no be called very soon   
               */
@@ -774,7 +774,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  append_list(&line_obj, str_tmp);
                  set_token_items(file_number, line, "cpu" , CHK_CORES_N, SAR_OPTION, time_span, PM); /* setting each cpu values to the object */
                  if (CHK_CORES_N == MAX_CORE_NUMBERS)
-@@ -4639,7 +4639,7 @@ int get_word_line(int file_number, char
+@@ -4653,7 +4653,7 @@ int get_word_line(int file_number, char
               * just because not knowing which block device will appear every time this clause is called,
               * setting each name to the object for future use 
               */ 
@@ -783,7 +783,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  if (strstr(*line, "dev") != 0) {
                      append_list(&line_obj, str_tmp);
                      set_token_items(file_number, line, "DEV" , -999, SAR_OPTION, time_span, PM);
-@@ -4648,17 +4648,17 @@ int get_word_line(int file_number, char
+@@ -4662,17 +4662,17 @@ int get_word_line(int file_number, char
               * just because not knowing which network device will appear every time this clause is called,
               * setting each name to the object for future use 
               */ 

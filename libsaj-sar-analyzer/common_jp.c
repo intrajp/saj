@@ -821,11 +821,15 @@ int create_sar_analyzer_obj()
     initialize_block_device_name();
     initialize_network_device_name();
 
-    /* for dates */
+    /* for dates and time */
     set_this_date("1970/1/1");
     set_this_date_all("1970/1/1");
     set_this_date_former("1970/1/1");
     set_this_date_all_former("1970/1/1");
+    set_this_time("00:00:00");
+    set_this_time_all("00:00:00");
+    set_this_time_former("00:00:00");
+    set_this_time_all_former("00:00:00");
 
     /* these values should be small enough for the comparison */
 

@@ -1836,9 +1836,11 @@ struct sar_analyzer_data
     char title_strings_first_file[TITLE_TOKEN_LIMIT][MAX_DATE_STRINGS];
     /* this numbers should be consistent with item columns sometimes, AM or PM should appear, in that case, decrement it*/
     int columns;
-    /* date string related to below values */
+    /* date and time string related to below values */
     char this_date[MAX_DATE_STRINGS];
     char this_date_former[MAX_DATE_STRINGS];
+    char this_time[MAX_DATE_STRINGS];
+    char this_time_former[MAX_DATE_STRINGS];
 
     /* struct of cpu_column_data */
     cpu_column_data column_cpus;
@@ -1963,9 +1965,11 @@ struct sar_analyzer_data_all
      * AM or PM should appear, in that case, decrement it
      */
     int columns;
-    /* date string related to below values */
+    /* date and time string related to below values */
     char this_date[MAX_DATE_STRINGS];
     char this_date_former[MAX_DATE_STRINGS];
+    char this_time[MAX_DATE_STRINGS];
+    char this_time_former[MAX_DATE_STRINGS];
 
     /* struct of cpu_column_data */
     cpu_column_data column_cpus;
@@ -2726,6 +2730,50 @@ void set_this_date_former(const char *date_string);
  *  Calls : none 
  */
 void set_this_date_all_former(const char *date_string);
+
+/* 
+ * Function Name: set_this_time()
+ *
+ * This function sets this_time to sar_analyzer_obj
+ *
+ *  Caller :
+ *
+ *  Calls : none 
+ */
+void set_this_time(const char *date_string);
+
+/* 
+ * Function Name: set_this_time_all()
+ *
+ * This function sets this_time to sar_analyzer_obj
+ *
+ *  Caller :
+ *
+ *  Calls : none 
+ */
+void set_this_time_all(const char *date_string);
+
+/* 
+ * Function Name: set_this_time_former()
+ *
+ * This function sets this_time_former to sar_analyzer_obj
+ *
+ *  Caller :
+ *
+ *  Calls : none 
+ */
+void set_this_time_former(const char *date_string);
+
+/* 
+ * Function Name: set_this_time_all_former()
+ *
+ * This function sets this_time_former to sar_analyzer_obj
+ *
+ *  Caller :
+ *
+ *  Calls : none 
+ */
+void set_this_time_all_former(const char *date_string);
 
 /*
  * Function Name: remove_unneeded_files()

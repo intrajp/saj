@@ -81,7 +81,7 @@
 #include "sar_analyzer.h"
 #include "setter_getter.h"
 
-int linux_restart_count[ MAX_ANALYZE_FILES ]= {0};
+int linux_restart_count[MAX_ANALYZE_FILES]= {0};
 
 void initialize_check_int(void)
 {
@@ -439,13 +439,27 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
 
     /* get the first token */
     token = strtok(*line, s);
-    /* this should be the first token, which is time value, so, copying time value to variable for future use */
+    /* this should be the first token, which is time value, so, copying time value to variable for the future use */
     strncpy(time_value, token, 19);
     /* converting am-pm style to abs style */ 
     if (PM == 1)
         set_pm_to_abs_time(time_value);
     if (time_span != NULL)
         time_span_checked = check_time_value_is_in_time_span (time_span,time_value);
+
+    /* set time_value and its former value here */
+    char str_time_former[MAX_DATE_STRINGS];
+    memset(str_time_former, '\0', sizeof(str_time_former));
+    if (SAR_OPTION == 'Z') {
+        strncpy(str_time_former, get_this_time_all(), MAX_DATE_STRINGS -1);
+        set_this_time_all_former(str_time_former);
+        set_this_time_all(time_value);
+    } else {
+        strncpy(str_time_former, get_this_time(), MAX_DATE_STRINGS -1);
+        set_this_time_former(str_time_former);
+        set_this_time(time_value);
+    }
+
     i++;
     /* walk throuth other tokens */
     while (token != NULL) {
