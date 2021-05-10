@@ -461,7 +461,7 @@ void file_write_date_svg(char* item, char* str, int data_lines, double width, ch
         if (strcmp(start, "start") == 0)
             str_date_first = "  <text x=\"10\" y=\"120\">";
         if (strcmp(start, "end") == 0)
-            str_date_first = "  <text x=\"955\" y=\"120\">";
+            str_date_first = "  <text x=\"950\" y=\"120\">";
         char* str_date_last = "</text>";
         snprintf(str_date, MAX_LINE_LENGTH, "%s%s%s\n", str_date_first, str, str_date_last);
         fprintf(fp_w, "%s", str_date);
@@ -478,7 +478,7 @@ void file_write_time_svg(char* item, char* str, int data_lines, double width, ch
         if (strcmp(start, "start") == 0)
             str_time_first = "  <text x=\"10\" y=\"130\">";
         if (strcmp(start, "end") == 0)
-            str_time_first = "  <text x=\"955\" y=\"130\">";
+            str_time_first = "  <text x=\"950\" y=\"130\">";
         char* str_time_last = "</text>";
         snprintf(str_time, MAX_LINE_LENGTH, "%s%s%s\n", str_time_first, str, str_time_last);
         fprintf(fp_w, "%s", str_time);
@@ -643,7 +643,7 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
                     // percentage string 
                     if (strcmp(item, "ldavg_one") != 0) {
                         fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">100</text>");
-                        fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">50</text>");
+                        fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">50</text>");
                         fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
                     }
                     file_write_time_svg(item, str_time_only, 0, width, "start", fp_w); 
@@ -656,47 +656,47 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
             fprintf(fp_w, "%s\n", "<g font-family=\"sans-serif\" fill=\"black\" font-size=\"10\">");
             if (c_ldavg == 800.0) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">0.125</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">0.0625</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">0.0625</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             } else if (c_ldavg == 400.0) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">0.25</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">0.125</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">0.125</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             } else if (c_ldavg == 200.0) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">0.5</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">0.25</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">0.25</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             } else if (c_ldavg == 100.0) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">1</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">0.5</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">0.5</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             } else if (c_ldavg == 50.0) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">2</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">1</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">1</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             } else if (c_ldavg == 20.0) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">5</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">2.5</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">2.5</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             } else if (c_ldavg == 10.0) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">10</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">5</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">5</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             } else if (c_ldavg == 5.0) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">20</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">10</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">10</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             } else if (c_ldavg == 2.5) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">40</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">20</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">20</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             } else if (c_ldavg == 1.25) {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">80</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">40</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">40</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             } else {
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"10\">100</text>");
-                fprintf(fp_w, "%s\n", "  <text x=\"00\" y=\"60\">50</text>");
+                fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"60\">50</text>");
                 fprintf(fp_w, "%s\n", "  <text x=\"0\" y=\"110\">0</text>");
             }
             fprintf(fp_w, "%s\n", "</g>");
