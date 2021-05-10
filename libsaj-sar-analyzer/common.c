@@ -824,6 +824,8 @@ int create_sar_analyzer_obj()
     /* for dates */
     set_this_date("1970/1/1");
     set_this_date_all("1970/1/1");
+    set_this_date_former("1970/1/1");
+    set_this_date_all_former("1970/1/1");
 
     /* these values should be small enough for the comparison */
 

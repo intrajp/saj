@@ -127,16 +127,27 @@ int set_token_column(int file_number, char *line, const char *item_name_for_colu
 
             strncpy(buff, token, 10);
 
+            /* we want to know former date*/
+            char str_date_former[MAX_DATE_STRINGS];
+            char str_date_all_former[MAX_DATE_STRINGS];
+            memset(str_date_former, '\0', sizeof(str_date_former));
+            memset(str_date_all_former, '\0', sizeof(str_date_all_former));
+
             /* if it was the date stging set into the struct */
             if (
                ((buff[0]== '2') &&(buff[1]== '0') &&(buff[4]== '-')) ||
                ((buff[0]== '1') &&(buff[1]== '9') &&(buff[4]== '-')) ||
                ((buff[2]== '/') &&(buff[5]== '/'))
-           ) {
-                if (SAR_OPTION == 'Z')
+            ) {
+                if (SAR_OPTION == 'Z') {
+                    strncpy(str_date_all_former, get_this_date_all(), MAX_DATE_STRINGS -1);
+                    set_this_date_all_former(str_date_all_former);
                     set_this_date_all(token);
-                else
+                } else {
+                    strncpy(str_date_former, get_this_date(), MAX_DATE_STRINGS -1);
+                    set_this_date_former(str_date_former);
                     set_this_date(token);
+                }
             }
         }
         /* if AM or PM will appear, column number should be decremented, unless, segfault in set_column_item() */

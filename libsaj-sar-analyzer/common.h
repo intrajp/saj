@@ -1838,6 +1838,7 @@ struct sar_analyzer_data
     int columns;
     /* date string related to below values */
     char this_date[MAX_DATE_STRINGS];
+    char this_date_former[MAX_DATE_STRINGS];
 
     /* struct of cpu_column_data */
     cpu_column_data column_cpus;
@@ -1964,6 +1965,7 @@ struct sar_analyzer_data_all
     int columns;
     /* date string related to below values */
     char this_date[MAX_DATE_STRINGS];
+    char this_date_former[MAX_DATE_STRINGS];
 
     /* struct of cpu_column_data */
     cpu_column_data column_cpus;
@@ -2702,6 +2704,28 @@ void set_this_date(const char *date_string);
  *  Calls : none 
  */
 void set_this_date_all(const char *date_string);
+
+/* 
+ * Function Name: set_this_date_former()
+ *
+ * This function sets this_date_former to sar_analyzer_obj
+ *
+ *  Caller : set_token_column()
+ *
+ *  Calls : none 
+ */
+void set_this_date_former(const char *date_string);
+
+/* 
+ * Function Name: set_this_date_all_former()
+ *
+ * This function sets this_date_all_former to sar_analyzer_all_obj
+ *
+ *  Caller : set_token_column()
+ *
+ *  Calls : none 
+ */
+void set_this_date_all_former(const char *date_string);
 
 /*
  * Function Name: remove_unneeded_files()

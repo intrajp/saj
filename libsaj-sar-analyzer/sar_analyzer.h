@@ -86,6 +86,7 @@ struct sar_analyzer_data sar_analyzer_obj_raw =
         {{0}}, /* title_strings_first_file */
         0, /* columns */
         "1970-01-01", /* this_date */
+        "1970-01-01", /* this_date_former */
 
         {0, 0, 0, 0, 0}, /* cpu_column_data */
         {0, 0, 0, 0, 0}, /* ldavg_column_data */
@@ -168,6 +169,7 @@ struct sar_analyzer_data_all sar_analyzer_all_obj_raw =
         {{0}}, /* title_strings_first_file */
         0, /* columns */
         "1970-01-01", /* this_date */
+        "1970-01-01", /* this_date_former */
 
         {0, 0, 0, 0, 0}, /* cpu_column_data */
         {0, 0, 0, 0, 0}, /* ldavg_column_data */
@@ -1246,6 +1248,8 @@ void set_block_device_names ( const char *block_device_name );
 void set_title_strings_first_file ( int x, const char *title_strings );
 void set_this_date ( const char *date_string );
 void set_this_date_all ( const char *date_string );
+void set_this_date_former ( const char *date_string );
+void set_this_date_all_former ( const char *date_string );
 int search_block_device_name ( const char *block_device_name );
 
 /* columns */
@@ -1480,6 +1484,8 @@ int set_network_lowest_time ( const char *date_string, int x, const char *elemen
 /**** getters ****/
 const char *get_this_date ( void );
 const char *get_this_date_all ( void );
+const char *get_this_date_former ( void );
+const char *get_this_date_all_former ( void );
 
 /* columns */
 int get_column_cpu ( const char *element);

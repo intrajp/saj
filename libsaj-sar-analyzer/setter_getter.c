@@ -69,6 +69,16 @@ void set_this_date_all(const char *date_string)
     strncpy(sar_analyzer_all_obj->this_date, date_string, MAX_DATE_STRINGS - 1);
 }
 
+void set_this_date_former(const char *date_string)
+{
+    strncpy(sar_analyzer_obj->this_date_former, date_string, MAX_DATE_STRINGS - 1);
+}
+
+void set_this_date_all_former(const char *date_string)
+{
+    strncpy(sar_analyzer_all_obj->this_date_former, date_string, MAX_DATE_STRINGS - 1);
+}
+
 /* -------- Columns -------- */
 int set_column_cpu(int var, const char *element)
 {
@@ -4945,6 +4955,16 @@ const char *get_this_date(void)
 const char *get_this_date_all(void)
 {
     return sar_analyzer_all_obj->this_date;
+}
+
+const char *get_this_date_former(void)
+{
+    return sar_analyzer_obj->this_date_former;
+}
+
+const char *get_this_date_all_former(void)
+{
+    return sar_analyzer_all_obj->this_date_former;
 }
 
 /* -------- Columns -------- */
