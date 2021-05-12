@@ -1841,6 +1841,7 @@ struct sar_analyzer_data
     char this_date_former[MAX_DATE_STRINGS];
     char this_time[MAX_DATE_STRINGS];
     char this_time_former[MAX_DATE_STRINGS];
+    char this_time_former2[MAX_DATE_STRINGS];
 
     /* struct of cpu_column_data */
     cpu_column_data column_cpus;
@@ -1970,6 +1971,7 @@ struct sar_analyzer_data_all
     char this_date_former[MAX_DATE_STRINGS];
     char this_time[MAX_DATE_STRINGS];
     char this_time_former[MAX_DATE_STRINGS];
+    char this_time_former2[MAX_DATE_STRINGS];
 
     /* struct of cpu_column_data */
     cpu_column_data column_cpus;
@@ -2775,6 +2777,28 @@ void set_this_time_former(const char *date_string);
  */
 void set_this_time_all_former(const char *date_string);
 
+/* 
+ * Function Name: set_this_time_former2()
+ *
+ * This function sets this_time_former2 to sar_analyzer_obj
+ *
+ *  Caller :
+ *
+ *  Calls : none 
+ */
+void set_this_time_former2(const char *date_string);
+
+/* 
+ * Function Name: set_this_time_all_former2()
+ *
+ * This function sets this_time_former2 to sar_analyzer_obj
+ *
+ *  Caller :
+ *
+ *  Calls : none 
+ */
+void set_this_time_all_former2(const char *date_string);
+
 /*
  * Function Name: remove_unneeded_files()
  *
@@ -2809,5 +2833,14 @@ double check_time_value(double initial_val, double horizontal_notch, int count, 
  *  Calls : none 
  */
 int check_time_value_is_in_time_span(const char *time_span_str, const char *time_value);
+
+/*
+ * Function Name: check_time_continuity()
+ *
+ *  Caller : set_token_items()
+ *
+ *  Calls : none 
+ */
+int check_time_continuity(int file_number, char* this_time, char* this_time_former);
 
 #endif /* SAJ_COMMON_H */

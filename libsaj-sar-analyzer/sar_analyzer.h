@@ -89,6 +89,7 @@ struct sar_analyzer_data sar_analyzer_obj_raw =
         "1970-01-01", /* this_date_former */
         "00:00:00", /* this_time */
         "00:00:00", /* this_time_former */
+        "00:00:00", /* this_time_former2 */
 
         {0, 0, 0, 0, 0}, /* cpu_column_data */
         {0, 0, 0, 0, 0}, /* ldavg_column_data */
@@ -174,6 +175,7 @@ struct sar_analyzer_data_all sar_analyzer_all_obj_raw =
         "1970-01-01", /* this_date_former */
         "00:00:00", /* this_time */
         "00:00:00", /* this_time_former */
+        "00:00:00", /* this_time_former2 */
 
         {0, 0, 0, 0, 0}, /* cpu_column_data */
         {0, 0, 0, 0, 0}, /* ldavg_column_data */
@@ -1258,6 +1260,8 @@ void set_this_time ( const char *date_string );
 void set_this_time_all ( const char *date_string );
 void set_this_time_former ( const char *date_string );
 void set_this_time_all_former ( const char *date_string );
+void set_this_time_former2 ( const char *date_string );
+void set_this_time_all_former2 ( const char *date_string );
 int search_block_device_name ( const char *block_device_name );
 
 /* columns */
@@ -1498,6 +1502,8 @@ const char *get_this_time ( void );
 const char *get_this_time_all ( void );
 const char *get_this_time_former ( void );
 const char *get_this_time_all_former ( void );
+const char *get_this_time_former2 ( void );
+const char *get_this_time_all_former2 ( void );
 
 /* columns */
 int get_column_cpu ( const char *element);

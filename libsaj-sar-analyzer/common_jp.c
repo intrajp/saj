@@ -830,6 +830,8 @@ int create_sar_analyzer_obj()
     set_this_time_all("00:00:00");
     set_this_time_former("00:00:00");
     set_this_time_all_former("00:00:00");
+    set_this_time_former2("00:00:00");
+    set_this_time_all_former2("00:00:00");
 
     /* these values should be small enough for the comparison */
 
@@ -2196,4 +2198,60 @@ int check_time_value_is_in_time_span(const char *time_span_str, const char *time
         return 1;
 
     return 0;
+}
+
+int check_time_continuity(int file_number, char* this_time, char* this_time_former)
+{
+    char time_this[6];
+    char minutes_this[6];
+    char time_this_former[6];
+    char minutes_this_former[6];
+
+    memset(time_this,'\0',sizeof(time_this));
+    memset(minutes_this,'\0',sizeof(minutes_this));
+    memset(time_this_former,'\0',sizeof(time_this_former));
+    memset(minutes_this_former,'\0',sizeof(minutes_this_former));
+
+    strncpy(time_this, this_time, 5);
+    strncpy(time_this_former, this_time_former, 5);
+    time_this[2] = '\0';
+    time_this_former[2] = '\0';
+    minutes_this[0] = this_time[3];
+    minutes_this[1] = this_time[4];
+    minutes_this[2] = '\0';
+    minutes_this_former[0] = this_time_former[3];
+    minutes_this_former[1] = this_time_former[4];
+    minutes_this_former[2] = '\0';
+
+    int time_this_i =atoi(time_this);
+    int time_this_former_i =atoi(time_this_former);
+    int minutes_this_i =atoi(minutes_this);
+    int minutes_this_former_i =atoi(minutes_this_former);
+    int time_difference = 0;
+    int minutes_difference = 0;
+    int difference = 0;
+
+    if (time_this_i == time_this_former_i) {
+        if (minutes_this_i - minutes_this_former_i > 10)
+            difference = (minutes_this_i - minutes_this_former_i / 10) - 1;
+    }
+
+    time_difference = time_this_i - time_this_former_i; 
+
+    if (minutes_this_i > minutes_this_former_i) {
+        minutes_difference = ((minutes_this_i - minutes_this_former_i) / 10) - 1;
+    } else {
+        if (minutes_this_former_i - minutes_this_i == 10)
+            minutes_difference = 4;
+        if (minutes_this_former_i - minutes_this_i == 20)
+            minutes_difference = 3;
+        if (minutes_this_former_i - minutes_this_i == 30)
+            minutes_difference = 2;
+        if (minutes_this_former_i - minutes_this_i == 40)
+            minutes_difference = 1;
+    }
+
+    difference = time_difference * minutes_difference;
+
+    return difference;
 }

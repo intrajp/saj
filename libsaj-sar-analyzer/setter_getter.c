@@ -84,19 +84,29 @@ void set_this_time(const char *date_string)
     strncpy(sar_analyzer_obj->this_time, date_string, MAX_DATE_STRINGS - 1);
 }
 
-void set_this_time_former(const char *date_string)
-{
-    strncpy(sar_analyzer_obj->this_time_former, date_string, MAX_DATE_STRINGS - 1);
-}
-
 void set_this_time_all(const char *date_string)
 {
     strncpy(sar_analyzer_all_obj->this_time, date_string, MAX_DATE_STRINGS - 1);
 }
 
+void set_this_time_former(const char *date_string)
+{
+    strncpy(sar_analyzer_obj->this_time_former, date_string, MAX_DATE_STRINGS - 1);
+}
+
 void set_this_time_all_former(const char *date_string)
 {
     strncpy(sar_analyzer_all_obj->this_time_former, date_string, MAX_DATE_STRINGS - 1);
+}
+
+void set_this_time_former2(const char *date_string)
+{
+    strncpy(sar_analyzer_obj->this_time_former2, date_string, MAX_DATE_STRINGS - 1);
+}
+
+void set_this_time_all_former2(const char *date_string)
+{
+    strncpy(sar_analyzer_all_obj->this_time_former2, date_string, MAX_DATE_STRINGS - 1);
 }
 
 /* -------- Columns -------- */
@@ -5005,6 +5015,16 @@ const char *get_this_time_former(void)
 const char *get_this_time_all_former(void)
 {
     return sar_analyzer_all_obj->this_time_former;
+}
+
+const char *get_this_time_former2(void)
+{
+    return sar_analyzer_obj->this_time_former2;
+}
+
+const char *get_this_time_all_former2(void)
+{
+    return sar_analyzer_all_obj->this_time_former2;
 }
 
 /* -------- Columns -------- */

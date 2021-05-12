@@ -441,6 +441,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
     token = strtok(*line, s);
     /* this should be the first token, which is time value, so, copying time value to variable for the future use */
     strncpy(time_value, token, 19);
+
     /* converting am-pm style to abs style */ 
     if (PM == 1)
         set_pm_to_abs_time(time_value);
@@ -450,6 +451,8 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
     /* set time_value and its former value here */
     char str_time_former[MAX_DATE_STRINGS];
     memset(str_time_former, '\0', sizeof(str_time_former));
+
+    /* if second field (column) are not these, set time value and its former value to the strut */
     if (SAR_OPTION == 'Z') {
         strncpy(str_time_former, get_this_time_all(), MAX_DATE_STRINGS -1);
         set_this_time_all_former(str_time_former);
@@ -2213,8 +2216,10 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
                         memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        int time_difference = 0;
                         snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
                         snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "memused", "memused", this_date_all, time_value, str_tmp_echo);
+                        time_difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
                         append_list2(&svg_memory_memused_obj, str_tmp_echo2, str_tmp_echo);
                     }
                     /* end code for graph */

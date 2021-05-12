@@ -830,6 +830,7 @@ int create_sar_analyzer_obj()
     set_this_time_all("00:00:00");
     set_this_time_former("00:00:00");
     set_this_time_all_former("00:00:00");
+    set_this_time_all_former2("00:00:00");
 
     /* these values should be small enough for the comparison */
 
@@ -2196,4 +2197,11 @@ int check_time_value_is_in_time_span(const char *time_span_str, const char *time
         return 1;
 
     return 0;
+}
+
+int check_time_continuity(char* this_time, char* this_time_former)
+{
+printf("%s,%s\n",this_time, this_time_former);
+    int x = 0;
+    return x;
 }
