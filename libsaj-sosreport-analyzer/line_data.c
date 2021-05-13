@@ -621,13 +621,10 @@ int create_svg_file(node2** obj, char* item, FILE* fp_w, int utility)
             width = width + horizontal_notch;
             snprintf(str_horizontal_notch, MAX_FILE_NAME_LENGTH, "%f ", width);
             strncat(str_svg_draw, str_horizontal_notch, 200000 - 1);
-            if (strstr(item, "ldavg")) {
-                val_sar = atof(get_sar_value_from_string(str_svg[i]));
-                val_sar = 110 - (val_sar * c_ldavg);
-                snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%f ", val_sar);
-            } else {
-                snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%s ", get_sar_value_from_string(str_svg[i]));
-            }
+            val_sar = atof(get_sar_value_from_string(str_svg[i]));
+            val_sar = 110 - (val_sar * c_ldavg);
+            snprintf(str_hight, MAX_FILE_NAME_LENGTH, "%f ", val_sar);
+
             snprintf(str_date, MAX_FILE_NAME_LENGTH, "%s ", get_date_from_string(str_svg[i]));
             snprintf(str_date_only_pre, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 2, ","));
             snprintf(str_date_only, MAX_FILE_NAME_LENGTH, "%s ", terminate_string(str_date, 1, ","));
