@@ -76,3 +76,5 @@ Add html file.
 Fix html file.
 0.2.21
 Fix graph color.
+0.2.22
+Fix graph feature when sar has no data.
