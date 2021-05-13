@@ -93,6 +93,9 @@ void read_sa_dir(const char *dname, int SAR_OPTION, int REPORT,
     struct dirent *dp;
     dir = opendir(dname); 
     char *str, *str_tmp;
+    struct stat buf;
+    char fullpath[MAX_FILE_NAME_LENGTH];
+    int ret;
     int i = 0, ii = 0 , j = 0, files_n = 0;
 
     /* limit of sar files to be analyzed */
@@ -105,6 +108,13 @@ void read_sa_dir(const char *dname, int SAR_OPTION, int REPORT,
         if (dp->d_type != DT_REG)
             continue;
         str = dp->d_name;
+        snprintf(fullpath, MAX_FILE_NAME_LENGTH + 2, "%s/%s", dname, str);
+        ret = stat(fullpath, &buf);
+        if (ret < 0) {
+            free_sar_analyzer_obj();
+            free_sosreport_analyzer_obj(0);
+            exit(EXIT_FAILURE);
+        }
         /*
          *  find files with name sar
          *  skip reading "sar_all" file 
@@ -2272,6 +2282,7 @@ int check_time_continuity(int file_number, char* this_time, char* this_time_form
     }
 
     difference = time_difference * minutes_difference;
-
+//fujiwara
+//printf("%d %d - %d %d : %d\n", time_this_i, minutes_this_i, time_this_former_i, minutes_this_former_i, difference);
     return difference;
 }
