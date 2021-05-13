@@ -1,7 +1,7 @@
 diff -ruNp a/common.c b/common.c
---- a/common.c	2021-05-13 20:33:17.599879653 +0900
-+++ b/common.c	2021-05-13 20:28:03.181846116 +0900
-@@ -298,7 +298,7 @@ void read_sar_cpu_as_paragraph(const cha
+--- a/common.c	2021-05-13 21:28:09.304055165 +0900
++++ b/common.c	2021-05-13 21:28:16.531917174 +0900
+@@ -304,7 +304,7 @@ void read_sar_cpu_as_paragraph(const cha
          for (i--; (i > 0) && isspace (line[i -1]) ; i--)
              line[i -1] = '\0';
          /* count cpu all line and set numbers to cpu_as_paragraph */
@@ -10,7 +10,7 @@ diff -ruNp a/common.c b/common.c
              break;
          if ((strstr (*(&line), "all") != 0)) 
              _cpu_as_paragraph++;
-@@ -627,31 +627,31 @@ void sanity_check_file(char * line, cons
+@@ -642,31 +642,31 @@ void sanity_check_file(char * line, cons
      if (strstr(line, "LINUX RESTART") != 0)
          initialize_avg_checked_int ();
  
@@ -49,7 +49,7 @@ diff -ruNp a/common.c b/common.c
          if ((kbhugfree == 1) || (dentunusd == 0)) {
              kbswpfree_avg_checked_int = 1;
              kbswpfree_avg_checked = "Checked";
-@@ -659,39 +659,39 @@ void sanity_check_file(char * line, cons
+@@ -674,39 +674,39 @@ void sanity_check_file(char * line, cons
              kbhugfree_avg_checked = "Checked";
          }
      }
@@ -98,7 +98,7 @@ diff -ruNp a/common.c b/common.c
          if (squeezd == 0) {
              totsck_avg_checked_int = 1;
              totsck_avg_checked = "Checked";
-@@ -699,7 +699,7 @@ void sanity_check_file(char * line, cons
+@@ -714,7 +714,7 @@ void sanity_check_file(char * line, cons
              squeezd_avg_checked = "Checked";
          }
      }
@@ -108,8 +108,8 @@ diff -ruNp a/common.c b/common.c
          squeezd_avg_checked = "Checked";
      }
 diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
---- a/sar_analyzer.c	2021-05-13 20:40:49.128311358 +0900
-+++ b/sar_analyzer.c	2021-05-13 20:40:57.711148489 +0900
+--- a/sar_analyzer.c	2021-05-13 21:28:22.491803389 +0900
++++ b/sar_analyzer.c	2021-05-13 21:28:35.323558407 +0900
 @@ -154,7 +154,7 @@ int set_token_column(int file_number, ch
          }
          /* if AM or PM will appear, column number should be decremented, unless, segfault in set_column_item() */
