@@ -991,7 +991,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
                         int difference = 0;
                         snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
-                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 0.0);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 100.0);
                         if (utility == 0) {
                             snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_idle", this_date_all, time_value, str_tmp_echo);
                             snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", "CPU All", "cpu_idle", this_date_all, "", str_tmp_null);
