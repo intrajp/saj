@@ -129,6 +129,7 @@ void read_sa_dir(const char *dname, int SAR_OPTION, int REPORT,
         fprintf(stderr, "-If you are not in sar-analyzer only mode, check file in saj-results dir.\n");
         /* freeing object and setting it to NULL */
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
 
@@ -173,6 +174,7 @@ void read_write_file(DIR *dir, const char *dname, char *sar_arr[], int files_n,
         for (i = 0; i < files_n; i++)
             sar_arr[i]=NULL;
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
     if (dname_len > MAX_DIR_NAME_LENGTH) {
@@ -181,6 +183,7 @@ void read_write_file(DIR *dir, const char *dname, char *sar_arr[], int files_n,
         for (i = 0; i < files_n; i++)
             sar_arr[i]=NULL;
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
     /* stripping last slash if any */
@@ -234,6 +237,7 @@ void read_write_file(DIR *dir, const char *dname, char *sar_arr[], int files_n,
         for (i = 0; i < files_n; i++)
             sar_arr[i]=NULL;
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
     unlink("dummy.svg");
@@ -276,6 +280,7 @@ void read_sar_cpu_as_paragraph(const char *filename)
         fprintf(stderr, "can't open file (%s): %s\n", filename, strerror(errno));
         /* freeing object and setting it to NULL */
         free_sar_analyzer_obj ();
+        free_sosreport_analyzer_obj(0);
         exit (EXIT_FAILURE);
     }
     /* read file and parse lines */
@@ -288,6 +293,7 @@ void read_sar_cpu_as_paragraph(const char *filename)
             fprintf(stderr, "%s:%d: line too long or last line missing newline\n Hint:$sed -i 's/\\x00//g' <sar_file>\n",filename,lnr);
             /* freeing object and setting it to NULL */
             free_sar_analyzer_obj ();
+            free_sosreport_analyzer_obj(0);
             exit (EXIT_FAILURE);
         }
         line[i - 1] = '\0';
@@ -317,12 +323,14 @@ void read_sar(int file_number, const char *filename, int SAR_OPTION,
         fprintf(stderr, "no file name supplied (%s): %ld %s\n", filename, filename_len, strerror(errno));
         /* freeing object and setting it to NULL */
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
     if (filename_len > MAX_FULL_PATH_LENGTH) {
         fprintf(stderr, "file name too long (%s): %ld %s\n", filename, filename_len, strerror(errno));
         /* freeing object and setting it to NULL */
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
     FILE *fp;
@@ -338,6 +346,7 @@ void read_sar(int file_number, const char *filename, int SAR_OPTION,
         fprintf(stderr, "can't open file (%s): %s\n", filename, strerror(errno));
         /* freeing object and setting it to NULL */
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     } else {
         char str_num[MAX_FILE_NAME_LENGTH + 1] = {'\0'};
@@ -360,6 +369,7 @@ void read_sar(int file_number, const char *filename, int SAR_OPTION,
             fprintf(stderr, "%s:%d: line too long or last line missing newline\n Hint:$sed -i 's/\\x00//g' <sar_file>\n", filename, lnr);
             /* freeing object and setting it to NULL */
             free_sar_analyzer_obj();
+            free_sosreport_analyzer_obj(0);
             exit(EXIT_FAILURE);
         }
         line[i - 1] = '\0';
@@ -387,12 +397,14 @@ void read_sar_check(int file_number, const char *filename, int SAR_OPTION)
         fprintf(stderr, "no file name supplied (%s): %ld %s\n", filename, filename_len, strerror(errno));
         /* freeing object and setting it to NULL */
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
     if (filename_len > MAX_FULL_PATH_LENGTH) {
         fprintf(stderr, "file name too long (%s): %ld %s\n", filename, filename_len, strerror(errno));
         /* freeing object and setting it to NULL */
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
     FILE *fp;
@@ -407,6 +419,7 @@ void read_sar_check(int file_number, const char *filename, int SAR_OPTION)
         fprintf(stderr, "can't open file (%s): %s\n", filename, strerror(errno));
         /* freeing object and setting it to NULL */
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
     else
@@ -422,6 +435,7 @@ void read_sar_check(int file_number, const char *filename, int SAR_OPTION)
             fprintf(stderr, "%s:%d: line too long or last line missing newline\n Hint:$sed -i 's/\\x00//g' <sar_file>\n", filename, lnr);
             /* freeing object and setting it to NULL */
             free_sar_analyzer_obj();
+            free_sosreport_analyzer_obj(0);
             exit(EXIT_FAILURE);
         }
         line[i - 1] = '\0';
@@ -449,6 +463,7 @@ void read_sar_check(int file_number, const char *filename, int SAR_OPTION)
         puts("Sanity check faild!");
         puts("--------");
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         printf("cpu_avg_checked (%s)\n", cpu_avg_checked);
         printf("proc_s_avg_checked (%s)\n", proc_s_avg_checked);
         printf("pswpin_s_avg_checked (%s)\n", pswpin_s_avg_checked);
@@ -754,6 +769,7 @@ int check_result_dir(const char *dname, int sar_only, int tmp)
             {
                 fprintf(stderr, "can't open directory %s\n", dname);
                 free_sar_analyzer_obj();
+                free_sosreport_analyzer_obj(0);
                 exit(EXIT_FAILURE);
             }
         }
@@ -772,6 +788,7 @@ void remove_unneeded_files (const char *filename, const char *extension)
     {
         fprintf(stderr, "command failed: %s (%d)\n", buff, err);
         free_sar_analyzer_obj ();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
     else 
@@ -788,6 +805,7 @@ void sar_analyzer_init(const char *dname, const char *fname, int SAR_OPTION,
         {
             fprintf(stderr, "cannot open directory (%s): %s\n", dname, strerror(errno));
             free_sar_analyzer_obj();
+            free_sosreport_analyzer_obj(0);
             exit(EXIT_FAILURE);
         }
         /* this is needed to suppress memory leak */
@@ -803,10 +821,12 @@ void sar_analyzer_init(const char *dname, const char *fname, int SAR_OPTION,
     else if (fname != NULL) {
         puts("this function is almost done, but right now, please use directory option...");
         free_sar_analyzer_obj ();
+        free_sosreport_analyzer_obj(0);
         exit (EXIT_FAILURE);
     } else {
         fprintf(stderr, "file or directory name not present\n");
         free_sar_analyzer_obj();
+        free_sosreport_analyzer_obj(0);
         exit(EXIT_FAILURE);
     }
 }
@@ -821,9 +841,17 @@ int create_sar_analyzer_obj()
     initialize_block_device_name();
     initialize_network_device_name();
 
-    /* for dates */
+    /* for dates and time */
     set_this_date("1970/1/1");
     set_this_date_all("1970/1/1");
+    set_this_date_former("1970/1/1");
+    set_this_date_all_former("1970/1/1");
+    set_this_time("00:00:00");
+    set_this_time_all("00:00:00");
+    set_this_time_former("00:00:00");
+    set_this_time_all_former("00:00:00");
+    set_this_time_former2("00:00:00");
+    set_this_time_all_former2("00:00:00");
 
     /* these values should be small enough for the comparison */
 
@@ -2190,4 +2218,60 @@ int check_time_value_is_in_time_span(const char *time_span_str, const char *time
         return 1;
 
     return 0;
+}
+
+int check_time_continuity(int file_number, char* this_time, char* this_time_former)
+{
+    char time_this[6];
+    char minutes_this[6];
+    char time_this_former[6];
+    char minutes_this_former[6];
+
+    memset(time_this,'\0',sizeof(time_this));
+    memset(minutes_this,'\0',sizeof(minutes_this));
+    memset(time_this_former,'\0',sizeof(time_this_former));
+    memset(minutes_this_former,'\0',sizeof(minutes_this_former));
+
+    strncpy(time_this, this_time, 5);
+    strncpy(time_this_former, this_time_former, 5);
+    time_this[2] = '\0';
+    time_this_former[2] = '\0';
+    minutes_this[0] = this_time[3];
+    minutes_this[1] = this_time[4];
+    minutes_this[2] = '\0';
+    minutes_this_former[0] = this_time_former[3];
+    minutes_this_former[1] = this_time_former[4];
+    minutes_this_former[2] = '\0';
+
+    int time_this_i =atoi(time_this);
+    int time_this_former_i =atoi(time_this_former);
+    int minutes_this_i =atoi(minutes_this);
+    int minutes_this_former_i =atoi(minutes_this_former);
+    int time_difference = 0;
+    int minutes_difference = 0;
+    int difference = 0;
+
+    if (time_this_i == time_this_former_i) {
+        if (minutes_this_i - minutes_this_former_i > 10)
+            difference = (minutes_this_i - minutes_this_former_i / 10) - 1;
+    }
+
+    time_difference = time_this_i - time_this_former_i; 
+
+    if (minutes_this_i > minutes_this_former_i) {
+        minutes_difference = ((minutes_this_i - minutes_this_former_i) / 10) - 1;
+    } else {
+        if (minutes_this_former_i - minutes_this_i == 10)
+            minutes_difference = 4;
+        if (minutes_this_former_i - minutes_this_i == 20)
+            minutes_difference = 3;
+        if (minutes_this_former_i - minutes_this_i == 30)
+            minutes_difference = 2;
+        if (minutes_this_former_i - minutes_this_i == 40)
+            minutes_difference = 1;
+    }
+
+    difference = time_difference * minutes_difference;
+
+    return difference;
 }

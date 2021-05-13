@@ -81,7 +81,7 @@
 #include "sar_analyzer.h"
 #include "setter_getter.h"
 
-int linux_restart_count[ MAX_ANALYZE_FILES ]= {0};
+int linux_restart_count[MAX_ANALYZE_FILES]= {0};
 
 void initialize_check_int(void)
 {
@@ -127,16 +127,29 @@ int set_token_column(int file_number, char *line, const char *item_name_for_colu
 
             strncpy(buff, token, 10);
 
+            /* we want to know former date*/
+            char str_date_former[MAX_DATE_STRINGS];
+            char str_date_all_former[MAX_DATE_STRINGS];
+            char str_date_all_former2[MAX_DATE_STRINGS];
+            memset(str_date_former, '\0', sizeof(str_date_former));
+            memset(str_date_all_former, '\0', sizeof(str_date_all_former));
+            memset(str_date_all_former2, '\0', sizeof(str_date_all_former2));
+
             /* if it was the date stging set into the struct */
             if (
                ((buff[0]== '2') &&(buff[1]== '0') &&(buff[4]== '-')) ||
                ((buff[0]== '1') &&(buff[1]== '9') &&(buff[4]== '-')) ||
                ((buff[2]== '/') &&(buff[5]== '/'))
-           ) {
-                if (SAR_OPTION == 'Z')
+            ) {
+                if (SAR_OPTION == 'Z') {
+                    strncpy(str_date_all_former, get_this_date_all(), MAX_DATE_STRINGS -1);
+                    set_this_date_all_former(str_date_all_former);
                     set_this_date_all(token);
-                else
+                } else {
+                    strncpy(str_date_former, get_this_date(), MAX_DATE_STRINGS -1);
+                    set_this_date_former(str_date_former);
                     set_this_date(token);
+                }
             }
         }
         /* if AM or PM will appear, column number should be decremented, unless, segfault in set_column_item() */
@@ -428,13 +441,29 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
 
     /* get the first token */
     token = strtok(*line, s);
-    /* this should be the first token, which is time value, so, copying time value to variable for future use */
+    /* this should be the first token, which is time value, so, copying time value to variable for the future use */
     strncpy(time_value, token, 19);
     /* converting am-pm style to abs style */ 
     if (PM == 1)
         set_pm_to_abs_time(time_value);
     if (time_span != NULL)
         time_span_checked = check_time_value_is_in_time_span (time_span,time_value);
+
+    /* set time_value and its former value here */
+    char str_time_former[MAX_DATE_STRINGS];
+    memset(str_time_former, '\0', sizeof(str_time_former));
+
+    /* if second field (column) are not these, set time value and its former value to the struct */
+    if (SAR_OPTION == 'Z') {
+        strncpy(str_time_former, get_this_time_all(), MAX_DATE_STRINGS -1);
+        set_this_time_all_former(str_time_former);
+        set_this_time_all(time_value);
+    } else {
+        strncpy(str_time_former, get_this_time(), MAX_DATE_STRINGS -1);
+        set_this_time_former(str_time_former);
+        set_this_time(time_value);
+    }
+
     i++;
     /* walk throuth other tokens */
     while (token != NULL) {
@@ -624,14 +653,25 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
                         char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null2[MAX_LINE_LENGTH + 100] = {'\0'};
+                        memset(str_tmp_null, '\0', sizeof(str_tmp_null));
+                        memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        int difference = 0;
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 0.0);
                         if (utility == 0) {
                             snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_usr", this_date_all, time_value, str_tmp_echo);
-                            append_list2(&svg_cpu_usr_obj, str_tmp_echo2, str_tmp_echo);
+                            snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", "CPU All", "cpu_usr", this_date_all, "", str_tmp_null);
+                            difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
+                            // absense of data should be zero
+                            if (difference > 1)
+                                for(int i=0; i<difference; i++)
+                                    append_list2(&svg_cpu_usr_obj, str_tmp_null2, str_tmp_null);
+                            else
+                                append_list2(&svg_cpu_usr_obj, str_tmp_echo2, str_tmp_echo);
                         }
                     }
                     /* end code for graph */
@@ -723,14 +763,25 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
                         char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null2[MAX_LINE_LENGTH + 100] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        memset(str_tmp_null, '\0', sizeof(str_tmp_null));
+                        memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
+                        int difference = 0;
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 0.0);
                         if (utility == 0) {
                             snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_sys", this_date_all, time_value, str_tmp_echo);
-                            append_list2(&svg_cpu_sys_obj, str_tmp_echo2, str_tmp_echo);
+                            snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", "CPU All", "cpu_sys", this_date_all, "", str_tmp_null);
+                            difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
+                            // absense of data should be zero
+                            if (difference > 1)
+                                for(int i=0; i<difference; i++)
+                                    append_list2(&svg_cpu_sys_obj, str_tmp_null2, str_tmp_null);
+                            else
+                                append_list2(&svg_cpu_sys_obj, str_tmp_echo2, str_tmp_echo);
                         }
                     }
                     /* end code for graph */
@@ -822,14 +873,25 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
                         char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null2[MAX_LINE_LENGTH + 100] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        memset(str_tmp_null, '\0', sizeof(str_tmp_null));
+                        memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
+                        int difference = 0;
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 0.0);
                         if (utility == 0) {
                             snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_iowait", this_date_all, time_value, str_tmp_echo);
-                            append_list2(&svg_cpu_iowait_obj, str_tmp_echo2, str_tmp_echo);
+                            snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", "CPU All", "cpu_iowait", this_date_all, "", str_tmp_null);
+                            difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
+                            // absense of data should be zero
+                            if (difference > 1)
+                                for(int i=0; i<difference; i++)
+                                    append_list2(&svg_cpu_iowait_obj, str_tmp_null2, str_tmp_null);
+                            else
+                                append_list2(&svg_cpu_iowait_obj, str_tmp_echo2, str_tmp_echo);
                         }
                     }
                     /* end code for graph */
@@ -921,14 +983,25 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
                         char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null2[MAX_LINE_LENGTH + 100] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        memset(str_tmp_null, '\0', sizeof(str_tmp_null));
+                        memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
+                        int difference = 0;
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 100.0);
                         if (utility == 0) {
                             snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "CPU All", "cpu_idle", this_date_all, time_value, str_tmp_echo);
-                            append_list2(&svg_cpu_idle_obj, str_tmp_echo2, str_tmp_echo);
+                            snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", "CPU All", "cpu_idle", this_date_all, "", str_tmp_null);
+                            difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
+                            // absense of data should be zero
+                            if (difference > 1)
+                                for(int i=0; i<difference; i++)
+                                    append_list2(&svg_cpu_idle_obj, str_tmp_null2, str_tmp_null);
+                            else
+                                append_list2(&svg_cpu_idle_obj, str_tmp_echo2, str_tmp_echo);
                         }
                     }
                     /* end code for graph */
@@ -2184,13 +2257,24 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
                         char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null2[MAX_LINE_LENGTH + 100] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        memset(str_tmp_null, '\0', sizeof(str_tmp_null));
+                        memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
+                        int difference = 0;
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
                         snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "memused", "memused", this_date_all, time_value, str_tmp_echo);
-                        append_list2(&svg_memory_memused_obj, str_tmp_echo2, str_tmp_echo);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 0.0);
+                        snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", "memused", "memused", this_date_all, "", str_tmp_null);
+                        difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
+                        // absense of data should be zero
+                        if (difference > 1)
+                            for(int i=0; i<difference; i++)
+                                append_list2(&svg_memory_memused_obj, str_tmp_null2, str_tmp_null);
+                        else
+                            append_list2(&svg_memory_memused_obj, str_tmp_echo2, str_tmp_echo);
                     }
                     /* end code for graph */
                 } else {
@@ -2457,14 +2541,26 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
                         char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null2[MAX_LINE_LENGTH + 100] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        memset(str_tmp_null, '\0', sizeof(str_tmp_null));
+                        memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
+                        int difference = 0;
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 0.0);
                         snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "swpused", "swpused", this_date_all, time_value, str_tmp_echo);
-                        append_list2(&svg_memory_swpused_obj, str_tmp_echo2, str_tmp_echo);
+                        snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", "swpused", "swpused", this_date_all, "", str_tmp_null);
+                        difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
+                        // absense of data should be zero
+                        if (difference > 1)
+                            for(int i=0; i<difference; i++)
+                                append_list2(&svg_memory_swpused_obj, str_tmp_null2, str_tmp_null);
+                        else
+                            append_list2(&svg_memory_swpused_obj, str_tmp_echo2, str_tmp_echo);
                     }
+                    /* end code for graph */
                 } else {
                     h = get_swpused_avg_highest_val();
                     l = get_swpused_avg_lowest_val();
@@ -3061,13 +3157,24 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
                         char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null2[MAX_LINE_LENGTH + 100] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        memset(str_tmp_null, '\0', sizeof(str_tmp_null));
+                        memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
+                        int difference = 0;
                         snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 0.0);
                         snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "ldavg_one", "ldavg_one", this_date_all, time_value, str_tmp_echo);
-                        append_list2(&svg_ldavg_one_obj, str_tmp_echo2, str_tmp_echo);
+                        snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", "ldavg_one", "ldavg_one", this_date_all, "", str_tmp_null);
+                        difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
+                        // absense of data should be zero
+                        if (difference > 1)
+                            for(int i=0; i<difference; i++)
+                                append_list2(&svg_ldavg_one_obj, str_tmp_null2, str_tmp_null);
+                        else
+                            append_list2(&svg_ldavg_one_obj, str_tmp_echo2, str_tmp_echo);
                     }
                     /* end code for graph */
                 } else {
@@ -3158,13 +3265,24 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
                         char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null2[MAX_LINE_LENGTH + 100] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        memset(str_tmp_null, '\0', sizeof(str_tmp_null));
+                        memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
+                        int difference = 0;
                         snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 0.0);
                         snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "ldavg_five", "ldavg_five", this_date_all, time_value, str_tmp_echo);
-                        append_list2(&svg_ldavg_five_obj, str_tmp_echo2, str_tmp_echo);
+                        snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", "ldavg_five", "ldavg_five", this_date_all, "", str_tmp_null);
+                        difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
+                        // absense of data should be zero
+                        if (difference > 1)
+                            for(int i=0; i<difference; i++)
+                                append_list2(&svg_ldavg_five_obj, str_tmp_null2, str_tmp_null);
+                        else
+                            append_list2(&svg_ldavg_five_obj, str_tmp_echo2, str_tmp_echo);
                     }
                     /* end code for graph */
                 } else {
@@ -3255,13 +3373,24 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
                         char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null2[MAX_LINE_LENGTH + 100] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
+                        memset(str_tmp_null, '\0', sizeof(str_tmp_null));
+                        memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
+                        int difference = 0;
                         snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 0.0);
                         snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", "ldavg_15", "ldavg_15", this_date_all, time_value, str_tmp_echo);
-                        append_list2(&svg_ldavg_15_obj, str_tmp_echo2, str_tmp_echo);
+                        snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", "ldavg_15", "ldavg_15", this_date_all, "", str_tmp_null);
+                        difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
+                        // absense of data should be zero
+                        if (difference > 1)
+                            for(int i=0; i<difference; i++)
+                                append_list2(&svg_ldavg_15_obj, str_tmp_null2, str_tmp_null);
+                        else
+                            append_list2(&svg_ldavg_15_obj, str_tmp_echo2, str_tmp_echo);
                     }
                     /* end code for graph */
                 } else {
@@ -3415,16 +3544,28 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
                         (strstr(time_value, ":50:") != NULL) ||(strstr(time_value, "50分") != NULL)) {
                         char str_tmp_echo[MAX_LINE_LENGTH - 100] = {'\0'};
                         char str_tmp_echo2[MAX_LINE_LENGTH] = {'\0'};
-                        char str_tmp_echo3[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null[MAX_LINE_LENGTH] = {'\0'};
+                        char str_tmp_null2[MAX_LINE_LENGTH + 100] = {'\0'};
                         memset(str_tmp_echo, '\0', sizeof(str_tmp_echo));
                         memset(str_tmp_echo2, '\0', sizeof(str_tmp_echo2));
-                        memset(str_tmp_echo3, '\0', sizeof(str_tmp_echo3));
-                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", 110 - t);
+                        memset(str_tmp_null, '\0', sizeof(str_tmp_null));
+                        memset(str_tmp_null2, '\0', sizeof(str_tmp_null2));
+                        int difference = 0;
+                        snprintf(str_tmp_echo, sizeof(str_tmp_echo), "%f", t);
+                        snprintf(str_tmp_null, sizeof(str_tmp_null), "%f", 0.0);
                         // block device utility starts from value 1
                         if (utility >= 1) {
                             snprintf(str_tmp_echo2, sizeof(str_tmp_echo2), "%s,%s,%s,%s,%s", get_block_device_names(utility),
                                 "block_device_util", this_date_all, time_value, str_tmp_echo);
-                            append_list2(&svg_block_device_util_obj[utility], str_tmp_echo2, str_tmp_echo);
+                            snprintf(str_tmp_null2, sizeof(str_tmp_null2), "%s,%s,%s,%s,%s", get_block_device_names(utility),
+                                "block_device_util", this_date_all, "", str_tmp_null);
+                            difference = check_time_continuity(file_number, (char*)get_this_time_all(), (char*)get_this_time_all_former());
+                            // absense of data should be zero
+                            if (difference > 1)
+                                for(int i=0; i<difference; i++)
+                                    append_list2(&svg_block_device_util_obj[utility], str_tmp_null2, str_tmp_null);
+                            else
+                                append_list2(&svg_block_device_util_obj[utility], str_tmp_echo2, str_tmp_echo);
                         }
                     }
                     /* end code for graph */
