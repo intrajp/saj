@@ -4183,6 +4183,7 @@ int get_word_line(int file_number, char **line, int SAR_OPTION, int MESSAGE_ONLY
             /* this clause will be save for future use maybe */
             if (strstr(*line, "RESTART")) {
                 set_token_column(file_number, *line, "Linux", 1, SAR_OPTION);
+                /* for ps file */
                 linux_restart_count[file_number]++;
             }
             else
