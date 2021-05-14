@@ -175,8 +175,8 @@ void read_sa_dir(const char *dname, int SAR_OPTION, int REPORT,
 
     /* freeing memory */
     for (i = 0; i < MAX_ANALYZE_FILES; i++) {
-        str_arr[i]=NULL;
-        int_arr[i]=NULL;
+        str_arr[i] = NULL;
+        int_arr[i] = 0;
     }
 }
 
