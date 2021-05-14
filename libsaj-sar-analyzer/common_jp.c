@@ -93,10 +93,14 @@ void read_sa_dir(const char *dname, int SAR_OPTION, int REPORT,
     struct dirent *dp;
     dir = opendir(dname); 
     char *str, *str_tmp;
+    struct stat buf;
+    char fullpath[MAX_FILE_NAME_LENGTH];
+    int ret, mtime, int_tmp;
     int i = 0, ii = 0 , j = 0, files_n = 0;
 
     /* limit of sar files to be analyzed */
     char *str_arr[MAX_ANALYZE_FILES];
+    int int_arr[MAX_ANALYZE_FILES];
 
     int str_arr_valid_size = 0;
 
@@ -105,6 +109,13 @@ void read_sa_dir(const char *dname, int SAR_OPTION, int REPORT,
         if (dp->d_type != DT_REG)
             continue;
         str = dp->d_name;
+        snprintf(fullpath, MAX_FILE_NAME_LENGTH + 2, "%s/%s", dname, str);
+        ret = stat(fullpath, &buf);
+        if (ret < 0) {
+            free_sar_analyzer_obj();
+            free_sosreport_analyzer_obj(0);
+            exit(EXIT_FAILURE);
+        }
         /*
          *  find files with name sar
          *  skip reading "sar_all" file 
@@ -115,6 +126,9 @@ void read_sa_dir(const char *dname, int SAR_OPTION, int REPORT,
             /* exclude files with name tar or bz */
             if (strstr(str, "tar") == 0 && strstr(str, "bz") == 0) {
                 /* so, only sar[0-9][0-9] files will remain */
+                /* we also check mtime to sort files as time */
+                mtime = (int)buf.st_mtime;
+                int_arr[str_arr_valid_size] = mtime;
                 str_arr[str_arr_valid_size] = str;
                 str_arr_valid_size++;
                 if (str_arr_valid_size == MAX_ANALYZE_FILES -1)
@@ -139,10 +153,13 @@ void read_sa_dir(const char *dname, int SAR_OPTION, int REPORT,
         /* This makes largest item to the end of an array. */
         for (i = 0; i < str_arr_valid_size - (1 + j); i++) {
             ii = i + 1;
-            if (strcmp(str_arr[i], str_arr[ii]) > 0) {
+            if (int_arr[i] > int_arr[ii]) {
                 str_tmp = str_arr[i]; 
+                int_tmp = int_arr[i]; 
                 str_arr[i] = str_arr[ii]; 
+                int_arr[i] = int_arr[ii]; 
                 str_arr[ii] = str_tmp; 
+                int_arr[ii] = int_tmp; 
             }
         }
     }
@@ -157,8 +174,10 @@ void read_sa_dir(const char *dname, int SAR_OPTION, int REPORT,
     read_write_file(dir, dname, str_arr, files_n, SAR_OPTION, REPORT, MESSAGE_ONLY, time_span);
 
     /* freeing memory */
-    for (i = 0; i < MAX_ANALYZE_FILES; i++)
+    for (i = 0; i < MAX_ANALYZE_FILES; i++) {
         str_arr[i]=NULL;
+        int_arr[i]=NULL;
+    }
 }
 
 void read_write_file(DIR *dir, const char *dname, char *sar_arr[], int files_n,

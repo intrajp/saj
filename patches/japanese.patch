@@ -1,7 +1,7 @@
 diff -ruNp a/common.c b/common.c
---- a/common.c	2021-05-13 21:28:09.304055165 +0900
-+++ b/common.c	2021-05-13 21:28:16.531917174 +0900
-@@ -304,7 +304,7 @@ void read_sar_cpu_as_paragraph(const cha
+--- a/common.c	2021-05-14 21:53:45.745323238 +0900
++++ b/common.c	2021-05-14 21:55:35.879502659 +0900
+@@ -323,7 +323,7 @@ void read_sar_cpu_as_paragraph(const cha
          for (i--; (i > 0) && isspace (line[i -1]) ; i--)
              line[i -1] = '\0';
          /* count cpu all line and set numbers to cpu_as_paragraph */
@@ -10,7 +10,7 @@ diff -ruNp a/common.c b/common.c
              break;
          if ((strstr (*(&line), "all") != 0)) 
              _cpu_as_paragraph++;
-@@ -642,31 +642,31 @@ void sanity_check_file(char * line, cons
+@@ -661,31 +661,31 @@ void sanity_check_file(char * line, cons
      if (strstr(line, "LINUX RESTART") != 0)
          initialize_avg_checked_int ();
  
@@ -49,7 +49,7 @@ diff -ruNp a/common.c b/common.c
          if ((kbhugfree == 1) || (dentunusd == 0)) {
              kbswpfree_avg_checked_int = 1;
              kbswpfree_avg_checked = "Checked";
-@@ -674,39 +674,39 @@ void sanity_check_file(char * line, cons
+@@ -693,39 +693,39 @@ void sanity_check_file(char * line, cons
              kbhugfree_avg_checked = "Checked";
          }
      }
@@ -98,7 +98,7 @@ diff -ruNp a/common.c b/common.c
          if (squeezd == 0) {
              totsck_avg_checked_int = 1;
              totsck_avg_checked = "Checked";
-@@ -714,7 +714,7 @@ void sanity_check_file(char * line, cons
+@@ -733,7 +733,7 @@ void sanity_check_file(char * line, cons
              squeezd_avg_checked = "Checked";
          }
      }
@@ -108,8 +108,8 @@ diff -ruNp a/common.c b/common.c
          squeezd_avg_checked = "Checked";
      }
 diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
---- a/sar_analyzer.c	2021-05-13 21:28:22.491803389 +0900
-+++ b/sar_analyzer.c	2021-05-13 21:28:35.323558407 +0900
+--- a/sar_analyzer.c	2021-05-14 21:47:10.184808276 +0900
++++ b/sar_analyzer.c	2021-05-14 21:56:57.111938958 +0900
 @@ -154,7 +154,7 @@ int set_token_column(int file_number, ch
          }
          /* if AM or PM will appear, column number should be decremented, unless, segfault in set_column_item() */
@@ -660,15 +660,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              PM = 1;
          /* testing */
          char *str_tmp = "";
-@@ -4183,7 +4183,6 @@ int get_word_line(int file_number, char
-             /* this clause will be save for future use maybe */
-             if (strstr(*line, "RESTART")) {
-                 set_token_column(file_number, *line, "Linux", 1, SAR_OPTION);
--                /* for ps file */
-                 linux_restart_count[file_number]++;
-             }
-             else
-@@ -4194,7 +4193,7 @@ int get_word_line(int file_number, char
+@@ -4194,7 +4194,7 @@ int get_word_line(int file_number, char
               */
              initialize_check_int();
          /* first, we are setting column number of interests */
@@ -677,7 +669,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -4267,7 +4266,7 @@ int get_word_line(int file_number, char
+@@ -4267,7 +4267,7 @@ int get_word_line(int file_number, char
              PM = set_token_column(file_number, *line, "runq", 0, SAR_OPTION);
              /* this means, skip this clause on next loop, it's enough to set set_token_column() one time */
              CHK_Z = _LDAVG;
@@ -686,7 +678,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -4275,7 +4274,7 @@ int get_word_line(int file_number, char
+@@ -4275,7 +4275,7 @@ int get_word_line(int file_number, char
              PM = set_token_column(file_number, *line, "DEV", 0, SAR_OPTION);
              /* this means, skip this clause on next loop, it's enough to set set_token_column() one time */
              CHK_Z = _BLOCK_DEVICE;
@@ -695,7 +687,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -4283,7 +4282,7 @@ int get_word_line(int file_number, char
+@@ -4283,7 +4283,7 @@ int get_word_line(int file_number, char
              PM = set_token_column(file_number, *line, "rxpck", 0, SAR_OPTION);
              /* this means, skip this clause on next loop, it's enough to set set_token_column() one time */
              CHK_Z = _NETWORK;
@@ -704,7 +696,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              if (MESSAGE_ONLY == 0)
                  append_list(&line_all_obj, str_tmp);
  
-@@ -4319,7 +4318,7 @@ int get_word_line(int file_number, char
+@@ -4319,7 +4319,7 @@ int get_word_line(int file_number, char
                      CHK_CORES_N = 0;
                  }
                  CHECK_CPU_EACH++;
@@ -713,7 +705,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 0);  /* this means, skip this clause on next loop */
                  CHK_CORES_N = 0;
                  /* set_token_items(file_number, line, "cpu" , CHK_CORES_N, SAR_OPTION); */
-@@ -4337,7 +4336,7 @@ int get_word_line(int file_number, char
+@@ -4337,7 +4337,7 @@ int get_word_line(int file_number, char
              }
          /* setting utility arguments to meaningless value like -999 */
          } else if (CHK_Z == _TASKS) {
@@ -722,7 +714,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 1);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4346,7 +4345,7 @@ int get_word_line(int file_number, char
+@@ -4346,7 +4346,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "proc", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _PSWAP) {
@@ -731,7 +723,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 2);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4355,7 +4354,7 @@ int get_word_line(int file_number, char
+@@ -4355,7 +4355,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "pswpin/s", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _PAGING) {
@@ -740,7 +732,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 3);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4364,7 +4363,7 @@ int get_word_line(int file_number, char
+@@ -4364,7 +4364,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "fault", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _IO_TRANSFER_RATE) {
@@ -749,7 +741,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 4);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4373,7 +4372,7 @@ int get_word_line(int file_number, char
+@@ -4373,7 +4373,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "bread/s", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _MEMORY) {
@@ -758,7 +750,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 5);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4382,7 +4381,7 @@ int get_word_line(int file_number, char
+@@ -4382,7 +4382,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "kbmemfree", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _SWPUSED) {
@@ -767,7 +759,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 6);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4391,7 +4390,7 @@ int get_word_line(int file_number, char
+@@ -4391,7 +4391,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "kbswpfree", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _KERNEL_TABLE) {
@@ -776,7 +768,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 7);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4400,7 +4399,7 @@ int get_word_line(int file_number, char
+@@ -4400,7 +4400,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "dentunusd", -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _LDAVG) {
@@ -785,7 +777,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 8);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4413,7 +4412,7 @@ int get_word_line(int file_number, char
+@@ -4413,7 +4413,7 @@ int get_word_line(int file_number, char
           * setting each name to the object for future use 
           */ 
          } else if (CHK_Z == _BLOCK_DEVICE) {
@@ -794,7 +786,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 9);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4426,7 +4425,7 @@ int get_word_line(int file_number, char
+@@ -4426,7 +4426,7 @@ int get_word_line(int file_number, char
           * setting each name to the object for future use 
           */ 
          } else if (CHK_Z == _NETWORK) {
@@ -803,7 +795,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 10);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4435,7 +4434,7 @@ int get_word_line(int file_number, char
+@@ -4435,7 +4435,7 @@ int get_word_line(int file_number, char
                  set_token_items(file_number, line, "rxpck" , -999, SAR_OPTION, time_span, PM);
              }
          } else if (CHK_Z == _NETWORK_ERROR) {
@@ -812,7 +804,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  CHK_Z &= ~(1 << 11);  /* this means, skip this clause on next loop */
              else {
                  if (MESSAGE_ONLY == 0)
-@@ -4458,7 +4457,8 @@ int get_word_line(int file_number, char
+@@ -4458,7 +4458,8 @@ int get_word_line(int file_number, char
              && strstr(*line, "rcvin/s") == 0 && strstr(*line, "cswch/s") == 0 
              && strstr(*line, "frmpg/s") == 0 && strstr(*line, "call/s") == 0 
              && strstr(*line, "scall/s") == 0 && strstr(*line, "totsck") == 0 
@@ -822,7 +814,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
              /* no match */
              return 0;
          } else {
-@@ -4758,7 +4758,7 @@ int get_word_line(int file_number, char
+@@ -4758,7 +4759,7 @@ int get_word_line(int file_number, char
               * cpu and sets core number every time. core number is incremented, so, lately, core number could be known (including all line)  
               * stop calling this clause if reached up to MAX_CORE_NUMBERS, anyway, it will no be called very soon   
               */
@@ -831,7 +823,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  append_list(&line_obj, str_tmp);
                  set_token_items(file_number, line, "cpu" , CHK_CORES_N, SAR_OPTION, time_span, PM); /* setting each cpu values to the object */
                  if (CHK_CORES_N == MAX_CORE_NUMBERS)
-@@ -4769,7 +4769,7 @@ int get_word_line(int file_number, char
+@@ -4769,7 +4770,7 @@ int get_word_line(int file_number, char
               * just because not knowing which block device will appear every time this clause is called,
               * setting each name to the object for future use 
               */ 
@@ -840,7 +832,7 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
                  if (strstr(*line, "dev") != 0) {
                      append_list(&line_obj, str_tmp);
                      set_token_items(file_number, line, "DEV" , -999, SAR_OPTION, time_span, PM);
-@@ -4778,17 +4778,17 @@ int get_word_line(int file_number, char
+@@ -4778,17 +4779,17 @@ int get_word_line(int file_number, char
               * just because not knowing which network device will appear every time this clause is called,
               * setting each name to the object for future use 
               */ 
