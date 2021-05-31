@@ -97,7 +97,7 @@ void handle_signal(int sig)
     if (sig == SIGINT) {
         /*showing this is SIGINT process*/
         write(STDOUT_FILENO, msg_sigint, sizeof(msg_sigint) - 1);
-        printf("%s",msg_sigint);
+        fprintf(stderr, "%s",msg_sigint);
         /* this is needed, kernel don't care these stuff, you know... */
         delete_files();
         /* Reset signal handling to default behavior */
@@ -107,7 +107,7 @@ void handle_signal(int sig)
     if (sig == SIGHUP) {
         /*showing this is SIGHUP process*/
         write(STDOUT_FILENO, msg_sighup, sizeof(msg_sighup) - 1);
-        printf("%s",msg_sighup);
+        fprintf(stderr, "%s",msg_sighup);
         /* this is needed, kernel don't care these stuff, you know... */
         delete_files();
         /* Reset signal handling to default behavior */
@@ -437,7 +437,7 @@ int main(int argc, char* argv[])
 
     if (is_dir_present(dir_sa, sar_only) == 1 && sar_only == 0) {
         printf("Please check result file ./%s\n", sos_file_all_write);
-        printf("%s does not exist. Program ends.\n", dir_sa);
+        fprintf(stderr, "%s does not exist. Program ends.\n", dir_sa);
         /* freeing sosreport-analyzer objects */
         free_sosreport_analyzer_obj(sar_only);
         exit(EXIT_FAILURE);
