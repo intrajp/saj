@@ -2972,11 +2972,11 @@ int make_report(int SAR_OPTION, int REPORT, int files_n, const char *time_span)
     append_list(&report_overall_judgement_obj, "   -- CPU --");
     if (judge_cpu_avg_lowest_val < 30.00) {
         append_list(&report_overall_judgement_obj, "   Add more CPU!");
-        snprintf(str_tmp, MAX_LINE_LENGTH, "   Lowest average value of '%%idle' for CPU all is below 30(%5.2f)%%!", judge_cpu_avg_lowest_val);
+        snprintf(str_tmp, MAX_LINE_LENGTH, "   Lowest average value of '%%idle' for CPU all is below 30(%5.2f)%%!\n", judge_cpu_avg_lowest_val);
         append_list(&report_overall_judgement_obj, str_tmp);
     } else {
         append_list(&report_overall_judgement_obj, "   No need to add more CPU.");
-        snprintf(str_tmp, MAX_LINE_LENGTH, "   Lowest average value of '%%idle' for CPU all is above 30(%5.2f)%%.", judge_cpu_avg_lowest_val);
+        snprintf(str_tmp, MAX_LINE_LENGTH, "   Lowest average value of '%%idle' for CPU all is above 30(%5.2f)%%.\n", judge_cpu_avg_lowest_val);
         append_list(&report_overall_judgement_obj, str_tmp);
     }
     append_list(&report_overall_judgement_obj, "   -- MEMORY --");
