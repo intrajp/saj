@@ -70,7 +70,7 @@ AC_ARG_ENABLE(debug,
               [if test "x$enableval" != "xno" ; then CFLAGS="-g -DDEBUG $CFLAGS" ; fi])
 
 # check for extra compiler warnings
-DESIRED_CFLAGS="-Wall -std=gnu99"
+DESIRED_CFLAGS="-Wall -std=gnu99 -fstack-protector"
 AC_ARG_ENABLE(warnings,
               AS_HELP_STRING([--enable-warnings],
                              [enable extra compiler warnings (gcc)]),
