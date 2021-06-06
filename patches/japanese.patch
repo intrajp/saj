@@ -1,6 +1,6 @@
 diff -ruNp a/common.c b/common.c
---- a/common.c	2021-05-14 21:53:45.745323238 +0900
-+++ b/common.c	2021-05-14 21:55:35.879502659 +0900
+--- a/common.c	2021-06-06 16:13:29.950902836 +0900
++++ b/common.c	2021-06-06 16:13:37.173761832 +0900
 @@ -323,7 +323,7 @@ void read_sar_cpu_as_paragraph(const cha
          for (i--; (i > 0) && isspace (line[i -1]) ; i--)
              line[i -1] = '\0';
@@ -108,8 +108,8 @@ diff -ruNp a/common.c b/common.c
          squeezd_avg_checked = "Checked";
      }
 diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
---- a/sar_analyzer.c	2021-05-14 21:47:10.184808276 +0900
-+++ b/sar_analyzer.c	2021-05-14 21:56:57.111938958 +0900
+--- a/sar_analyzer.c	2021-06-06 16:13:45.603597263 +0900
++++ b/sar_analyzer.c	2021-06-06 16:14:00.275310843 +0900
 @@ -154,7 +154,7 @@ int set_token_column(int file_number, ch
          }
          /* if AM or PM will appear, column number should be decremented, unless, segfault in set_column_item() */
@@ -829,10 +829,10 @@ diff -ruNp a/sar_analyzer.c b/sar_analyzer.c
               */ 
 -            } else if (strstr(*line, "Average")  && !strstr(*line, "DEV") && (SHOW_AVG == 3)) {
 +            } else if (((strstr(*line, "Average")) ||(strstr(*line, "平均値"))) &&  !strstr(*line, "DEV") &&(SHOW_AVG == 3)) {
-                 if (strstr(*line, "dev") != 0) {
+                 if ((strstr(*line, "dev") != 0) || (strstr(*line, "sd") != 0) || (strstr(*line, "sr") != 0) ||
+                     (strstr(*line, "ram") != 0) || (strstr(*line, "dm") != 0)) {
                      append_list(&line_obj, str_tmp);
-                     set_token_items(file_number, line, "DEV" , -999, SAR_OPTION, time_span, PM);
-@@ -4778,17 +4779,17 @@ int get_word_line(int file_number, char
+@@ -4779,17 +4780,17 @@ int get_word_line(int file_number, char
               * just because not knowing which network device will appear every time this clause is called,
               * setting each name to the object for future use 
               */ 
