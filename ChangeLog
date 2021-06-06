@@ -86,3 +86,5 @@ Fix improper sentence.
 Fix sar report.
 0.3.3
 Fix compiler warnings.
+0.3.4
+Fix devie names in sar analyzing feature.
