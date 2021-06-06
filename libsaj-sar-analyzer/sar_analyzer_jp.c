@@ -4771,7 +4771,8 @@ int get_word_line(int file_number, char **line, int SAR_OPTION, int MESSAGE_ONLY
              * setting each name to the object for future use 
              */ 
             } else if (((strstr(*line, "Average")) ||(strstr(*line, "平均値"))) &&  !strstr(*line, "DEV") &&(SHOW_AVG == 3)) {
-                if (strstr(*line, "dev") != 0) {
+                if ((strstr(*line, "dev") != 0) || (strstr(*line, "sd") != 0) || (strstr(*line, "sr") != 0) ||
+                    (strstr(*line, "ram") != 0) || (strstr(*line, "dm") != 0)) {
                     append_list(&line_obj, str_tmp);
                     set_token_items(file_number, line, "DEV" , -999, SAR_OPTION, time_span, PM);
                 }
