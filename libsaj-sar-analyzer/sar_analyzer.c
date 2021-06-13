@@ -476,7 +476,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
     sigaction(SIGIOT, &act, 0);
     sigaction(SIGBUS, &act, 0);
     sigaction(SIGFPE, &act, 0);
-    sigaction(SIGKILL, &act, 0);
+    //sigaction(SIGKILL, &act, 0);
     sigaction(SIGUSR1, &act, 0);
     sigaction(SIGSEGV, &act, 0);
     sigaction(SIGUSR2, &act, 0);
@@ -486,7 +486,7 @@ int set_token_items(int file_number, char **line, const char *item_name, int uti
     sigaction(SIGSTKFLT, &act, 0);
     //sigaction(SIGCHLD, &act, 0);
     sigaction(SIGCONT, &act, 0);
-    sigaction(SIGSTOP, &act, 0);
+    //sigaction(SIGSTOP, &act, 0);
     sigaction(SIGTSTP, &act, 0);
     sigaction(SIGTTIN, &act, 0);
     sigaction(SIGTTOU, &act, 0);

@@ -92,10 +92,10 @@ static void __sighandler(int signo)
 {
     if (signo == SIGHUP || signo == SIGINT || signo == SIGQUIT || signo == SIGILL ||
         signo == SIGTRAP || signo == SIGIOT || signo == SIGBUS || signo == SIGFPE ||
-        signo == SIGKILL || signo == SIGUSR1 || signo == SIGSEGV || signo == SIGUSR2 ||
+        signo == SIGUSR1 || signo == SIGSEGV || signo == SIGUSR2 ||
         signo == SIGPIPE || signo == SIGALRM || signo == SIGTERM || signo == SIGSTKFLT ||
         signo == SIGCHLD || signo == SIGCONT || signo == SIGSTOP || signo == SIGTSTP ||
-        signo == SIGCONT || signo == SIGSTOP || signo == SIGTSTP ||
+        signo == SIGCONT || signo == SIGTSTP ||
         signo == SIGTTIN || signo == SIGTTOU || signo == SIGURG || signo == SIGXCPU ||
         signo == SIGXFSZ || signo == SIGVTALRM || signo == SIGPROF || signo == SIGWINCH ||
         signo == SIGIO || signo == SIGPWR) {
