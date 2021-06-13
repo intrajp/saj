@@ -85,33 +85,26 @@ static void __print_help(int mcinfo)
     puts("   You can set items to each member in conf file.\n");
 }
 
-const char msg_sigint[30] ="I caught SIGINT\n";
-const char msg_sighup[30] ="I caught SIGHUP\n";
-const char msg_sigchld[30] ="I caught SIGCHLD\n";
-
 /*
  * brief Callback function for handling signal(s).
  */
-void handle_signal(int sig)
+static void __sighandler(int signo)
 {
-    if (sig == SIGINT) {
-        /*showing this is SIGINT process*/
-        write(STDOUT_FILENO, msg_sigint, sizeof(msg_sigint) - 1);
-        fprintf(stderr, "%s",msg_sigint);
-        /* this is needed, kernel don't care these stuff, you know... */
+    if (signo == SIGHUP || signo == SIGINT || signo == SIGQUIT || signo == SIGILL ||
+        signo == SIGTRAP || signo == SIGIOT || signo == SIGBUS || signo == SIGFPE ||
+        signo == SIGKILL || signo == SIGUSR1 || signo == SIGSEGV || signo == SIGUSR2 ||
+        signo == SIGPIPE || signo == SIGALRM || signo == SIGTERM || signo == SIGSTKFLT ||
+        signo == SIGCHLD || signo == SIGCONT || signo == SIGSTOP || signo == SIGTSTP ||
+        signo == SIGCONT || signo == SIGSTOP || signo == SIGTSTP ||
+        signo == SIGTTIN || signo == SIGTTOU || signo == SIGURG || signo == SIGXCPU ||
+        signo == SIGXFSZ || signo == SIGVTALRM || signo == SIGPROF || signo == SIGWINCH ||
+        signo == SIGIO || signo == SIGPWR) {
+        /* we terminate so removing all temporary files */
         delete_files();
+        free_sosreport_analyzer_obj(0);
         /* Reset signal handling to default behavior */
         signal(SIGINT, SIG_DFL);
-        exit(EXIT_FAILURE); 
-    }
-    if (sig == SIGHUP) {
-        /*showing this is SIGHUP process*/
-        write(STDOUT_FILENO, msg_sighup, sizeof(msg_sighup) - 1);
-        fprintf(stderr, "%s",msg_sighup);
-        /* this is needed, kernel don't care these stuff, you know... */
-        delete_files();
-        /* Reset signal handling to default behavior */
-        signal(SIGHUP, SIG_DFL);
+
         exit(EXIT_FAILURE); 
     }
 }
@@ -137,6 +130,10 @@ int file_part = 0;
 /* Main function */
 int main(int argc, char* argv[])
 {
+    struct sigaction act;
+    memset (&act, 0, sizeof(act));
+    act.sa_handler = __sighandler;
+
     struct timeval  tv1, tv2;
     gettimeofday(&tv1, NULL);
 
@@ -363,8 +360,37 @@ int main(int argc, char* argv[])
     puts("\nNotice: You can set 'skip' to the member in the conf file when directory\
  is not present.\n");
     if (sar_only != 1) {
-        signal(SIGINT, handle_signal);
-        signal(SIGHUP, handle_signal);
+        sigaction(SIGHUP, &act, 0);
+        sigaction(SIGINT, &act, 0);
+        sigaction(SIGQUIT, &act, 0);
+        sigaction(SIGILL, &act, 0);
+        sigaction(SIGTRAP, &act, 0);
+        sigaction(SIGIOT, &act, 0);
+        sigaction(SIGBUS, &act, 0);
+        sigaction(SIGFPE, &act, 0);
+        sigaction(SIGKILL, &act, 0);
+        sigaction(SIGUSR1, &act, 0);
+        sigaction(SIGSEGV, &act, 0);
+        sigaction(SIGUSR2, &act, 0);
+        sigaction(SIGPIPE, &act, 0);
+        sigaction(SIGALRM, &act, 0);
+        sigaction(SIGTERM, &act, 0);
+        sigaction(SIGSTKFLT, &act, 0);
+        //sigaction(SIGCHLD, &act, 0);
+        sigaction(SIGCONT, &act, 0);
+        sigaction(SIGSTOP, &act, 0);
+        sigaction(SIGTSTP, &act, 0);
+        sigaction(SIGTTIN, &act, 0);
+        sigaction(SIGTTOU, &act, 0);
+        sigaction(SIGURG, &act, 0);
+        sigaction(SIGXCPU, &act, 0);
+        sigaction(SIGXFSZ, &act, 0);
+        sigaction(SIGVTALRM, &act, 0);
+        sigaction(SIGPROF, &act, 0);
+        sigaction(SIGWINCH, &act, 0);
+        sigaction(SIGIO, &act, 0);
+        sigaction(SIGPWR, &act, 0);
+
         pid_t cpid;
         pid_t wpid;
         int status = 0;
@@ -416,8 +442,6 @@ int main(int argc, char* argv[])
     file_write_list(&sos_tail_obj, fp_all_w);
     fclose(fp_all_w);
 
-    signal(SIGINT, handle_signal);
-    signal(SIGHUP, handle_signal);
     /* open result directory */
     char str_dir_result[MAX_FILE_NAME_LENGTH];
     memset(str_dir_result, '\0', sizeof(str_dir_result));
@@ -462,7 +486,13 @@ int main(int argc, char* argv[])
         snprintf(str_tmp, MAX_FILE_NAME_LENGTH, "%s/var/log/sa", (char *)get_dirname(str_tmp3));
     }
 
-    sar_analyzer_init(str_tmp, file_name, SAR_OPTION, REPORT, MESSAGE_ONLY, time_span);
+    /* --------  for file write --------*/
+    const char* sar_file_write = "";
+    char* file_svg_write = "";
+    sar_file_write = get_sar_file_name_to_be_written();
+    file_svg_write = (char *)get_svg_file_name_to_be_written();
+
+    sar_analyzer_init(str_tmp, file_name, SAR_OPTION, REPORT, MESSAGE_ONLY, time_span, sar_file_write);
 
     char str_num[MAX_FILE_NAME_LENGTH + 1] = {'\0'};
     char str_tmp_sar[10] = "dir_name:";
@@ -475,11 +505,6 @@ int main(int argc, char* argv[])
     /* creating file name to be written from SAR_OPTION */
     file_to_write(SAR_OPTION);
 
-    const char* sar_file_write = "";
-    char* file_svg_write = "";
-    /* --------  for file write --------*/
-    sar_file_write = get_sar_file_name_to_be_written();
-    file_svg_write = (char *)get_svg_file_name_to_be_written();
     FILE* fp_sar_w = NULL;
     FILE* fp_svg_w = NULL;
     FILE* fp_svg2_w = NULL;
@@ -654,6 +679,7 @@ int delete_files(void)
         snprintf(sos_file_all_write_tmp, MAX_LINE_LENGTH - 1, "%s_%d", sos_file_all_write, i);
         unlink(sos_file_all_write_tmp);
     }
+
     unlink(sos_file_all_write);
     unlink(get_sos_analyze_file_name_to_be_written());
     unlink(log_file_write);
