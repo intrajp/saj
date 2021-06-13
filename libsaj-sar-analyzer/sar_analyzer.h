@@ -1226,7 +1226,7 @@ int set_token_column ( int file_number, char *line, const char *item_name_for_co
  *  Calls : setters and getters
  *
  */
-int set_token_items ( int file_number, char **line, const char *item_name, int utility, int SAR_OPTION, const char *time_span, int PM );
+int set_token_items(int file_number, char **line, const char *item_name, int utility, int SAR_OPTION, const char *time_span, int PM, const char *sar_file_write);
 
 /* 
  *  This function checks if item string is inclued in a single line.
@@ -1242,7 +1242,7 @@ int set_token_items ( int file_number, char **line, const char *item_name, int u
  *  Calls : set_token_items()
  *
  */
-int get_word_line ( int file_number, char **line, int SAR_OPTION, int MESSAGE_ONLY, const char *time_span );
+int get_word_line(int file_number, char **line, int SAR_OPTION, int MESSAGE_ONLY, const char *time_span, const char *sar_file_write);
 
 /**** setter ****/
 void set_hostname ( char *hostname );
