@@ -88,3 +88,5 @@ Fix sar report.
 Fix compiler warnings.
 0.3.4
 Fix devie names in sar analyzing feature.
+0.3.5
+Fix signal handler function.
