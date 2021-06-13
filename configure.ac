@@ -28,7 +28,7 @@ version 2.1 of the License, or (at your option) any later version. See the
 configure.ac file for more details.])
 
 # initialize and set version and bugreport address
-AC_INIT([saj], [0.3.5], [shintaro.fujiwara@gmail.com])
+AC_INIT([saj], [0.3.6], [shintaro.fujiwara@gmail.com])
 RELEASE_MONTH="Jun 2021"
 AC_SUBST(RELEASE_MONTH)
 AC_CONFIG_MACRO_DIR([m4])
