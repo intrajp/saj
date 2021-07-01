@@ -360,36 +360,9 @@ int main(int argc, char* argv[])
     puts("\nNotice: You can set 'skip' to the member in the conf file when directory\
  is not present.\n");
     if (sar_only != 1) {
-        sigaction(SIGHUP, &act, 0);
-        sigaction(SIGINT, &act, 0);
-        sigaction(SIGQUIT, &act, 0);
-        sigaction(SIGILL, &act, 0);
-        sigaction(SIGTRAP, &act, 0);
-        sigaction(SIGIOT, &act, 0);
-        sigaction(SIGBUS, &act, 0);
-        sigaction(SIGFPE, &act, 0);
-        sigaction(SIGKILL, &act, 0);
-        sigaction(SIGUSR1, &act, 0);
-        sigaction(SIGSEGV, &act, 0);
-        sigaction(SIGUSR2, &act, 0);
-        sigaction(SIGPIPE, &act, 0);
-        sigaction(SIGALRM, &act, 0);
-        sigaction(SIGTERM, &act, 0);
-        sigaction(SIGSTKFLT, &act, 0);
-        //sigaction(SIGCHLD, &act, 0);
-        sigaction(SIGCONT, &act, 0);
-        sigaction(SIGSTOP, &act, 0);
-        sigaction(SIGTSTP, &act, 0);
-        sigaction(SIGTTIN, &act, 0);
-        sigaction(SIGTTOU, &act, 0);
-        sigaction(SIGURG, &act, 0);
-        sigaction(SIGXCPU, &act, 0);
-        sigaction(SIGXFSZ, &act, 0);
-        sigaction(SIGVTALRM, &act, 0);
-        sigaction(SIGPROF, &act, 0);
-        sigaction(SIGWINCH, &act, 0);
-        sigaction(SIGIO, &act, 0);
-        sigaction(SIGPWR, &act, 0);
+        struct sigaction act;
+        memset (&act, 0, sizeof(act));
+        act.sa_handler = __sighandler;
 
         pid_t cpid;
         pid_t wpid;
