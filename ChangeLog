@@ -94,3 +94,5 @@ Fix signal handler function.
 Fix signal handler function.
 0.3.7
 Fix SVG graphs.
+0.3.8
+Fix signal handler.
