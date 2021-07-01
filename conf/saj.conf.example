@@ -301,8 +301,8 @@ sos_commands/ruby/=all
 etc/samba/=all
 sos_commands/samba/=all
 ##==== sar ==== 
-sos_commands/sar/=all
-var/log/sa/sar=all
+#sos_commands/sar/=all
+#var/log/sa/sar=all
 ##==== snmp ==== 
 etc/snmp/=all
 ##==== sos ==== 
@@ -331,4 +331,5 @@ sos_commands/=skip
 dev/=skip
 usr/=skip
 var/=skip
+# If you want these to be analysed fully, you will need more work on source code, I guess.
 proc/=skip
