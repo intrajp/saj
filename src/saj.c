@@ -85,6 +85,10 @@ static void __print_help(int mcinfo)
     puts("   You can set items to each member in conf file.\n");
 }
 
+const char msg_sigint[30] ="I caught SIGINT\n";
+const char msg_sighup[30] ="I caught SIGHUP\n";
+const char msg_sigchld[30] ="I caught SIGCHLD\n";
+
 /*
  * brief Callback function for handling signal(s).
  */
