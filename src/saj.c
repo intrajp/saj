@@ -88,24 +88,27 @@ static void __print_help(int mcinfo)
 /*
  * brief Callback function for handling signal(s).
  */
-static void __sighandler(int signo)
+void handle_signal(int sig)
 {
-    if (signo == SIGHUP || signo == SIGINT || signo == SIGQUIT || signo == SIGILL ||
-        signo == SIGTRAP || signo == SIGIOT || signo == SIGBUS || signo == SIGFPE ||
-        signo == SIGUSR1 || signo == SIGSEGV || signo == SIGUSR2 ||
-        signo == SIGPIPE || signo == SIGALRM || signo == SIGTERM || signo == SIGSTKFLT ||
-        signo == SIGCHLD || signo == SIGCONT || signo == SIGSTOP || signo == SIGTSTP ||
-        signo == SIGCONT || signo == SIGTSTP ||
-        signo == SIGTTIN || signo == SIGTTOU || signo == SIGURG || signo == SIGXCPU ||
-        signo == SIGXFSZ || signo == SIGVTALRM || signo == SIGPROF || signo == SIGWINCH ||
-        signo == SIGIO || signo == SIGPWR) {
-        /* we terminate so removing all temporary files */
+    if (sig == SIGINT) {
+        /*showing this is SIGINT process*/
+        write(STDOUT_FILENO, msg_sigint, sizeof(msg_sigint) - 1);
+        printf("%s",msg_sigint);
+        /* this is needed, kernel don't care these stuff, you know... */
         delete_files();
-        free_sosreport_analyzer_obj(0);
         /* Reset signal handling to default behavior */
         signal(SIGINT, SIG_DFL);
-
-        exit(EXIT_FAILURE); 
+        exit(EXIT_FAILURE);
+    }
+    if (sig == SIGHUP) {
+        /*showing this is SIGHUP process*/
+        write(STDOUT_FILENO, msg_sighup, sizeof(msg_sighup) - 1);
+        printf("%s",msg_sighup);
+        /* this is needed, kernel don't care these stuff, you know... */
+        delete_files();
+        /* Reset signal handling to default behavior */
+        signal(SIGHUP, SIG_DFL);
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -130,9 +133,8 @@ int file_part = 0;
 /* Main function */
 int main(int argc, char* argv[])
 {
-    struct sigaction act;
-    memset (&act, 0, sizeof(act));
-    act.sa_handler = __sighandler;
+    signal(SIGINT, handle_signal);
+    signal(SIGHUP, handle_signal);
 
     struct timeval  tv1, tv2;
     gettimeofday(&tv1, NULL);
@@ -360,9 +362,8 @@ int main(int argc, char* argv[])
     puts("\nNotice: You can set 'skip' to the member in the conf file when directory\
  is not present.\n");
     if (sar_only != 1) {
-        struct sigaction act;
-        memset (&act, 0, sizeof(act));
-        act.sa_handler = __sighandler;
+        signal(SIGINT, handle_signal);
+        signal(SIGHUP, handle_signal);
 
         pid_t cpid;
         pid_t wpid;
@@ -378,6 +379,8 @@ int main(int argc, char* argv[])
                     exit(EXIT_FAILURE);
                 }
                 if (cpid == 0) {
+                    signal(SIGINT, handle_signal);
+                    signal(SIGHUP, handle_signal);
                     printf("---- member:%s\n", ptr_tmp_m->_member);
                     char str_dir_tmp[MAX_FILE_NAME_LENGTH];
                     memset(str_dir_tmp, '\0', sizeof(str_dir_tmp));
@@ -398,6 +401,8 @@ int main(int argc, char* argv[])
 
     /* Copy contents of part file to all */
     for (int i = 0; i < file_part; i++) {
+        signal(SIGINT, handle_signal);
+        signal(SIGHUP, handle_signal);
         char sos_file_all_write_tmp[ MAX_FILE_NAME_LENGTH ];
         snprintf(sos_file_all_write_tmp, MAX_LINE_LENGTH - 1, "%s_%d", sos_file_all_write, i);
 
