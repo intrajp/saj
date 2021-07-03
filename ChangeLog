@@ -100,3 +100,5 @@ Fix signal handler.
 Fix config example.
 0.4.0
 Fix signal handling.
+0.4.1
+Add forgotten lines.
