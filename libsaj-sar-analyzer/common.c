@@ -261,7 +261,7 @@ void read_write_file(DIR *dir, const char *dname, char *sar_arr[], int files_n,
     }
     unlink("dummy.svg");
 
-    pclose(fp_svg_w);
+    fclose(fp_svg_w);
 
     /* read sar files */
     for (i = 0; i < files_n; i++) {
