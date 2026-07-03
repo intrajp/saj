@@ -36,6 +36,11 @@ How to build:
  It will install 2 programs, 'saj', 'cmp-saj'
  in '/usr/local/bin'.
 
+# container
+
+You can also build and run saj as a container image.
+See docs/container.md for Docker and Podman examples.
+
 1. saj for analyze sosreport
 
 Program Name: saj
